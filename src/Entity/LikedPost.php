@@ -19,6 +19,9 @@ class LikedPost
     #[ORM\ManyToOne(inversedBy: 'likedPosts')]
     private ?User $user = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $date = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class LikedPost
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeImmutable
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeImmutable $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

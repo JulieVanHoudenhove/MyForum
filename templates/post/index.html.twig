@@ -21,9 +21,9 @@
         <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
 
         <div>
-            {% if app.user and app.user.likedPosts|length > 0 %}
-                {% for liked in app.user.likedPosts %}
-                    {% if post == liked.post %}
+            {% if app.user and post.likedPosts|length > 0 %}
+                {% for liked in post.likedPosts %}
+                    {% if app.user == liked.user %}
                         <a href="{{ path('app_post_dislike', {'id': post.id}) }}">Dislike</a>
                     {% else %}
                         <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
@@ -33,7 +33,5 @@
                 <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
             {% endif %}
         </div>
-
-
     {% endfor %}
 {% endblock %}

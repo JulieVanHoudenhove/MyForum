@@ -42,17 +42,18 @@ class LikedPostRepository extends ServiceEntityRepository
 //    /**
 //     * @return LikedPost[] Returns an array of LikedPost objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findLastWeekLiked($user): array
+    {
+        return $this->createQueryBuilder('l')
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere("l.date >= :date")
+            ->setParameter('date', new \DateTimeImmutable('1 week ago'))
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?LikedPost
 //    {
