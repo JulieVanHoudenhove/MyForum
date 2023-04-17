@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+
+    <h2>{{post.title}} - n°{{post.id}}</h2>
+    <p>{{post.text}}</p>
+    <small>Author: {{ post.user.username }}</small> <br>
+    <small>{{post.date|date('d/m/Y H:i', "Europe/Paris")}}</small>
+    {% if app.user == post.user %}
+        <a href="{{ path('app_post_remove', {'id': post.id}) }}">Delete</a>
+    {% endif %}
+
+{% endblock %}
