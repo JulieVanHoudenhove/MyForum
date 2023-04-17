@@ -42,16 +42,26 @@ class PostRepository extends ServiceEntityRepository
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */
+    public function findOrderDate(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.date', 'DESC')
+            ->setMaxResults(25)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
+//            ->orderBy('p.date', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
-//        ;
+//            ;
 //    }
 
 //    public function findOneBySomeField($value): ?Post

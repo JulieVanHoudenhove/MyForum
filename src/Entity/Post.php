@@ -28,12 +28,17 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private Collection $comments;
+
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: LikedPost::class, cascade: ['persist', 'remove'])]
+    private Collection $likedPosts;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->likePosts = new ArrayCollection();
+        $this->likedPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,6 +118,36 @@ class Post
             // set the owning side to null (unless already changed)
             if ($comment->getPost() === $this) {
                 $comment->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LikedPost>
+     */
+    public function getLikedPosts(): Collection
+    {
+        return $this->likedPosts;
+    }
+
+    public function addLikedPost(LikedPost $likedPost): self
+    {
+        if (!$this->likedPosts->contains($likedPost)) {
+            $this->likedPosts->add($likedPost);
+            $likedPost->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedPost(LikedPost $likedPost): self
+    {
+        if ($this->likedPosts->removeElement($likedPost)) {
+            // set the owning side to null (unless already changed)
+            if ($likedPost->getPost() === $this) {
+                $likedPost->setPost(null);
             }
         }
 
