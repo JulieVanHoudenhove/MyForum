@@ -8,6 +8,7 @@
     <main class="compte">
         <h1>Votre compte</h1>
         <section>
+            <ImageProfil />
             <div>
                 <Pseudo />
                 <Email />
@@ -22,5 +23,6 @@
     import Pseudo from './compte/Pseudo.vue'
     import Email from './compte/Email.vue'
     import Mdp from './compte/Mdp.vue'
+    import ImageProfil from './compte/ImageProfil.vue';
 </script>
 <style></style>

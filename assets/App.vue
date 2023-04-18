@@ -19,7 +19,6 @@ import Statistique from './controllers/Statistique.vue'
 import Inscription from './controllers/Inscription.vue'
 import DetailPost from './controllers/DetailPost.vue'
 
-
     onMounted(() => {
         console.log('hello world')
     })

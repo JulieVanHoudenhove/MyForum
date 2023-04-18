@@ -111,8 +111,6 @@ nav ul li a:hover {
 
 .react {
     width: 50px;
-    display: flex;
-    justify-content: space-around;
 }
 
 
@@ -247,6 +245,31 @@ h1 {
     background-color: transparent;
     border: 2px solid #84a98c;
     color: #84a98c;
+}
+
+.pdp {
+    display: flex;
+    flex-direction: row !important;
+    align-items: flex-end;
+}
+
+.pdp img {
+    background-color: #fff;
+    border-radius: 100px;
+    height: 125px;
+    width: 125px;
+}
+
+.fa-camera {
+    font-size: 20px;
+    background-color: #84a98c;
+    padding: 7px;
+    border-radius: 50px;
+    height: 40px;
+    width: 40px;
+    padding-top: 9px;
+    text-align: center;
+    margin-left: -30px;
 }
 
 
