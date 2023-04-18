@@ -3,7 +3,7 @@
 namespace App\Dto;
 
 use App\Entity\User;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 
 class PostDto
 {
@@ -14,5 +14,5 @@ class PostDto
     public \DateTimeImmutable $date;
     public bool $isLiked;
     public int $likes;
-    public PersistentCollection $comments;
+    public Collection $comments;
 }

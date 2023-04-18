@@ -4,14 +4,26 @@ namespace App\Dto;
 
 use App\Entity\Post;
 use App\Entity\User;
+use App\Repository\LikedPostRepository;
 
 class PostDtoTransformer
 {
-    public function transformFromObjects($posts, $user): array
+    private LikedPostRepository $likedPostRepository;
+
+    /**
+     * @param LikedPostRepository $likedPostRepository
+     */
+    public function __construct(LikedPostRepository $likedPostRepository)
+    {
+        $this->likedPostRepository = $likedPostRepository;
+    }
+
+
+    public function transformFromObjects($posts, User $user): array
     {
         $dtos = [];
         foreach ($posts as $post) {
-            $likes = $post->getLikedPosts();
+            $like = $this->likedPostRepository->findOneBy(['post' => $post, 'user' => $user]);
 
             $dto = new PostDto();
             $dto->id = $post->getId();
@@ -20,10 +32,8 @@ class PostDtoTransformer
             $dto->date = $post->getDate();
             $dto->user = $post->getUser();
             $dto->likes = count($post->getLikedPosts());
-            foreach ($likes as $like) {
-                if ($like->getUser() == $user) {
-                    $dto->isLiked = true;
-                }
+            if ($like) {
+                $dto->isLiked = true;
             }
 
             if (!isset($dto->isLiked)) {
@@ -36,9 +46,9 @@ class PostDtoTransformer
         return $dtos;
     }
 
-    public function transformFromObject($post, $user): PostDto
+    public function transformFromObject(Post $post, User $user): PostDto
     {
-        $likes = $post->getLikedPosts();
+        $like = $this->likedPostRepository->findOneBy(['post' => $post, 'user' => $user]);
         $dto = new PostDto();
         $dto->id = $post->getId();
         $dto->title = $post->getTitle();
@@ -47,10 +57,9 @@ class PostDtoTransformer
         $dto->user = $post->getUser();
         $dto->likes = count($post->getLikedPosts());
         $dto->comments = $post->getComments();
-        foreach ($likes as $like) {
-            if ($like->getUser() == $user) {
-                $dto->isLiked = true;
-            }
+
+        if ($like) {
+            $dto->isLiked = true;
         }
 
         if (!isset($dto->isLiked)) {
@@ -59,4 +68,29 @@ class PostDtoTransformer
 
         return $dto;
     }
+
+
+//    public function transformFromObject(Post $post, User $user): PostDto
+//    {
+//        $likes = $post->getLikedPosts();
+//        $dto = new PostDto();
+//        $dto->id = $post->getId();
+//        $dto->title = $post->getTitle();
+//        $dto->text = $post->getText();
+//        $dto->date = $post->getDate();
+//        $dto->user = $post->getUser();
+//        $dto->likes = count($post->getLikedPosts());
+//        $dto->comments = $post->getComments();
+//        foreach ($likes as $like) {
+//            if ($like->getUser() == $user) {
+//                $dto->isLiked = true;
+//            }
+//        }
+//
+//        if (!isset($dto->isLiked)) {
+//            $dto->isLiked = false;
+//        }
+//
+//        return $dto;
+//    }
 }
