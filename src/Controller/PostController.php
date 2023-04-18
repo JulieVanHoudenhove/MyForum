@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Dto\CommentDtoTransformer;
+use App\Dto\PostDtoTransformer;
 use App\Entity\Comment;
 use App\Entity\LikedPost;
 use App\Entity\Post;
@@ -19,12 +21,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post_index')]
-    public function index(PostRepository $postRepository): Response
+    public function index(PostRepository $postRepository, PostDtoTransformer $postDtoTransformer): Response
     {
+        $posts = $postRepository->findOrderDate();
+        if ($this->getUser()) {
+            $results = $postDtoTransformer->transformFromObjects($posts, $this->getUser());
+        } else {
+            $results = $posts;
+        }
+
         return $this->render('post/index.html.twig',
         [
             'controller_name' => 'PostController',
-            'posts' => $postRepository->findOrderDate()
+            'posts' => $results
         ]);
     }
 
@@ -55,8 +64,22 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_post_show')]
-    public function show(Post $post, Request $request, CommentRepository $commentRepository): Response
+    public function show(Post $post, Request $request, CommentRepository $commentRepository, PostDtoTransformer $postDtoTransformer, CommentDtoTransformer $commentDtoTransformer): Response
     {
+        if ($this->getUser()) {
+            $result = $postDtoTransformer->transformFromObject($post, $this->getUser());
+        } else {
+            $result = $post;
+        }
+
+        $comments = $commentRepository->findBy(['post' => $post]);
+
+        if ($this->getUser()) {
+            $result_comments = $commentDtoTransformer->transform($comments, $this->getUser());
+        } else {
+            $result_comments = $comments;
+        }
+
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -73,9 +96,10 @@ class PostController extends AbstractController
         return $this->render('post/show.html.twig', 
         [
             'controller_name' => 'PostController',
-            'post' => $post,
+            'post' => $result,
             'form' => $form,
-            'comment' => $comment
+            'comment' => $comment,
+            'comments' => $result_comments
         ]);
     }
 

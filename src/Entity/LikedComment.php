@@ -2,21 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\LikedPostRepository;
+use App\Repository\LikedCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LikedPostRepository::class)]
-class LikedPost
+#[ORM\Entity(repositoryClass: LikedCommentRepository::class)]
+class LikedComment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'likedPosts')]
-    private ?Post $post = null;
+    #[ORM\ManyToOne(inversedBy: 'likes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Comment $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'likedPosts')]
+    #[ORM\ManyToOne(inversedBy: 'likedComments')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column]
@@ -27,14 +29,14 @@ class LikedPost
         return $this->id;
     }
 
-    public function getPost(): ?Post
+    public function getComment(): ?Comment
     {
-        return $this->post;
+        return $this->comment;
     }
 
-    public function setPost(?Post $post): self
+    public function setComment(?Comment $comment): self
     {
-        $this->post = $post;
+        $this->comment = $comment;
 
         return $this;
     }

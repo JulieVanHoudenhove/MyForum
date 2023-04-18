@@ -41,11 +41,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: LikedPost::class)]
     private Collection $likedPosts;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: LikedComment::class)]
+    private Collection $likedComments;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->likedPosts = new ArrayCollection();
+        $this->likedComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +206,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($likedPost->getUser() === $this) {
                 $likedPost->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LikedComment>
+     */
+    public function getLikedComments(): Collection
+    {
+        return $this->likedComments;
+    }
+
+    public function addLikedComment(LikedComment $likedComment): self
+    {
+        if (!$this->likedComments->contains($likedComment)) {
+            $this->likedComments->add($likedComment);
+            $likedComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedComment(LikedComment $likedComment): self
+    {
+        if ($this->likedComments->removeElement($likedComment)) {
+            // set the owning side to null (unless already changed)
+            if ($likedComment->getUser() === $this) {
+                $likedComment->setUser(null);
             }
         }
 
