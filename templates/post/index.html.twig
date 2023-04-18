@@ -8,7 +8,7 @@
     {% endif %}
 
     {% for post in posts %}
-        <h2>{{post.title}}</h2>
+        <h2>{{post.title}} - n°{{post.id}}</h2>
         <p>{{post.text}}</p>
         <small>Author: {{ post.user.username }}</small> <br>
         <small>{{post.date|date('d/m/Y H:i', "Europe/Paris")}}</small>
@@ -18,18 +18,20 @@
 
         <a href="{{ path('app_post_show', {'id': post.id}) }}">Show</a>
 
-        {% if app.user %}
-            <p>{{ post.likes }} {{ post.likes > 1 ? 'Likes' : 'Like' }}</p>
+        <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
 
-            <div>
-                {% if post.isLiked %}
-                    <a href="{{ path('app_post_dislike', {'id': post.id}) }}">Dislike</a>
-                {% else %}
-                    <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
-                {% endif %}
-            </div>
-        {% else %}
-            <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
-        {% endif %}
+        <div>
+            {% if app.user and post.likedPosts|length > 0 %}
+                {% for liked in post.likedPosts %}
+                    {% if app.user == liked.user %}
+                        <a href="{{ path('app_post_dislike', {'id': post.id}) }}">Dislike</a>
+                    {% else %}
+                        <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
+            {% endif %}
+        </div>
     {% endfor %}
 {% endblock %}

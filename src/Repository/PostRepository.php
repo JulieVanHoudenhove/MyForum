@@ -4,8 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -52,38 +50,6 @@ class PostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function countTotalPost($user): array
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.user = :user')
-            ->setParameter(':user', $user)
-            ->getQuery()
-            ->getScalarResult()
-        ;
-    }
-
-    public function countLastWeekPost($user): array
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.user = :user')
-            ->setParameter(':user', $user)
-            ->andWhere('p.date >= :date')
-            ->setParameter(':date', new \DateTimeImmutable('1 week ago'))
-            ->getQuery()
-            ->getScalarResult()
-        ;
-    }
-
-    public function testQuery(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.likedPosts', 'likedPosts')
-            ->setMaxResults(25)
-            ->getQuery()
-            ->getResult()
-            ;
     }
 
 //    public function findByExampleField($value): array
