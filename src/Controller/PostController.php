@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Dto\PostDtoTransformer;
 use App\Entity\Comment;
 use App\Entity\LikedPost;
 use App\Entity\Post;
@@ -19,12 +20,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post_index')]
-    public function index(PostRepository $postRepository): Response
+    public function index(PostDtoTransformer $postDtoTransformer, PostRepository $postRepository): Response
     {
+        $posts = $postRepository->findOrderDate();
+
+        if ($this->getUser()) {
+            $results = $postDtoTransformer->transformFromObjects($posts, $this->getUser());
+        } else {
+            $results = $posts;
+        }
+
         return $this->render('post/index.html.twig',
         [
             'controller_name' => 'PostController',
-            'posts' => $postRepository->findOrderDate()
+            'posts' => $results
         ]);
     }
 
@@ -32,7 +41,6 @@ class PostController extends AbstractController
     public function new(PostRepository $postRepository, Request $request): Response
     {
         $post = new Post();
-
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -40,9 +48,7 @@ class PostController extends AbstractController
         {
             $post->setUser($this->getUser());
             $post->setDate(new \DateTimeImmutable('now'));
-
             $postRepository->save($post, true);
-
             return $this->redirectToRoute('app_post_index');
         }
 
@@ -55,8 +61,14 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_post_show')]
-    public function show(Post $post, Request $request, CommentRepository $commentRepository): Response
+    public function show(Post $post, Request $request, CommentRepository $commentRepository, PostDtoTransformer $postDtoTransformer): Response
     {
+        if ($this->getUser()) {
+            $result = $postDtoTransformer->transformFromObject($post, $this->getUser());
+        } else {
+            $result = $post;
+        }
+
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -66,14 +78,19 @@ class PostController extends AbstractController
             $comment->setDate(new \DateTimeImmutable('now'));
             $comment->setUser($this->getUser());
             $comment->setPost($post);
-
             $commentRepository->save($comment, true);
+
+            // Reset the comment form
+            unset($comment);
+            unset($form);
+            $comment = new Comment();
+            $form = $this->createForm(CommentType::class, $comment);
         }
 
         return $this->render('post/show.html.twig', 
         [
             'controller_name' => 'PostController',
-            'post' => $post,
+            'post' => $result,
             'form' => $form,
             'comment' => $comment
         ]);
