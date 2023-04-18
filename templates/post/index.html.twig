@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <a href="{{ path('app_post_new') }}">New</a>
+    {% endif %}
+
+    {% for post in posts %}
+        <h2>{{post.title}} - n°{{post.id}}</h2>
+        <p>{{post.text}}</p>
+        <small>Author: {{ post.user.username }}</small> <br>
+        <small>{{post.date|date('d/m/Y H:i', "Europe/Paris")}}</small>
+        {% if app.user == post.user %}
+            <a href="{{ path('app_post_remove', {'id': post.id}) }}">Delete</a>
+        {% endif %}
+
+        <a href="{{ path('app_post_show', {'id': post.id}) }}">Show</a>
+
+        <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
+
+        <div>
+            {% if app.user and post.likedPosts|length > 0 %}
+                {% for liked in post.likedPosts %}
+                    {% if app.user == liked.user %}
+                        <a href="{{ path('app_post_dislike', {'id': post.id}) }}">Dislike</a>
+                    {% else %}
+                        <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}
