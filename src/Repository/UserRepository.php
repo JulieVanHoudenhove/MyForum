@@ -56,6 +56,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
+    public function findMostActiveUser(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u, COUNT(posts.user) AS HIDDEN num_posts')
+            ->leftJoin('u.posts', 'posts')
+//            ->where('posts.date >= :date')
+//            ->setParameter(':date', new \DateTimeImmutable('1 week ago'))
+            ->groupBy('u.id')
+            ->orderBy('num_posts', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
