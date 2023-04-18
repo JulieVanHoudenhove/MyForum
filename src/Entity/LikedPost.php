@@ -13,7 +13,7 @@ class LikedPost
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'likedPosts')]
+    #[ORM\ManyToOne(inversedBy: 'likes')]
     private ?Post $post = null;
 
     #[ORM\ManyToOne(inversedBy: 'likedPosts')]

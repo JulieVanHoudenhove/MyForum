@@ -37,7 +37,6 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->likePosts = new ArrayCollection();
         $this->likedPosts = new ArrayCollection();
     }
 
