@@ -1,0 +1,17 @@
+<header>
+    <nav class="font-Poppins flex flex-row justify-between items-center px-12 py-5 shadow-[0_0_80px_rgba(0,0,0,.07)]">
+        <a class="block text-black font-bold text-3xl" href="{{path('app_home')}}"><span class="text-vert text-4xl">F</span>orum</a>
+        <ul class="flex flex-row justify-around w-6/12">
+            <li><a class="nav_li_a" href="{{path('app_home')}}">Accueil</a></li>
+            <li><a class="nav_li_a" href="#">Statistiques</a></li>
+            {% if app.user %}
+               <li><a class="nav_li_a" href="{{ path('app_user_show')}}">Compte</a></li>
+                <li><a class="nav_li_a" href="{{ path('app_logout')}}">Déconnexion</a></li>
+            {% else %}
+                <li><a class="nav_li_a" href="{{ path('app_register')}}">Inscription</a></li>
+                <li><a class="nav_li_a" href="{{ path('app_login')}}">Connexion</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

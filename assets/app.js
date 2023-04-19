@@ -14,9 +14,7 @@ import './bootstrap';
 import {createApp} from 'vue';
 import App from './App.vue';
 
-console.log('test');
-
 /**
 * Create a fresh Vue Application instance
-*/
+// */
 let app = createApp(App).mount('#app');

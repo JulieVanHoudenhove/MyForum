@@ -3,5 +3,44 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-    
+  <main class="font-Poppins">
+        <div class="w-full p-64 flex justify-center items-center bg-vert">
+            <h1 class="text-white text-4xl font-bold">My Forum</h1>
+        </div>
+        <section class="flex items-start w-full flex-col">
+            <h2 class="m-14 font-bold text-2xl">Fil d'actualité</h2>
+            {# POST #}
+              <article class=" mr-12 mb-12 ml-20">
+                <a class=" mx-12" href="post_detail.html">
+                    <h3 class="my-5 text-xl font-bold">Post 2</h3>
+                    <p class="my-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quae pariatur doloribus cumque distinctio! Sint numquam nam quas, asperiores optio neque veniam itaque, magnam possimus quia incidunt natus unde commodi.</p>
+                    <img class="h-52 my-3.5" src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="">
+                    <div class="flex flew-row justify-between">
+                        <p><span class="text-xs italic">Écrit par :</span> Pseudo 2</p>
+                        <p>17/04/2023 16:03</p>
+                    </div>
+                </a>
+                    <div class="w-12 flex justify-around">
+                        <i class="fa-regular fa-comment"></i>
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+            </article>
+            {# POST #}
+              <article class=" mr-12 mb-12 ml-20">
+                <a class=" mx-12" href="post_detail.html">
+                    <h3 class="my-5 text-xl font-bold">Post 2</h3>
+                    <p class="my-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quae pariatur doloribus cumque distinctio! Sint numquam nam quas, asperiores optio neque veniam itaque, magnam possimus quia incidunt natus unde commodi.</p>
+                    <img class="h-52 m-3.5" src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="">
+                    <div class="flex flew-row justify-between">
+                        <p><span class="text-xs italic">Écrit par :</span> Pseudo 2</p>
+                        <p>17/04/2023 16:03</p>
+                    </div>
+                </a>
+                    <div class="w-12 flex justify-around">
+                        <i class="fa-regular fa-comment"></i>
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+            </article>
+        </section>
+    </main>
 {% endblock %}
