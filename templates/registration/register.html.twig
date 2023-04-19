@@ -4,22 +4,16 @@
 
 {% block body %}
 <main class=" mt-20 flex flex-col items-center justify-center font-Poppins">
-    <h1>Créez votre compte</h1>
+    <h1 class="h1 text-vert">Créez votre compte</h1>
 
-    {{ form_start(registrationForm) }}
-        <div>
-            {{ form_row(registrationForm.username, {'label_attr': {'class': 'a'}, 'attr': {'class': 'a'}}, ) }}
-        </div>
-        <div>
-            {{ form_row(registrationForm.password.first, {'label_attr': {'class': 'a'}, 'attr': {'class': 'a'}}, ) }}
-        </div>
-        <div>
-            {{ form_row(registrationForm.password.second, {'label_attr': {'class': 'a'}, 'attr': {'class': 'a'}}, ) }}
-        </div>
-        <div>
+    {{ form_start(registrationForm, {'attr': {'class': 'flex flex-col items-center justify-center'}}) }}
+            {{ form_row(registrationForm.email, {'label_attr': {'class': 'mb-2'}, 'attr': {'class': 'py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg'}}, ) }}
+            {{ form_row(registrationForm.username, {'label_attr': {'class': 'mb-2'}, 'attr': {'class': 'py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg'}}, ) }}
+            {{ form_row(registrationForm.password.first, {'label_attr': {'class': 'mb-2'}, 'attr': {'class': 'py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg'}}, ) }}
+            {{ form_row(registrationForm.password.second, {'label_attr': {'class': 'mb-2'}, 'attr': {'class': 'py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg'}}, ) }}
             {{ form_row(registrationForm.agreeTerms, {'label_attr': {'class': 'a'}, 'attr': {'class': 'a'}}, ) }}
-        </div>
-        <button type="submit" class="btn" >Register</button>
+        <p>J'ai déjà un compte, <a class="text-vert" href="connexion.html">me connecter</a></p>
+        <button type="submit" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" >Register</button>
     {{ form_end(registrationForm) }}
 </main>
 {% endblock %}

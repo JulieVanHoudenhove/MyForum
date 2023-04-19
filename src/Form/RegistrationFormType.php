@@ -21,8 +21,16 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('username', TextType::class, [
+                'row_attr' => [
+                    'class' => 'flex flex-col m-4 w-80'
+                ]
+            ])
+            ->add('email', EmailType::class, [
+                'row_attr' => [
+                    'class' => 'flex flex-col m-4 w-80'
+                ]
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -30,6 +38,9 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+                'row_attr' => [
+                    'class' => 'flex flex-row-reverse justify-between w-4/12 mb-2'
+                ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -37,9 +48,15 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'first_options' => [
                     'label' => 'Password',
-                    'attr' => ['autocomplete' => 'new-password']
+                    'attr' => ['autocomplete' => 'new-password'],
+                    'row_attr' => [
+                        'class' => 'flex flex-col m-4 w-80'
+                    ]
                 ],
-                'second_options' => ['label' => 'Repeat Password'],
+                'second_options' => ['label' => 'Repeat Password',                 'row_attr' => [
+                    'class' => 'flex flex-col m-4 w-80'
+                ]],
+                
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
