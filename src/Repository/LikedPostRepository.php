@@ -47,7 +47,7 @@ class LikedPostRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('l')
             ->where('l.user = :user')
             ->setParameter('user', $user)
-            ->andWhere("l.date >= :date")
+            ->andWhere("l.created_at >= :date")
             ->setParameter('date', new \DateTimeImmutable('1 week ago'))
             ->orderBy('l.id', 'ASC')
             ->getQuery()

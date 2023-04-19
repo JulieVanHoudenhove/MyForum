@@ -28,7 +28,8 @@ class CommentDtoTransformer
             $dto = new PostDto();
             $dto->id = $comment->getId();
             $dto->text = $comment->getText();
-            $dto->date = $comment->getDate();
+            $dto->updatedAt = $comment->getUpdatedAt();
+            $dto->createdAt = $comment->getCreatedAt();
             $dto->user = $comment->getUser();
             $dto->likes = count($comment->getLikes());
             if ($like) {

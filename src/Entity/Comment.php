@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\Timestamp;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
+    use Timestamp;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -17,9 +21,6 @@ class Comment
 
     #[ORM\Column(length: 255)]
     private ?string $text = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -50,18 +51,6 @@ class Comment
     public function setText(string $text): self
     {
         $this->text = $text;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeImmutable
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeImmutable $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }

@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\Timestamp;
 use App\Repository\LikedCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LikedCommentRepository::class)]
 class LikedComment
 {
+    use Timestamp;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,9 +23,6 @@ class LikedComment
     #[ORM\ManyToOne(inversedBy: 'likedComments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $date = null;
 
     public function getId(): ?int
     {
@@ -49,18 +49,6 @@ class LikedComment
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeImmutable
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeImmutable $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }

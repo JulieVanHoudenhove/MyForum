@@ -29,7 +29,13 @@ class PostDtoTransformer
             $dto->id = $post->getId();
             $dto->title = $post->getTitle();
             $dto->text = $post->getText();
-            $dto->date = $post->getDate();
+
+            if ($post->getImage() != null) {
+                $dto->image = $post->getImage();
+            }
+
+            $dto->updatedAt = $post->getUpdatedAt();
+            $dto->createdAt = $post->getCreatedAt();
             $dto->user = $post->getUser();
             $dto->likes = count($post->getLikedPosts());
             if ($like) {
@@ -53,7 +59,13 @@ class PostDtoTransformer
         $dto->id = $post->getId();
         $dto->title = $post->getTitle();
         $dto->text = $post->getText();
-        $dto->date = $post->getDate();
+
+        if ($post->getImage() != null) {
+            $dto->image = $post->getImage();
+        }
+
+        $dto->updatedAt = $post->getUpdatedAt();
+        $dto->createdAt = $post->getCreatedAt();
         $dto->user = $post->getUser();
         $dto->likes = count($post->getLikedPosts());
         $dto->comments = $post->getComments();

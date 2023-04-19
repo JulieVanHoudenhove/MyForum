@@ -9,10 +9,12 @@
 
     {% for post in posts %}
         <div style="margin-bottom: 1rem">
-            <h2>{{post.title}} - n°{{post.id}}</h2>
+            <h2>{{post.title}}</h2>
             <p>{{post.text}}</p>
-            <small>Author: {{ post.user.username }}</small> <br>
-            <small>{{post.date|date('d/m/Y H:i', "Europe/Paris")}}</small>
+            {% if post.image %}
+                <img src="{{ asset('uploads/post_img/' ~ post.image) }}" alt=""> <br>
+            {% endif %}        Author: <a href="{{ path('app_user_show', {'id': post.user.id}) }}"> {{ post.user.username }}</a> <br>
+            <small>{{post.createdAt|date('d/m/Y H:i', "Europe/Paris")}}</small>
             {% if app.user == post.user %}
                 <a href="{{ path('app_post_remove', {'id': post.id}) }}">Delete</a>
             {% endif %}
@@ -28,7 +30,6 @@
                 <p>{{ post.likes }} {{ post.likes > 1 ? 'Likes' : 'Like' }}</p>
             {% else %}
                 <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
-                <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
             {% endif %}
         </div>
     {% endfor %}

@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\Timestamp;
 use App\Repository\LikedPostRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LikedPostRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class LikedPost
 {
+    use Timestamp;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -18,9 +21,6 @@ class LikedPost
 
     #[ORM\ManyToOne(inversedBy: 'likedPosts')]
     private ?User $user = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $date = null;
 
     public function getId(): ?int
     {
@@ -47,18 +47,6 @@ class LikedPost
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeImmutable
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeImmutable $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }
