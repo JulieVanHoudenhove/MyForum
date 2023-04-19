@@ -12,7 +12,7 @@
     <script src="main.js"></script>
     <script src="https://kit.fontawesome.com/807117854c.js" crossorigin="anonymous"></script>
 
-    <title>Compte</title>
+    <title>Nouveau Post</title>
 </head>
 <body>
     <header>
@@ -26,30 +26,23 @@
             </ul>
         </nav>
     </header>
-    <main class="compte">
-        <h1>Votre compte</h1>
-        <section>
-            <div class="pdp">
-                <img src="" alt="">
-                <i class="fa-solid fa-camera"></i>
-            </div>
-
+    <main class="new_post">
+        <h1>Créer un nouveau post</h1>
+        <form class="create_post" action="">
             <div>
-                <div>
-                    <h3>Pseudo</h3>
-                    <p>Monpseudotropgénial</p>
-                </div>
-                <div>
-                    <h3>Email</h3>
-                    <p>monemail@email.com</h2>
-                </div>
+                <label for="titre">Titre</label>
+                <input type="text" placeholder="Votre titre...">
             </div>
-            <div class="mdp">
-                <h3>Mot de passe</h3>
-                <a class="change" href="#">Changer de mot de passe</a>
+            <div>
+                <label for="contenu">Contenu du post</label>
+                <textarea name="contenu" id="contenu" cols="30" rows="10" placeholder="Contenu de votre post..."></textarea>
             </div>
-            <a class="link" href="analytics.html">Accéder à mes statistiques</a>
-        </section>
+            <div>
+                <label for="image">Ajouter une image</label>
+                <input type="file">
+            </div>
+            <button>Poster</button>
+        </form>
     </main>
 </body>
 </html>

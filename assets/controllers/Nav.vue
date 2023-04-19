@@ -1,6 +1,6 @@
 <script>
    export default {
-       name: "Nav"
+       name: "navigation"
    }
 </script>
 

@@ -1,12 +1,13 @@
 <script>
    export default {
-       name: "test"
+       name: "email_compte"
    }
 </script>
 
 <template>
-    <div class="fullimg">
-        <h1>My Forum</h1>
+    <div>
+        <h3>Email</h3>
+        <p>monemail@email.com</p>
     </div>
 </template>
 

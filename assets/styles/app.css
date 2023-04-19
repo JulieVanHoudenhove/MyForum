@@ -94,6 +94,11 @@ nav ul li a:hover {
     margin: 20px 0;
 }
 
+.index section article img {
+    height: 200px;
+    margin: 13px 0;
+}
+
 .index section article a div p span {
     font-size: 12px;
     font-style: italic;
@@ -111,6 +116,8 @@ nav ul li a:hover {
 
 .react {
     width: 50px;
+    display: flex;
+    justify-content: space-around;
 }
 
 
@@ -144,7 +151,7 @@ form div label {
     margin-bottom: 7px;
 }
 
-form div input {
+form div input, form div textarea {
     padding: 10px 20px;
     background-color: #eee;
     border: 1px solid #eee;
@@ -175,6 +182,7 @@ form button {
     border-radius: 7px;
     color: #fff;
     transition: .3s;
+    font-size: 18px;
 }
 
 form button:hover {
@@ -190,7 +198,7 @@ h1 {
     color: #84a98c;
 }
 
-.compte, .statistique, .connexion, .inscription {
+.compte, .statistique, .connexion, .inscription, .new_post {
     margin-top: 70px;
 }
 
@@ -247,6 +255,31 @@ h1 {
     color: #84a98c;
 }
 
+.pdp {
+    display: flex;
+    flex-direction: row !important;
+    align-items: flex-end;
+}
+
+.pdp img {
+    background-color: #fff;
+    border-radius: 100px;
+    height: 125px;
+    width: 125px;
+}
+
+.fa-camera {
+    font-size: 20px;
+    background-color: #84a98c;
+    padding: 7px;
+    border-radius: 50px;
+    height: 40px;
+    width: 40px;
+    padding-top: 9px;
+    text-align: center;
+    margin-left: -30px;
+}
+
 
 /* POST */
 
@@ -256,6 +289,11 @@ h1 {
 
 .post article h3, .post article p, .com h3 {
     margin: 20px 0;
+}
+
+.post article img {
+    height: 200px;
+    margin: 13px 0;
 }
 
 .com input {
@@ -307,6 +345,16 @@ h1 {
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
+}
+
+/* CREATE NEW POST */
+
+.create_post {
+    width: 80vw;
+}
+
+.create_post div {
+    width: 80%;
 }
 
 /* ANALYTICS */
