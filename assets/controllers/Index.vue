@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-    import Banniere from './Banniere.vue'
-    import Post from './Post.vue'
+    import Banniere from './index/Banniere.vue'
+    import Post from './index/Post.vue'
 </script>
 <style></style>

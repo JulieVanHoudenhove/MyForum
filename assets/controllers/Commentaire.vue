@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-    import Com from './Com.vue'
-    import NewCom from './NewCom.vue'
+    import Com from './commentaire/Com.vue'
+    import NewCom from './commentaire/NewCom.vue'
 </script>
 <style></style>
