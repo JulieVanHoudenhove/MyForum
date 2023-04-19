@@ -4,6 +4,15 @@
 
 {% block body %}
     {{ user.username }} <br>
+    {% if user.avatar %}
+        <img src="{{ asset('uploads/avatars/' ~ user.avatar) }}" alt="{{ user.username }} avatar"> <br>
+    {% endif %}
+    {% if app.user == user %}
+        <a href="{{ path('app_user_edit', {'id': user.id }) }}">Edit profile picture</a>
+    {% endif %}
+
+{#  GERER DELETE IMAGE SI NOUVELLE IMAGE ??  #}
+
     <h2>Stats</h2>
     {{ totalPost|length }} {{ totalPost|length > 1 ? 'posts' : 'post' }} <br>
     {{ totalLike|length }} {{ totalLike|length > 1 ? 'likes' : 'like' }} <br>

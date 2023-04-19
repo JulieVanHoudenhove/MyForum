@@ -13,9 +13,11 @@ use App\Repository\CommentRepository;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/post')]
 class PostController extends AbstractController
@@ -38,7 +40,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/new', name: 'app_post_new')]
-    public function new(PostRepository $postRepository, Request $request): Response
+    public function new(PostRepository $postRepository, Request $request, SluggerInterface $slugger): Response
     {
         $post = new Post();
 
@@ -47,9 +49,25 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $post->setUser($this->getUser());
-            $post->setDate(new \DateTimeImmutable('now'));
+            $postFile = $form->get('imageFile')->getData();
 
+            if ($postFile) {
+                $originalFilename = pathinfo($postFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $postFile->guessExtension();
+
+                try {
+                    $postFile->move(
+                        $this->getParameter('post_img_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // if something happens during upload
+                }
+
+                $post->setImage($newFilename);
+            }
+            $post->setUser($this->getUser());
             $postRepository->save($post, true);
 
             return $this->redirectToRoute('app_post_index');
@@ -86,11 +104,23 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $comment->setDate(new \DateTimeImmutable('now'));
             $comment->setUser($this->getUser());
             $comment->setPost($post);
-
             $commentRepository->save($comment, true);
+
+            // Reset the comment form
+            unset($comment);
+            unset($form);
+            $comment = new Comment();
+            $form = $this->createForm(CommentType::class, $comment);
+
+            $comments = $commentRepository->findBy(['post' => $post]);
+
+            if ($this->getUser()) {
+                $result_comments = $commentDtoTransformer->transform($comments, $this->getUser());
+            } else {
+                $result_comments = $comments;
+            }
         }
 
         return $this->render('post/show.html.twig', 
@@ -134,6 +164,13 @@ class PostController extends AbstractController
     #[Route('/{id}/remove', name: 'app_post_remove')]
     public function remove(PostRepository $postRepository, Post $post): Response
     {
+        if($post->getImage() !== null) {
+            $filesystem = new Filesystem();
+            $oldFile = $post->getImage();
+            $path = $this->getParameter('post_img_directory').'/'.$oldFile;
+            $filesystem->remove($path);
+        }
+
         $postRepository->remove($post, true);
         return $this->redirectToRoute('app_post_index');
     }

@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\AvatarType;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use Monolog\DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -37,6 +42,52 @@ class UserController extends AbstractController
             'totalPost' => $totalPost,
             'totalLike' => $totalLike,
             'mostActiveUsers' => $mostActiveUsers
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_user_edit')]
+    public function edit(User $user, Request $request, SluggerInterface $slugger, UserRepository $userRepository)
+    {
+        if (!$this->getUser() || $this->getUser() != $user) {
+            return $this->redirectToRoute('app_post_index');
+        }
+
+        $form = $this->createForm(AvatarType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $avatarFile = $form->get('avatarFile')->getData();
+
+            if ($avatarFile) {
+                if($user->getAvatar() != null) {
+                    $filesystem = new Filesystem();
+                    $oldFile = $user->getAvatar();
+                    $path = $this->getParameter('avatars_directory').'/'.$oldFile;
+                    $filesystem->remove($path);
+                }
+
+                $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarFile->guessExtension();
+
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('avatars_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // if something happens during upload
+                }
+                $user->setAvatar($newFilename);
+                $userRepository->save($user, true);
+            }
+
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+        }
+
+        return $this->render('user/new.html.twig', [
+            'form' => $form,
+            'user' => $user
         ]);
     }
 }
