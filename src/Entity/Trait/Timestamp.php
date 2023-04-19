@@ -15,7 +15,7 @@ trait Timestamp
     #[ORM\PrePersist]
     public function OnPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable('now');
+        $this->created_at !== null ? null : $this->created_at = new \DateTimeImmutable('now');
         $this->updated_at = new \DateTimeImmutable('now');
     }
 

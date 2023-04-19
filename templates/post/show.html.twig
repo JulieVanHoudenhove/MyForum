@@ -6,7 +6,7 @@
 
     <a href="{{ path('app_post_index') }}">Back</a>
 
-    <h2>{{post.title}} - n°{{post.id}}</h2>
+    <h2>{{post.title}}</h2>
     <p>{{post.text}}</p>
     {% if post.image%}
         <img src="{{ asset('uploads/post_img/' ~ post.image) }}" alt="" /> <br>
@@ -29,7 +29,6 @@
         <p>{{ post.likes }} {{ post.likes > 1 ? 'Likes' : 'Like' }}</p>
     {% else %}
         <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
-        <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
     {% endif %}
 
     {% if app.user %}
@@ -62,8 +61,7 @@
                 </div>
                 <p>{{ comment.likes }} {{ comment.likes > 1 ? 'Likes' : 'Like' }}</p>
             {% else %}
-                <p>{{ comment.likedPosts|length }} {{ comment.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
-                <a href="{{ path('app_comment_like', {'id': comment.id}) }}">Like</a>
+                <p>{{ comment.likes|length }} {{ comment.likes|length > 1 ? 'Likes' : 'Like' }}</p>
             {% endif %}
         </div>
     {% endfor %}

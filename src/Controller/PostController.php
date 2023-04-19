@@ -144,7 +144,6 @@ class PostController extends AbstractController
 
         $likedPost->setPost($post);
         $likedPost->setUser($this->getUser());
-        $likedPost->setDate(new \DateTimeImmutable('now'));
         $likedPostRepository->save($likedPost, true);
         return $this->redirectToRoute('app_post_index');
     }

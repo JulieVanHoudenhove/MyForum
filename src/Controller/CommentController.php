@@ -33,7 +33,6 @@ class CommentController extends AbstractController
 
         $likedComment->setComment($comment);
         $likedComment->setUser($this->getUser());
-        $likedComment->setDate(new \DateTimeImmutable('now'));
         $likedCommentRepository->save($likedComment, true);
         return $this->redirectToRoute('app_post_show', ['id' => $comment->getId()]);
     }
