@@ -24,8 +24,8 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
         for ($i=1; $i < 21; $i++) {
             $post = new Post();
             $createdDate = $this->faker->dateTimeBetween('-2 week', 'now');
-            $post->setTitle($this->faker->sentence(3))
-                ->setText($this->faker->realTextBetween(50, 120))
+            $post->setTitle($this->faker->realTextBetween(20, 50))
+                ->setText($this->faker->realTextBetween(50, 180))
                 ->setUser($this->getReference(UserFixtures::USER_REFERENCE  .rand(1, 10)))
                 ->setCreatedAt(\DateTimeImmutable::createFromMutable($createdDate));
             $this->addReference(self::POST_REFERENCE.$i, $post);
