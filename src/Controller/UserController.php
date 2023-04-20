@@ -26,12 +26,6 @@ class UserController extends AbstractController
         $totalLike = $likedPostRepository->countTotalLike($user);
         $mostActiveUsers = $userRepository->findMostActiveUser();
 
-        // Voir nb total post
-        // Voir nb total like sur poste
-        // Voir nb poste 7 derniers jours
-        // Voir nb like 7 derniers jours [X]
-        // Voir utilisateurs poste le +
-
         return $this->render('user/show.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,

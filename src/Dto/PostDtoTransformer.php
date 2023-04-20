@@ -10,16 +10,13 @@ class PostDtoTransformer
 {
     private LikedPostRepository $likedPostRepository;
 
-    /**
-     * @param LikedPostRepository $likedPostRepository
-     */
     public function __construct(LikedPostRepository $likedPostRepository)
     {
         $this->likedPostRepository = $likedPostRepository;
     }
 
 
-    public function transformFromObjects($posts, User $user): array
+    public function transformPosts($posts, User $user): array
     {
         $dtos = [];
         foreach ($posts as $post) {
@@ -52,7 +49,7 @@ class PostDtoTransformer
         return $dtos;
     }
 
-    public function transformFromObject(Post $post, User $user): PostDto
+    public function transformPost(Post $post, User $user): PostDto
     {
         $like = $this->likedPostRepository->findOneBy(['post' => $post, 'user' => $user]);
         $dto = new PostDto();

@@ -10,9 +10,6 @@ class CommentDtoTransformer
 {
     private LikedCommentRepository $likedCommentRepository;
 
-    /**
-     * @param LikedCommentRepository $likedCommentRepository
-     */
     public function __construct(LikedCommentRepository $likedCommentRepository)
     {
         $this->likedCommentRepository = $likedCommentRepository;
