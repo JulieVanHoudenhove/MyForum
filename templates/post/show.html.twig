@@ -22,9 +22,9 @@
             {% if app.user %}
                 <div class="w-12 flex flex-row justify-around text-vert ">
                     {% if post.isLiked %}
-                        <a href="{{ path('app_post_dislike', {'id': post.id}) }}"><i class="fa-solid fa-heart"></i></a>
+                        <a href="{{ path('app_post_dislike', {'id': post.id, 'redirect':'post'}) }}"><i class="fa-solid fa-heart"></i></a>
                     {% else %}
-                        <a href="{{ path('app_post_like', {'id': post.id}) }}"><i class="fa-regular fa-heart"></i></a>
+                        <a href="{{ path('app_post_like', {'id': post.id, 'redirect':'post'}) }}"><i class="fa-regular fa-heart"></i></a>
                     {% endif %}
                     <p>{{ post.likes }}</p>
                 </div>

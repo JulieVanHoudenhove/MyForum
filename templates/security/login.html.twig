@@ -24,7 +24,7 @@
             <label class="mb-2" for="inputPassword">Mot de passe</label>
             <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="****">
         </div>
-        <p>Je n'ai pas de compte, <a class="text-vert" href="inscription.html">m'inscrire</a></p>
+        <p>Je n'ai pas de compte, <a class="text-vert" href="{{ path('app_register')}}">m'inscrire</a></p>
 
         <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
@@ -45,3 +45,4 @@
     </form>
 </main>
 {% endblock %}
+ 
