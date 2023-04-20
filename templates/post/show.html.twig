@@ -3,67 +3,72 @@
 {% block title %}Hello PostController!{% endblock %}
 
 {% block body %}
-
-    <a href="{{ path('app_post_index') }}">Back</a>
-
-    <h2>{{post.title}}</h2>
-    <p>{{post.text}}</p>
-    {% if post.image%}
-        <img src="{{ asset('uploads/post_img/' ~ post.image) }}" alt="" /> <br>
-    {% endif %}
-    <small>Author: {{ post.user.username }}</small> <br>
-    <small>{{post.createdAt|date('d/m/Y H:i', "Europe/Paris")}}</small>
-    {% if app.user == post.user %}
-        <a href="{{ path('app_post_remove', {'id': post.id}) }}">Delete</a>
-    {% endif %}
-
-
-    {% if app.user %}
-        <div>
-            {% if post.isLiked %}
-                <a href="{{ path('app_post_dislike', {'id': post.id}) }}">Dislike</a>
-            {% else %}
-                <a href="{{ path('app_post_like', {'id': post.id}) }}">Like</a>
-            {% endif %}
+<main class="mt-5 ml-5 font-Poppins">
+    <a class="m-5 text-vert transition duration-3000 decoration-2 hover:underline uppercase font-semibold" href="{{ path('app_home') }}"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+    <article class="m-12 px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
+        <h3 class="my-5 text-xl font-bold">{{post.title}}</h3>
+        <p class="my-5">{{post.text}}</p>
+        {% if post.image %}
+            <img class="h-52 my-3.5" src="{{ asset('uploads/post_img/' ~ post.image) }}" alt="">
+        {% endif %}
+        <div class="flex flew-row justify-between">       
+            <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user.username }}</p>
+            <p>{{post.createdAt|date('d/m/Y H:i', "Europe/Paris")}}</p>
         </div>
-        <p>{{ post.likes }} {{ post.likes > 1 ? 'Likes' : 'Like' }}</p>
-    {% else %}
-        <p>{{ post.likedPosts|length }} {{ post.likedPosts|length > 1 ? 'Likes' : 'Like' }}</p>
-    {% endif %}
-
-    {% if app.user %}
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Send">
-        {{ form_end(form) }}
-    {% endif %}
-
-    <h3>Comments • {{ comments|length }}</h3>
-    {% if comments is empty %}
-        No comment found...
-    {% endif %}
-    {% for comment in comments %}
-        <div>
-            <p>{{ comment.text }}</p>
-            <small>Author: {{ comment.user.username }}</small><br>
-            <small>{{ comment.createdAt|date('d/m/y H:i', "Europe/Paris") }}</small>
-            {% if app.user == comment.user %}
-                <a href="{{ path('app_comment_remove', {'id': comment.id, 'post': post.id}) }}">Delete</a>
+        <div class="flex flex-row-reverse justify-between my-5">
+            {% if app.user == post.user %}
+                <a class="text-vert" href="{{ path('app_post_remove', {'id': post.id}) }}"><i class="fa-solid fa-trash"></i></a>
             {% endif %}
-
             {% if app.user %}
-                <div>
-                    {% if comment.isLiked %}
-                        <a href="{{ path('app_comment_dislike', {'id': comment.id}) }}">Dislike</a>
+                <div class="w-12 flex flex-row justify-around text-vert ">
+                    {% if post.isLiked %}
+                        <a href="{{ path('app_post_dislike', {'id': post.id}) }}"><i class="fa-solid fa-heart"></i></a>
                     {% else %}
-                        <a href="{{ path('app_comment_like', {'id': comment.id}) }}">Like</a>
+                        <a href="{{ path('app_post_like', {'id': post.id}) }}"><i class="fa-regular fa-heart"></i></a>
                     {% endif %}
+                    <p>{{ post.likes }}</p>
                 </div>
-                <p>{{ comment.likes }} {{ comment.likes > 1 ? 'Likes' : 'Like' }}</p>
-            {% else %}
-                <p>{{ comment.likes|length }} {{ comment.likes|length > 1 ? 'Likes' : 'Like' }}</p>
             {% endif %}
         </div>
-    {% endfor %}
+    </article>
+        <section class="mx-12 my-14 ">
+            <h3 class="my-5 text-xl font-bold">Commentaires</h3>
+            {% if app.user %}
+                {{ form_start(form) }}
+                {{ form_errors(form.text) }}
+                {{ form_widget(form.text, { 'attr': {'class': 'mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg'}}, ) }}
+                <input class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert" type="submit" value="Envoyer">
+                {{ form_end(form)}}
+            {% endif %}
 
+            {# <h3>Commentaires • {{ comments|length }}</h3> #}
+            {% if comments is empty %}
+                Pas de commentaire...
+            {% endif %}
+            {% for comment in comments %}
+                <article class=" mr-12 mb-12 ml-12">
+                    <p class="my-6"><span class="font-semibold">{{ comment.user.username }}</span><br>{{ comment.text }}</p>
+                    <div class=" flex flex-row justify-between">
+                        <p>{{ comment.createdAt|date('d/m/y H:i', "Europe/Paris") }}</p>
+                        {% if app.user %}
+                            <div class="w-20 flex flex-row justify-between text-vert ">
+                                <div class="w-12 flex flex-row justify-around">
+                                    {% if comment.isLiked %}
+                                        <a href="{{ path('app_post_dislike', {'id': comment.id}) }}"><i class="fa-solid fa-heart"></i></a>
+                                    {% else %}
+                                        <a href="{{ path('app_post_like', {'id': comment.id}) }}"><i class="fa-regular fa-heart"></i></a>
+                                    {% endif %}
+                                    <p>{{ comment.likes }}</p>
+                                </div>                    
+                                {% if app.user == comment.user %}
+                                    <a class="text-vert" href="{{ path('app_comment_remove', {'id': comment.id, 'post': post.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    </article>
+</main>
 {% endblock %}
