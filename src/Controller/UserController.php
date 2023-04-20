@@ -7,6 +7,7 @@ use App\Form\AvatarType;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use App\Service\UploaderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -46,7 +47,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit')]
-    public function edit(User $user, Request $request, SluggerInterface $slugger, UserRepository $userRepository)
+    public function edit(User $user, Request $request, UserRepository $userRepository, UploaderService $uploaderService)
     {
         if (!$this->getUser() || $this->getUser() != $user) {
             return $this->redirectToRoute('app_post_index');
@@ -66,19 +67,8 @@ class UserController extends AbstractController
                     $filesystem->remove($path);
                 }
 
-                $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarFile->guessExtension();
-
-                try {
-                    $avatarFile->move(
-                        $this->getParameter('avatars_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // if something happens during upload
-                }
-                $user->setAvatar($newFilename);
+                $filename = $uploaderService->uploadImage($avatarFile, UploaderService::AVATAR);
+                $user->setAvatar($filename);
                 $userRepository->save($user, true);
             }
 

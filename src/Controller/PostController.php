@@ -11,6 +11,7 @@ use App\Repository\CommentRepository;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
 use App\Service\PostService;
+use App\Service\UploaderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -37,7 +38,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/new', name: 'app_post_new')]
-    public function new(PostRepository $postRepository, Request $request, SluggerInterface $slugger): Response
+    public function new(PostRepository $postRepository, Request $request, UploaderService $uploaderService): Response
     {
         if ($this->getUser() == null) {
             return $this->redirectToRoute('app_login');
@@ -52,21 +53,10 @@ class PostController extends AbstractController
             $postFile = $form->get('imageFile')->getData();
 
             if ($postFile) {
-                $originalFilename = pathinfo($postFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $postFile->guessExtension();
-
-                try {
-                    $postFile->move(
-                        $this->getParameter('post_img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // if something happens during upload
-                }
-
-                $post->setImage($newFilename);
+                $filename = $uploaderService->uploadImage($postFile, UploaderService::POST);
+                $post->setImage($filename);
             }
+
             $post->setUser($this->getUser());
             $postRepository->save($post, true);
 
