@@ -18,7 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/{id}', name: 'app_user_show')]
-    public function show(User $user, LikedPostRepository $likedPostRepository, UserRepository $userRepository, PostRepository $postRepository): Response
+    public function show(User $user): Response
+    {
+        return $this->render('user/show.html.twig', [
+            'controller_name' => 'UserController',
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/{id}/stats', name: 'app_user_stats')]
+    public function stats(User $user, LikedPostRepository $likedPostRepository, UserRepository $userRepository, PostRepository $postRepository): Response
     {
         $lastWeekLike = $likedPostRepository->countLastWeekLike($user);
         $totalPost = $postRepository->countTotalPost($user);
