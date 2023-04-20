@@ -22,48 +22,60 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
+                'label' => 'Pseudo',
+                'attr' => array(
+                    'placeholder' => 'pseudo'
+                ),
                 'row_attr' => [
                     'class' => 'flex flex-col m-4 w-80'
                 ]
             ])
             ->add('email', EmailType::class, [
+                'attr' => array(
+                    'placeholder' => 'client@email.com'
+                ),
                 'row_attr' => [
                     'class' => 'flex flex-col m-4 w-80'
                 ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
+                'label' => 'Accepter les conditions d\'utilisation',
+                'row_attr' => [
+                    'class' => 'flex flex-row-reverse justify-around m-4 w-80'
+                ],
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions d\'utilisation.',
                     ]),
                 ],
-                'row_attr' => [
-                    'class' => 'flex flex-row-reverse justify-between w-4/12 mb-2'
-                ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fiels must match.',
+                'invalid_message' => 'Le mot de passe doit être identique.',
                 'required' => true,
                 'first_options' => [
-                    'label' => 'Password',
-                    'attr' => ['autocomplete' => 'new-password'],
+                    'label' => 'Mot de passe',
+                    'attr' => ['autocomplete' => 'new-password', 'placeholder' => '****'],
                     'row_attr' => [
                         'class' => 'flex flex-col m-4 w-80'
                     ]
                 ],
-                'second_options' => ['label' => 'Repeat Password',                 'row_attr' => [
+                'second_options' => ['label' => 'Confirmation du mot de passe',
+                'attr' => array(
+                    'placeholder' => '****'
+                ),
+                    'row_attr' => [
                     'class' => 'flex flex-col m-4 w-80'
                 ]],
                 
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Entrez un mot de passe.',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit être d\'au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
