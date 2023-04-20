@@ -14,6 +14,7 @@ use App\Service\PostService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,8 +110,11 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}/like', name: 'app_post_like')]
-    public function like(Post $post, LikedPostRepository $likedPostRepository): Response
+    public function like(Post $post, LikedPostRepository $likedPostRepository, Request $request): Response
     {
+        $id = $post->getId();
+        $redirect = $request->query->get('redirect');
+
         if ($this->getUser() == null) {
             return $this->redirectToRoute('app_login');
         }
@@ -118,29 +122,33 @@ class PostController extends AbstractController
         $likedPost = new LikedPost();
 
         if ($likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()])) {
-            return $this->redirectToRoute('app_post_index');
+            $this->redirectPost($redirect, $id);
         }
 
         $likedPost->setPost($post);
         $likedPost->setUser($this->getUser());
         $likedPostRepository->save($likedPost, true);
-        return $this->redirectToRoute('app_post_index');
+
+        return $this->redirectPost($redirect, $id);
     }
 
     #[Route('/{id}/dislike', name: 'app_post_dislike')]
-    public function dislike(Post $post, LikedPostRepository $likedPostRepository): Response
+    public function dislike(Post $post, LikedPostRepository $likedPostRepository, Request $request): Response
     {
+        $id = $post->getId();
+        $redirect = $request->query->get('redirect');
+
         if ($this->getUser() == null) {
             return $this->redirectToRoute('app_login');
         }
 
         if (!$likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()])) {
-            return $this->redirectToRoute('app_post_index');
+            $this->redirectPost($redirect, $id);
         }
 
         $likedPost = $likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()]);
         $likedPostRepository->remove($likedPost, true);
-        return $this->redirectToRoute('app_post_index');
+        return $this->redirectPost($redirect, $id);
     }
 
     #[Route('/{id}/remove', name: 'app_post_remove')]
@@ -155,5 +163,14 @@ class PostController extends AbstractController
 
         $postRepository->remove($post, true);
         return $this->redirectToRoute('app_post_index');
+    }
+
+    private function redirectPost($redirect, $id): RedirectResponse
+    {
+        if ($redirect == 'post') {
+            return $this->redirectToRoute('app_post_show', ['id' => $id]);
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
     }
 }
