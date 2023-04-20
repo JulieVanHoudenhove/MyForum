@@ -3,18 +3,24 @@
 namespace App\Service;
 
 
+use App\Dto\CommentDtoTransformer;
 use App\Dto\PostDtoTransformer;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 
 class PostService
 {
     private PostRepository $postRepository;
     private PostDtoTransformer $postDtoTransformer;
+    private CommentDtoTransformer $commentDtoTransformer;
+    private CommentRepository $commentRepository;
 
-    public function __construct(PostRepository $postRepository, PostDtoTransformer $postDtoTransformer)
+    public function __construct(PostRepository $postRepository, PostDtoTransformer $postDtoTransformer, CommentDtoTransformer $commentDtoTransformer, CommentRepository $commentRepository)
     {
         $this->postRepository = $postRepository;
         $this->postDtoTransformer = $postDtoTransformer;
+        $this->commentDtoTransformer = $commentDtoTransformer;
+        $this->commentRepository = $commentRepository;
     }
 
     public function getPostsByDate($limit, $currentUser)
@@ -28,20 +34,16 @@ class PostService
         return $posts;
     }
 
-//    public function RenderSinglePost($currentUser)
-//    {
-//        if ($currentUser) {
-//            $result = $postDtoTransformer->transformFromObject($post, $this->getUser());
-//        } else {
-//            $result = $post;
-//        }
-//
-//        $comments = $commentRepository->findBy(['post' => $post]);
-//
-//        if ($currentUser) {
-//            $result_comments = $commentDtoTransformer->transform($comments, $this->getUser());
-//        } else {
-//            $result_comments = $comments;
-//        }
-//    }
+    public function RenderSinglePost($post, $currentUser): array
+    {
+        $comments = $this->commentRepository->findBy(['post' => $post]);
+
+        if ($currentUser) {
+            $result_post = $this->postDtoTransformer->transformFromObject($post, $currentUser);
+            $result_comments = $this->commentDtoTransformer->transform($comments, $currentUser);
+            return [$result_post, $result_comments];
+        }
+
+        return [$post, $comments];
+    }
 }
