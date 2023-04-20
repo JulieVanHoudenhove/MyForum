@@ -12,17 +12,4 @@
     {% endif %}
 
 {#  GERER DELETE IMAGE SI NOUVELLE IMAGE ??  #}
-
-    <h2>Stats</h2>
-    {{ totalPost|length }} {{ totalPost|length > 1 ? 'posts' : 'post' }} <br>
-    {{ totalLike|length }} {{ totalLike|length > 1 ? 'likes' : 'like' }} <br>
-    {{ lastWeekPost|length }} writed {{ lastWeekPost|length > 1 ? 'posts' : 'post' }} last 7 days <br>
-    {{ lastWeekLike|length }} liked {{ lastWeekLike|length > 1 ? 'posts' : 'post' }} last 7 days
-
-    <h2>Most Active Users</h2>
-    {% for activeUser in mostActiveUsers %}
-        <div>
-            <p>{{ activeUser.username }} = {{ activeUser.posts|length }}</p>
-        </div>
-    {% endfor %}
 {% endblock %}

@@ -35,7 +35,7 @@ class UserController extends AbstractController
         $totalLike = $likedPostRepository->countTotalLike($user);
         $mostActiveUsers = $userRepository->findMostActiveUser();
 
-        return $this->render('user/show.html.twig', [
+        return $this->render('user/stats.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,
             'lastWeekLike' => $lastWeekLike,

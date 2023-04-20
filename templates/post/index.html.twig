@@ -4,9 +4,9 @@
     {% endif %}
 
     {% for post in posts %}
-        <article class=" mr-12 mb-12 ml-20 w-11/12">
+        <article class=" mr-12 mb-12 ml-20 w-11/12  px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <a class=" mx-12" href="{{ path('app_post_show', {'id': post.id}) }}">
-                <h3 class="my-5 text-xl font-bold">{{post.title}}</h3>
+                <h3 class="text-xl font-bold">{{post.title}}</h3>
                 <p class="my-5">{{post.text}}</p>
                 {% if post.image %}
                     <img class="h-52 my-3.5" src="{{ asset('uploads/post_img/' ~ post.image) }}" alt="">
@@ -17,7 +17,7 @@
                 </div>
             </a>
             {% if app.user %}
-                <div class="w-12 flex flex-row justify-around text-vert ">
+                <div class="w-12 flex flex-row justify-around text-vert mb-5">
                     {% if post.isLiked %}
                         <a href="{{ path('app_post_dislike', {'id': post.id}) }}"><i class="fa-solid fa-heart"></i></a>
                     {% else %}
