@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Dto\CommentDtoTransformer;
-use App\Dto\PostDtoTransformer;
 use App\Entity\Comment;
 use App\Entity\LikedPost;
 use App\Entity\Post;
@@ -12,8 +10,10 @@ use App\Form\PostType;
 use App\Repository\CommentRepository;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
+use App\Service\PostService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,20 +23,16 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class PostController extends AbstractController
 {
     #[Route('/', name: 'app_post_index')]
-    public function index(PostRepository $postRepository, PostDtoTransformer $postDtoTransformer): Response
+    public function index(PostService $postService): Response
     {
-        $posts = $postRepository->findOrderDate();
-        if ($this->getUser()) {
-            $results = $postDtoTransformer->transformFromObjects($posts, $this->getUser());
-        } else {
-            $results = $posts;
-        }
+        $this->getUser() ? $currentUser = $this->getUser() : $currentUser = null;
+        $posts = $postService->getPostsByDate(25, $currentUser);
 
         return $this->render('post/index.html.twig',
-        [
-            'controller_name' => 'PostController',
-            'posts' => $results
-        ]);
+            [
+                'controller_name' => 'PostController',
+                'posts' => $posts
+            ]);
     }
 
     #[Route('/new', name: 'app_post_new')]
@@ -47,8 +43,7 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $postFile = $form->get('imageFile')->getData();
 
             if ($postFile) {
@@ -82,55 +77,31 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_post_show')]
-    public function show(Post $post, Request $request, CommentRepository $commentRepository, PostDtoTransformer $postDtoTransformer, CommentDtoTransformer $commentDtoTransformer): Response
+    public function show(Post $post, Request $request, CommentRepository $commentRepository, PostService $postService): Response
     {
-        if ($this->getUser()) {
-            $result = $postDtoTransformer->transformFromObject($post, $this->getUser());
-        } else {
-            $result = $post;
-        }
-
-        $comments = $commentRepository->findBy(['post' => $post]);
-
-        if ($this->getUser()) {
-            $result_comments = $commentDtoTransformer->transform($comments, $this->getUser());
-        } else {
-            $result_comments = $comments;
-        }
+        $this->getUser() ? $currentUser = $this->getUser() : $currentUser = null;
+        $data = $postService->RenderSinglePost($post, $currentUser);
 
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $comment->setUser($this->getUser());
-            $comment->setPost($post);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser())
+                ->setPost($post);
             $commentRepository->save($comment, true);
 
-            // Reset the comment form
-            unset($comment);
-            unset($form);
-            $comment = new Comment();
-            $form = $this->createForm(CommentType::class, $comment);
-
-            $comments = $commentRepository->findBy(['post' => $post]);
-
-            if ($this->getUser()) {
-                $result_comments = $commentDtoTransformer->transform($comments, $this->getUser());
-            } else {
-                $result_comments = $comments;
-            }
+            $data = $postService->RenderSinglePost($post, $currentUser);
         }
 
-        return $this->render('post/show.html.twig', 
-        [
-            'controller_name' => 'PostController',
-            'post' => $result,
-            'form' => $form,
-            'comment' => $comment,
-            'comments' => $result_comments
-        ]);
+        return $this->render('post/show.html.twig',
+            [
+                'controller_name' => 'PostController',
+                'post' => $data[0],
+                'form' => $form,
+                'comment' => $comment,
+                'comments' => $data[1]
+            ]);
     }
 
     #[Route('/{id}/like', name: 'app_post_like')]
@@ -138,7 +109,7 @@ class PostController extends AbstractController
     {
         $likedPost = new LikedPost();
 
-        if ($likedPostRepository->findOneBy(['post'=>$post, 'user'=>$this->getUser()])) {
+        if ($likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()])) {
             return $this->redirectToRoute('app_post_index');
         }
 
@@ -151,11 +122,11 @@ class PostController extends AbstractController
     #[Route('/{id}/dislike', name: 'app_post_dislike')]
     public function dislike(Post $post, LikedPostRepository $likedPostRepository): Response
     {
-        if (!$likedPostRepository->findOneBy(['post'=>$post, 'user'=>$this->getUser()])) {
+        if (!$likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()])) {
             return $this->redirectToRoute('app_post_index');
         }
 
-        $likedPost = $likedPostRepository->findOneBy(['post'=>$post, 'user'=>$this->getUser()]);
+        $likedPost = $likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()]);
         $likedPostRepository->remove($likedPost, true);
         return $this->redirectToRoute('app_post_index');
     }
@@ -163,10 +134,10 @@ class PostController extends AbstractController
     #[Route('/{id}/remove', name: 'app_post_remove')]
     public function remove(PostRepository $postRepository, Post $post): Response
     {
-        if($post->getImage() !== null) {
+        if ($post->getImage() !== null) {
             $filesystem = new Filesystem();
             $oldFile = $post->getImage();
-            $path = $this->getParameter('post_img_directory').'/'.$oldFile;
+            $path = $this->getParameter('post_img_directory') . '/' . $oldFile;
             $filesystem->remove($path);
         }
 

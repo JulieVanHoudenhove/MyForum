@@ -42,11 +42,11 @@ class PostRepository extends ServiceEntityRepository
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */
-    public function findOrderDate(): array
+    public function findOrderDate($limit): array
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.created_at', 'DESC')
-            ->setMaxResults(25)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
         ;
