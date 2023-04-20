@@ -10,7 +10,8 @@ module.exports = {
       colors: {
         'vert': '#84a98c',
         'gris_input': '#eee',
-        'gris_text': '#666'
+        'gris_text': '#666',
+        'stat_border': '#ededed'
       },
       fontFamily: {
         'Poppins': ['Poppins'],
