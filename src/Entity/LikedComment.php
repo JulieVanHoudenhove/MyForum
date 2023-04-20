@@ -5,12 +5,13 @@ namespace App\Entity;
 use App\Entity\Trait\Timestamp;
 use App\Repository\LikedCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: LikedCommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class LikedComment
 {
-    use Timestamp;
+    use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use App\Entity\Trait\Timestamp;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Comment
 {
-    use Timestamp;
+    use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

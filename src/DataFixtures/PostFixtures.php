@@ -21,13 +21,14 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        for ($i=1; $i < 21; $i++) {
+        for ($i=1; $i < 101; $i++) {
             $post = new Post();
-            $createdDate = $this->faker->dateTimeBetween('-2 week', 'now');
+            $date = $this->faker->dateTimeBetween('-4 week', 'now');
             $post->setTitle($this->faker->realTextBetween(20, 50))
                 ->setText($this->faker->realTextBetween(50, 180))
                 ->setUser($this->getReference(UserFixtures::USER_REFERENCE  .rand(1, 10)))
-                ->setCreatedAt(\DateTimeImmutable::createFromMutable($createdDate));
+                ->setCreatedAt($date)
+                ->setUpdatedAt($date);
             $this->addReference(self::POST_REFERENCE.$i, $post);
             $manager->persist($post);
         }

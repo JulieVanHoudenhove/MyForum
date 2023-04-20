@@ -45,7 +45,7 @@ class PostRepository extends ServiceEntityRepository
     public function findOrderDate($limit): array
     {
         return $this->createQueryBuilder('p')
-            ->orderBy('p.created_at', 'DESC')
+            ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -67,7 +67,7 @@ class PostRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->where('p.user = :user')
             ->setParameter(':user', $user)
-            ->andWhere('p.created_at >= :date')
+            ->andWhere('p.createdAt >= :date')
             ->setParameter(':date', new \DateTimeImmutable('1 week ago'))
             ->getQuery()
             ->getScalarResult()

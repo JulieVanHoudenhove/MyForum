@@ -9,8 +9,8 @@ class CommentDto
     public int $id;
     public string $text;
     public User $user;
-    public \DateTimeImmutable $createdAt;
-    public \DateTimeImmutable $updatedAt;
+    public \DateTime $createdAt;
+    public \DateTime $updatedAt;
     public bool $isLiked;
     public int $likes;
 }

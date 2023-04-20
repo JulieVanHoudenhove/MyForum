@@ -47,7 +47,7 @@ class LikedPostRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('l')
             ->where('l.user = :user')
             ->setParameter('user', $user)
-            ->andWhere("l.created_at >= :date")
+            ->andWhere("l.createdAt >= :date")
             ->setParameter('date', new \DateTimeImmutable('1 week ago'))
             ->orderBy('l.id', 'ASC')
             ->getQuery()
@@ -64,6 +64,19 @@ class LikedPostRepository extends ServiceEntityRepository
             ->getScalarResult()
             ;
     }
+
+//    public function findMostActiveUser(): array
+//    {
+//        return $this->createQueryBuilder('l')
+//            ->select('l, COUNT(l.post_id)')
+//            ->leftJoin('l.', 'posts')
+////            ->where('posts.date >= :date')
+////            ->setParameter(':date', new \DateTimeImmutable('1 week ago'))
+//            ->groupBy('l.id')
+//            ->getQuery()
+//            ->getResult()
+//            ;
+//    }
 
 //    public function findOneBySomeField($value): ?LikedPost
 //    {

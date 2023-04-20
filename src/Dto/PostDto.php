@@ -12,8 +12,8 @@ class PostDto
     public string $text;
     public ?string $image = null;
     public User $user;
-    public \DateTimeImmutable $createdAt;
-    public \DateTimeImmutable $updatedAt;
+    public \DateTime $createdAt;
+    public \DateTime $updatedAt;
     public bool $isLiked;
     public int $likes;
     public Collection $comments;
