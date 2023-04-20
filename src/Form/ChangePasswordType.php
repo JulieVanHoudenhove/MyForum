@@ -21,7 +21,7 @@ class ChangePasswordType extends AbstractType
                 'required' => true,
                 'mapped' => false,
                 'attr' => [
-                    'placeholder' => '******'
+                    'placeholder' => '****'
                 ],
                 'row_attr' => [
                     'class' => 'flex flex-col m-4 w-80'
@@ -34,14 +34,14 @@ class ChangePasswordType extends AbstractType
                 'mapped' => false,
                 'first_options' => [
                     'label' => 'Nouveau mot de passe',
-                    'attr' => ['placeholder' => '******'],
+                    'attr' => ['placeholder' => '****'],
                     'row_attr' => [
                         'class' => 'flex flex-col m-4 w-80'
                     ]
                 ],
                 'second_options' => ['label' => 'Répetez nouveau mot de passe',
                     'attr' => [
-                        'placeholder' => '******'
+                        'placeholder' => '****'
                     ],
                     'row_attr' => [
                         'class' => 'flex flex-col m-4 w-80'

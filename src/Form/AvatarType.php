@@ -15,7 +15,10 @@ class AvatarType extends AbstractType
     {
         $builder
             ->add('avatarFile', FileType::class, [
-                'label' => 'Upload a new avatar',
+                'label' => 'Ajouter un photo',
+                'row_attr' => [
+                    'class' => 'flex flex-col justify-center items-center m-4 w-4/5'
+                ],
                 'mapped' => false,
                 'required' => false,
                 'attr' => [

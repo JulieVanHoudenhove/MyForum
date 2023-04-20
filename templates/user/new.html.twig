@@ -3,12 +3,15 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-    {{ user.username }} <br>
-
-    {{ form_start(form) }}
-    <h4>Avatar actuel :</h4>
-    <img src="{{ asset('uploads/avatars/' ~ user.avatar) }}" alt="">
-    {{ form_widget(form) }}
-    <input type="submit" value="Edit">
-    {{ form_end(form) }}
+    <main  class=" mt-20 flex flex-col items-center justify-center font-Poppins">
+        <h1 class="h1 text-vert">Changez votre photo de profil</h1>
+        {{ form_start(form, {'attr': {'class': 'flex flex-col items-center justify-center p-7'}}) }}
+        <div class="flex flex-col justify-center items-center m-12">
+            <h3 class="text-xl font-bold pb-7">Votre photo actuelle :</h3>
+            <img class="bg-white rounded-full h-32 w-32" src="{{ asset('uploads/avatars/' ~ user.avatar) }}" alt="">
+        </div>
+        {{ form_row(form.avatarFile, {'label_attr': {'class': 'mb-2'}, 'attr': {'class': 'py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg'}},) }}
+        <input class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit" value="Mettre à jour">
+        {{ form_end(form) }}
+    </main>
 {% endblock %}
