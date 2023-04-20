@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AvatarType;
+use App\Form\ChangePasswordType;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -12,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
@@ -35,7 +37,7 @@ class UserController extends AbstractController
         $totalLike = $likedPostRepository->countTotalLike($user);
         $mostActiveUsers = $userRepository->findMostActiveUser();
 
-        return $this->render('user/show.html.twig', [
+        return $this->render('user/stats.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,
             'lastWeekLike' => $lastWeekLike,
@@ -76,6 +78,37 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/new.html.twig', [
+            'form' => $form,
+            'user' => $user
+        ]);
+    }
+
+    #[Route('/{id}/change-password', name: 'app_user_password')]
+    public function changePassword(User $user, Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
+    {
+        if (!$this->getUser() || $this->getUser() != $user) {
+            return $this->redirectToRoute('app_post_index');
+        }
+
+        $form = $this->createForm(ChangePasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $old = $form->get('oldPassword')->getData();
+            $new = $form->get('password')->getData();
+
+            if (!$passwordHasher->isPasswordValid($user, $old)) {
+                return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+            }
+
+            $newHashed = $passwordHasher->hashPassword($user, $new);
+            $user->setPassword($newHashed);
+            $userRepository->save($user, true);
+
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+        }
+
+        return $this->render('user/password.html.twig', [
             'form' => $form,
             'user' => $user
         ]);
