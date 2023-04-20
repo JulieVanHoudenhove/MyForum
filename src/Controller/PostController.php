@@ -38,6 +38,10 @@ class PostController extends AbstractController
     #[Route('/new', name: 'app_post_new')]
     public function new(PostRepository $postRepository, Request $request, SluggerInterface $slugger): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $post = new Post();
 
         $form = $this->createForm(PostType::class, $post);
@@ -107,6 +111,10 @@ class PostController extends AbstractController
     #[Route('/{id}/like', name: 'app_post_like')]
     public function like(Post $post, LikedPostRepository $likedPostRepository): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $likedPost = new LikedPost();
 
         if ($likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()])) {
@@ -122,6 +130,10 @@ class PostController extends AbstractController
     #[Route('/{id}/dislike', name: 'app_post_dislike')]
     public function dislike(Post $post, LikedPostRepository $likedPostRepository): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('app_login');
+        }
+
         if (!$likedPostRepository->findOneBy(['post' => $post, 'user' => $this->getUser()])) {
             return $this->redirectToRoute('app_post_index');
         }

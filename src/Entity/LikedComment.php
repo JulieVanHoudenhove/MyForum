@@ -7,6 +7,7 @@ use App\Repository\LikedCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LikedCommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class LikedComment
 {
     use Timestamp;
