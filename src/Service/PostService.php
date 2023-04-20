@@ -23,11 +23,11 @@ class PostService
         $this->commentRepository = $commentRepository;
     }
 
-    public function getPostsByDate($limit, $currentUser)
+    public function getPostsByDate($limit, $currentUser): array
     {
         $posts = $this->postRepository->findOrderDate($limit);
         if ($currentUser !== null) {
-            $results = $this->postDtoTransformer->transformFromObjects($posts, $currentUser);
+            $results = $this->postDtoTransformer->transformPosts($posts, $currentUser);
             return $results;
         }
 
@@ -39,7 +39,7 @@ class PostService
         $comments = $this->commentRepository->findBy(['post' => $post]);
 
         if ($currentUser) {
-            $result_post = $this->postDtoTransformer->transformFromObject($post, $currentUser);
+            $result_post = $this->postDtoTransformer->transformPost($post, $currentUser);
             $result_comments = $this->commentDtoTransformer->transform($comments, $currentUser);
             return [$result_post, $result_comments];
         }

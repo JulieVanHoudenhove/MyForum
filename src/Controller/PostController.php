@@ -84,6 +84,11 @@ class PostController extends AbstractController
                 ->setPost($post);
             $commentRepository->save($comment, true);
 
+            unset($comment);
+            unset($form);
+            $comment = new Comment();
+            $form = $this->createForm(CommentType::class, $comment);
+
             $data = $postService->RenderSinglePost($post, $currentUser);
         }
 
@@ -150,7 +155,7 @@ class PostController extends AbstractController
         }
 
         $postRepository->remove($post, true);
-        return $this->redirectToRoute('app_post_index');
+        return $this->redirectToRoute('app_home');
     }
 
     private function redirectPost($redirect, $id): RedirectResponse
