@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     order: ['createdAt' => 'DESC'],
     paginationEnabled: true,
     paginationItemsPerPage: 20,
-    provider: PostApi::class
+//    provider: PostApi::class
 )]
 //#[Get(provider: )]
 class Post
