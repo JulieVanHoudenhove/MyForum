@@ -25,7 +25,7 @@
          // Create the data table.
          var data = google.visualization.arrayToDataTable([
              ["Element", "Posts", { role: "style" } ],
-             ["Pseudo3", 889, "#b87333"],
+             ["hchsdh", 889, "#b87333"],
              ["Pseudo4", 1049, "silver"],
              ["Pseudo5", 1930, "gold"],
              ["Psqeudo6", 2145, "color: #e5e4e2"]

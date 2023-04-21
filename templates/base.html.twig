@@ -15,12 +15,12 @@
         {% endblock %}
     </head>
     <body>
+        {% include "nav.html.twig" %}
         {% for message in app.flashes('success') %}
-            <div class="flash-notice">
-                {{ message }}
+            <div class="flash-notice flex justify-center items-center bg-vert text-white text-lg font-Poppins p-2">
+                <p class="m-1">{{ message }}</p>
             </div>
         {% endfor %}
-        {% include "nav.html.twig" %}
         {% block body %}
         {% endblock %}
     </body>
