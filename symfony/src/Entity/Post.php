@@ -36,7 +36,7 @@ class Post
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list', 'post:item'])]
+    #[Groups(['post:list', 'post:item', 'comment:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]

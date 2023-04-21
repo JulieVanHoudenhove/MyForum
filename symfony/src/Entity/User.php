@@ -26,13 +26,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list', 'user:item', 'post:item'])]
+    #[Groups(['post:list', 'user:item', 'comment:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['post:list', 'user:item', 'post:item'])]
+    #[Groups(['post:list', 'user:item', 'comment:list'])]
     private ?string $username = null;
-
 
     #[ORM\Column]
     private array $roles = [];
