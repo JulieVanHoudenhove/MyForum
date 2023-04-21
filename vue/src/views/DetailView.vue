@@ -4,18 +4,18 @@
   import Commentaire from '../components/Commentaire.vue';
 
     const post = ref(null);
-    const com = ref(null);
+    const coms = ref(null);
     import { useRoute } from 'vue-router'
     const route = useRoute()
     const id = route.params.id
 
     onMounted(async () => {
     const response = await axios.get('http://localhost:8000/api/posts/'+id);
-    const responsecom = await axios.get('http://localhost:8000/api/comments?page=1');
+    const responsecom = await axios.get('http://localhost:8000/api/comments?page=1&post='+id);
     post.value = await response.data;
     console.log(post.value)
-    com.value = await responsecom.data['hydra:member'];
-    console.log(com.value)
+    coms.value = await responsecom.data['hydra:member'];
+    console.log(coms.value)
   });
 </script>
 
@@ -27,7 +27,7 @@
             <p class="my-5">{{ post.text }}</p>
             <!--<img class="h-52 my-3.5" src="{{post.image}}" alt="">-->
             <div class="flex flew-row justify-between">
-                <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user }}</p>
+                <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user.username }}</p>
                 <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
             </div>
             <div class="flex flex-row-reverse justify-between my-5">
@@ -48,7 +48,7 @@
                 <h3 class="my-5 text-xl font-bold">Commentaires</h3>
                 <input class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="Votre commentaire...">
                 <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
-                <Commentaire v-for="com in com" :com="com" />
+                <Commentaire v-if="coms" v-for="com in coms" :comment="com" />
             </section>
         </article>
     </main>
