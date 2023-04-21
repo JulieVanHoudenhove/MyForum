@@ -27,10 +27,13 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        $this->addFlash(
-            'success',
-            'Déconnexion avec succès !'
-        );
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route('/logout-message', name: 'app_logout_message')]
+    public function logoutMessage()
+    {
+        $this->addFlash('success', 'Déconnexion avec succès !');
+        return $this->redirectToRoute('app_home');
     }
 }
