@@ -6,15 +6,21 @@ import Post from '../components/Post.vue';
   const data = ref(null);
 
   onMounted(async () => {
-    const response = await axios.get('http://localhost:8080/myforum/api/posts?page=1');
+    const response = await axios.get('http://localhost:8000/api/posts?page=1');
     data.value = response.data['hydra:member'];
     console.log(data.value)
   });
 </script>
 
 <template>
-  <main>
-    <h1>Home</h1>
-    <Post v-for="post in data" :post="post" />
-</main>
+    <main class="font-Poppins">
+        <div class="w-full p-64 flex justify-center items-center bg-vert">
+            <h1 class="text-white text-4xl font-bold">My Forum</h1>
+        </div>
+        <section class="flex items-start w-full flex-col">
+            <h2 class="m-14 font-bold text-2xl">Fil d'actualité</h2>
+            <!-- POST     -->
+            <Post v-for="post in data" :post="post" />
+        </section>
+    </main>
 </template>

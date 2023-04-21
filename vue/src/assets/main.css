@@ -1,1 +1,22 @@
-@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav_li_a {
+    @apply text-black font-normal text-lg transition duration-300 hover:underline decoration-vert decoration-2;
+}
+
+.h1 {
+    @apply text-3xl font-bold
+}
+
+.grid-areas {
+    grid-area: 3 / 1 / 4 / 3; 
+    width: 712px;
+}
+
+.margin-negative {
+    margin-left: -30px;
+}
