@@ -25,6 +25,11 @@
                     {% endif %}
                     <p>{{ post.likes }}</p>
                 </div>
+            {% else %}
+                <div class="w-12 flex flex-row justify-around text-vert mb-5">
+                    <a href="{{ path('app_login') }}"><i class="fa-regular fa-heart"></i></a>
+                    <p>{{ post.likedPosts|length }}</p>
+                </div>
             {% endif %}
         </article>
     {% endfor %}

@@ -28,6 +28,11 @@
                     {% endif %}
                     <p>{{ post.likes }}</p>
                 </div>
+            {% else %}
+                <div class="w-12 flex flex-row justify-around text-vert mb-5">
+                    <a href="{{ path('app_login') }}"><i class="fa-regular fa-heart"></i></a>
+                    <p>{{ post.likedPosts|length }}</p>
+                </div>
             {% endif %}
         </div>
     </article>
@@ -64,6 +69,12 @@
                                 {% if app.user == comment.user %}
                                     <a class="text-vert" href="{{ path('app_comment_remove', {'id': comment.id, 'post': post.id}) }}"><i class="fa-solid fa-trash"></i></a>
                                 {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="w-12 flex flex-row justify-around text-vert mb-5">
+                                <a href="{{ path('app_login') }}"><i class="fa-regular fa-heart"></i></a>
+                                <p>{{ comment.likes|length }}</p>
+
                             </div>
                         {% endif %}
                     </div>
