@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -22,6 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     order: ['createdAt' => 'DESC'],
     paginationEnabled: true,
 )]
+//#[Get(provider: )]
 class Post
 {
     use TimestampableEntity;
@@ -29,31 +31,30 @@ class Post
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list'])]
+    #[Groups(['post:list', 'post:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['post:list'])]
+    #[Groups(['post:list', 'post:item'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['post:list'])]
+    #[Groups(['post:list', 'post:item'])]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['post:list'])]
+    #[Groups(['post:list', 'post:item'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
-    #[Groups(['post:list'])]
     private Collection $comments;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: LikedPost::class, cascade: ['persist', 'remove'])]
     private Collection $likedPosts;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['post:list'])]
+    #[Groups(['post:list', 'post:item'])]
     private ?string $image = null;
 
     public function __construct()
@@ -175,8 +176,8 @@ class Post
         return $this;
     }
 
-    #[Groups(["post:list"])]
-    #[SerializedName("createdAt")]
+    #[Groups(['post:list', 'post:item'])]
+    #[SerializedName('createdAt')]
     public function getCreatedAtTimestampable(): ?\DateTimeInterface
     {
         return $this->createdAt;
