@@ -6,8 +6,8 @@
   const data = ref(null);
 
   onMounted(async () => {
-    const response = await axios.get('http://localhost:8000/api/users/:id');
-    data.value = response.data['hydra:member'];
+    const response = await axios.get('http://localhost:8000/api/users/' +id);
+    data.value = response.data;
     console.log(data.value)
   });
 </script>

@@ -16,7 +16,7 @@
             <!--<img class="h-52 my-3.5" src="{{post.image}}" alt="">-->
             <div class="flex flew-row justify-between">
                 <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user.username }}</p>
-                <p>{{ new Date(post.createdAtTimestampable).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
+                <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
             </div>
         </RouterLink>
         <div class="w-12 flex flex-row justify-around text-vert mb-5">
