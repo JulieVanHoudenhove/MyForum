@@ -34,7 +34,7 @@ class PostDtoTransformer
             $dto->updatedAt = $post->getUpdatedAt();
             $dto->createdAt = $post->getCreatedAt();
             $dto->user = $post->getUser();
-            $dto->likes = count($post->getLikedPosts());
+            $dto->likes = count($post->getLikes());
             if ($like) {
                 $dto->isLiked = true;
             }
