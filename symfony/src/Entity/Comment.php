@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CommentRepository;
@@ -16,9 +18,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
-        new GetCollection(normalizationContext: ['groups' => 'post:item'])
+        new GetCollection(normalizationContext: ['groups' => 'comment:list'])
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]
 class Comment
 {
     use TimestampableEntity;
@@ -26,20 +29,21 @@ class Comment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:item'])]
+    #[Groups(['comment:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['post:item'])]
+    #[Groups(['comment:list'])]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['comment:list'])]
     private ?Post $post = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['post:item'])]
+    #[Groups(['comment:list'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: LikedComment::class)]
