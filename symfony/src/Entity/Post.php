@@ -5,7 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Dto\PostApiDto;
 use App\Repository\PostRepository;
+use App\State\PostApi;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,8 +22,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Get(normalizationContext: ['groups' => 'post:item']),
         new GetCollection(normalizationContext: ['groups' => 'post:list'])
     ],
+//    output: PostApiDto::class,
     order: ['createdAt' => 'DESC'],
     paginationEnabled: true,
+    paginationItemsPerPage: 20,
+//    provider: PostApi::class
 )]
 //#[Get(provider: )]
 class Post
@@ -48,6 +53,7 @@ class Post
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
+    #[Groups(['post:item'])]
     private Collection $comments;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: LikedPost::class, cascade: ['persist', 'remove'])]
