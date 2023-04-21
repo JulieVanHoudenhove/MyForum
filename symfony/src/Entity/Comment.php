@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
-        new GetCollection(normalizationContext: ['groups' => 'comment:list'])
+        new GetCollection(normalizationContext: ['groups' => 'post:item'])
     ]
 )]
 class Comment
@@ -26,11 +26,11 @@ class Comment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['comment:list'])]
+    #[Groups(['post:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['comment:list'])]
+    #[Groups(['post:item'])]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
@@ -39,7 +39,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['comment:list'])]
+    #[Groups(['post:item'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: LikedComment::class)]
