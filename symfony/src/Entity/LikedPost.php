@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Trait\Timestamp;
 use App\Repository\LikedPostRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: LikedPostRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource()]
 class LikedPost
 {
     use TimestampableEntity;
