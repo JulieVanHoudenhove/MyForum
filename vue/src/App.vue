@@ -9,7 +9,7 @@
         <ul class="flex flex-row justify-around w-6/12">
             <li><RouterLink class="nav_li_a" to="/">Accueil</RouterLink></li>
                 <li><RouterLink class="nav_li_a" to="/statistiques">Statistiques</RouterLink></li>
-                <li><RouterLink class="nav_li_a" to="/compte/:id">Compte</RouterLink></li>
+                <li><RouterLink class="nav_li_a" :to="'/compte/' + id">Compte</RouterLink></li>
                 <li><RouterLink class="nav_li_a" to="/deconnexion">Déconnexion</RouterLink></li>
                 <!-- <li><RouterLink class="nav_li_a" to="/inscription">Inscription</RouterLink></li>
                 <li><RouterLink class="nav_li_a" to="/connexion">Connexion</RouterLink> 
