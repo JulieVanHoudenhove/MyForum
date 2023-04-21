@@ -37,6 +37,14 @@
             <div id="chart_div"></div>
             <p>Les utilisateurs qui postent le plus</p>
         </section>
+
+        {% for like in likesPerWeek %}
+            <section>
+                    Semaine n°: {{ like.w }},
+                    total like sur les posts : {{ like.1 }}
+            </section>
+        {% endfor %}
+
     </div>
 </main>
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\LikedPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @extends ServiceEntityRepository<LikedPost>
  *
@@ -65,18 +66,17 @@ class LikedPostRepository extends ServiceEntityRepository
             ;
     }
 
-//    public function findMostActiveUser(): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->select('l, COUNT(l.post_id)')
-//            ->leftJoin('l.', 'posts')
-////            ->where('posts.date >= :date')
-////            ->setParameter(':date', new \DateTimeImmutable('1 week ago'))
-//            ->groupBy('l.id')
-//            ->getQuery()
-//            ->getResult()
-//            ;
-//    }
+    public function countLikeSortByWeek(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->select('COUNT(l.id), WEEK(l.createdAt) as w')
+            ->where('l.createdAt >= :date')
+            ->setParameter(':date', new \DateTime('1 month ago'))
+            ->groupBy('w')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
 //    public function findOneBySomeField($value): ?LikedPost
 //    {
