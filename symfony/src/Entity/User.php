@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,16 +16,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'user:item'])
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['post:list', 'user:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['post:list'])]
+    #[Groups(['post:list', 'user:item'])]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -49,9 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $likedComments;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:item'])]
     private ?string $avatar = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:item'])]
     private ?string $email = null;
 
     public function __construct()

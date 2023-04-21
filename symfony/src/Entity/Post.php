@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Odm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -27,7 +25,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Post
 {
     use TimestampableEntity;
-
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
