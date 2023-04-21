@@ -3,15 +3,22 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new GetCollection(normalizationContext: ['groups' => 'comment:list'])
+    ]
+)]
 class Comment
 {
     use TimestampableEntity;
@@ -19,9 +26,11 @@ class Comment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['comment:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['comment:list'])]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
@@ -30,6 +39,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['comment:list'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: LikedComment::class)]
@@ -109,5 +119,12 @@ class Comment
         }
 
         return $this;
+    }
+
+    #[Groups(['comment:list'])]
+    #[SerializedName('createdAt')]
+    public function getCreatedAtTimestampable(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }
