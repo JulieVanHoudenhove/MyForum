@@ -8,7 +8,6 @@
 </script>
 
 <template>
-    <RouterLink class="ml-20 m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" to="/create">Créer un post</RouterLink>
     <article class=" mr-12 mb-12 ml-20 w-11/12  px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
         <RouterLink class=" mx-12" :to="'/details/' + post.id">
             <h3 class="text-xl font-bold">{{ post.title }}</h3>

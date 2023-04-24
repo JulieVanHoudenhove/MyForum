@@ -19,6 +19,7 @@ import Post from '../components/Post.vue';
         </div>
         <section class="flex items-start w-full flex-col">
             <h2 class="m-14 font-bold text-2xl">Fil d'actualité</h2>
+            <RouterLink class="ml-20 m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" to="/create">Créer un post</RouterLink>
             <!-- POST     -->
             <Post v-for="post in data" :post="post" />
         </section>
