@@ -23,10 +23,10 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        for ($i=1; $i < 201; $i++) {
+        for ($i=1; $i < 101; $i++) {
             $comment = new Comment();
             $date = $this->faker->dateTimeBetween('-4 week', 'now');
-            $comment->setText($this->faker->realTextBetween(20, 40))
+            $comment->setText($this->faker->realText(40))
                 ->setUser($this->getReference(UserFixtures::USER_REFERENCE.rand(1, 10)))
                 ->setPost($this->getReference(PostFixtures::POST_REFERENCE.rand(1, 100)))
                 ->setCreatedAt($date)

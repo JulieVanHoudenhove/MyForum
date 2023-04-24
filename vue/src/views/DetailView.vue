@@ -36,11 +36,11 @@
             <div class="w-12 flex flex-row justify-around text-vert">
                 <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->
                 <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
-                <p>{{ post.likeposts|lenght }}</p>
+                <p>{{ post.likes }}</p>
             </div>
             <div class="w-12 flex flex-row justify-around text-vert mb-5">
                 <!--<RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>
-                <p>{{ post.likePosts|lenght }}</p>-->
+                <p>{{ post.likes }}</p>-->
             </div>
         </article>
         <article>
