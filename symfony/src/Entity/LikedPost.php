@@ -10,7 +10,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: LikedPostRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource()]
 class LikedPost
 {
     use TimestampableEntity;

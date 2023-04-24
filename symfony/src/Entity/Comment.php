@@ -6,7 +6,9 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\Dto\CommentApiDto;
 use App\Repository\CommentRepository;
+use App\State\CommentCollectionProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +20,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
-        new GetCollection(normalizationContext: ['groups' => 'comment:list'])
+        new GetCollection(
+            normalizationContext: ['groups' => 'comment:list'],
+            output: CommentApiDto::class,
+            provider: CommentCollectionProvider::class
+        )
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]

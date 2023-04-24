@@ -36,6 +36,8 @@ services:
         bind:
             $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'
 
-
+    App\State\CommentCollectionProvider:
+        bind:
+            $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
