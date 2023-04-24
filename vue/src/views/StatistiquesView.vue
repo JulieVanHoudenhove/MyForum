@@ -28,9 +28,9 @@
                         <p><!--{{ activeUser.username }} = {{ activeUser.posts|length }}--></p>
                     </div>
             <!-- Voir qui sont les utilisateurs qui postent le plus (pie chart…) -->
-            <div id="chart_div"></div>
+            <div id="chart_div" style="width: 900px; height: 300px;"></div>
         </section>
-        <section class="grid-areas py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
+        <section class="grid-areas_2 py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <h2>Likes per weeks</h2>
             <div>
               <p>Semaine n°: <!--{{ like.w }} -->17<br>total like sur les posts : <!--{{ like.1 }}-->800</p>
