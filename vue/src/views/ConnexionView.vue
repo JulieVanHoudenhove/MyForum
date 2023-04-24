@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 
-const CheckCredentials = async () => {
+const checkCredentials = async () => {
     const response = await axios.post('http://localhost:8000/api/login_check', {
         "username": document.getElementById('inputUsername').value,
         "password": document.getElementById('inputPassword').value
@@ -10,12 +10,14 @@ const CheckCredentials = async () => {
     if (response) {
         localStorage.setItem('token', response.data.token);
     }
+
+    console.log(response)
 }
 </script>
 
 <template>
 <main class=" mt-20 flex flex-col items-center justify-center font-Poppins">
-    <form method="post" class="flex flex-col items-center justify-center">
+    <div class="flex flex-col items-center justify-center">
         <!-- <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         <div class="mb-3">
             You are logged in as {{ app.user.userIdentifier }}, <a href="/deconnexion">Deconnexion</a>
@@ -34,8 +36,8 @@ const CheckCredentials = async () => {
         <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
         >
-        <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit">Connexion</button>
-    </form>
+        <button @click="checkCredentials" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit">Connexion</button>
+    </div>
 </main>
 </template>
 
