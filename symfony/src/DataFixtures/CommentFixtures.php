@@ -13,6 +13,8 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
     private Generator $faker;
 
+    public const COM_REFERENCE = 'com_';
+
     public function __construct()
     {
         $this->faker = Factory::create('fr_FR');
@@ -29,6 +31,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
                 ->setPost($this->getReference(PostFixtures::POST_REFERENCE.rand(1, 100)))
                 ->setCreatedAt($date)
                 ->setUpdatedAt($date);
+            $this->addReference(self::COM_REFERENCE.$i, $comment);
             $manager->persist($comment);
         }
 
