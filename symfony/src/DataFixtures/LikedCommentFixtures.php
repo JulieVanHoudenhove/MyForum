@@ -24,7 +24,7 @@ class LikedCommentFixtures extends Fixture implements DependentFixtureInterface
             $likedComment = new LikedComment();
             $date = $this->faker->dateTimeBetween('-4 week', 'now');
             $likedComment->setUser($this->getReference(UserFixtures::USER_REFERENCE.rand(1, 10)))
-                ->setComment($this->getReference(CommentFixtures::COM_REFERENCE.rand(1, 200)))
+                ->setComment($this->getReference(CommentFixtures::COM_REFERENCE.rand(1, 100)))
                 ->setCreatedAt($date)
                 ->setUpdatedAt($date);
             $manager->persist($likedComment);
