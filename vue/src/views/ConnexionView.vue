@@ -1,4 +1,16 @@
 <script setup>
+import axios from 'axios';
+
+const CheckCredentials = async () => {
+    const response = await axios.post('http://localhost:8000/api/login_check', {
+        "username": document.getElementById('inputUsername').value,
+        "password": document.getElementById('inputPassword').value
+    })
+
+    if (response) {
+        localStorage.setItem('token', response.data.token);
+    }
+}
 </script>
 
 <template>
@@ -10,8 +22,8 @@
         </div> -->
         <h1 class="h1 text-vert">Connectez-vous</h1>
         <div class="flex flex-col m-4 w-80">
-            <label class="mb-2" for="inputUsername">Email ou Pseudo</label>
-            <input class=" py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" value="" name="username" id="inputUsername" autocomplete="username" required autofocus placeholder="client@email.com">
+            <label class="mb-2" for="inputUsername">Pseudo</label>
+            <input class=" py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" value="" name="username" id="inputUsername" autocomplete="username" required autofocus placeholder="pseudo">
         </div>
         <div class="flex flex-col m-4 w-80">
             <label class="mb-2" for="inputPassword">Mot de passe</label>

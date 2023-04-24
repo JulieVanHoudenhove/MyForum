@@ -25,7 +25,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             output: CommentApiDto::class,
             provider: CommentCollectionProvider::class
         )
-    ]
+    ],
+    order: ['createdAt' => 'DESC'],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]
 class Comment
