@@ -16,6 +16,7 @@ const parseJwt = (token) => {
 
 if (localStorage.getItem('token')) {
     current.value = parseJwt(localStorage.getItem('token'));
+    console.log(parseJwt(localStorage.getItem('token')))
 }
 </script>
 
@@ -26,7 +27,7 @@ if (localStorage.getItem('token')) {
             <ul class="flex flex-row justify-around w-6/12">
                 <li><RouterLink class="nav_li_a" to="/">Accueil</RouterLink></li>
                 <li v-if="current"><RouterLink class="nav_li_a" to="/statistiques">Statistiques</RouterLink></li>
-                <li v-if="current"><RouterLink class="nav_li_a" :to="'/compte/' + id">Compte</RouterLink></li>
+                <li v-if="current"><RouterLink class="nav_li_a" :to="'/compte/' + current.id">Compte</RouterLink></li>
                 <li v-if="current"><RouterLink class="nav_li_a" to="/deconnexion">Déconnexion</RouterLink></li>
                 <li v-if="!current"><RouterLink class="nav_li_a" to="/inscription">Inscription</RouterLink></li>
                 <li v-if="!current"><RouterLink class="nav_li_a" to="/connexion">Connexion</RouterLink></li>

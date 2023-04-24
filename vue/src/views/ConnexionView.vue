@@ -10,8 +10,7 @@ const checkCredentials = async () => {
     if (response) {
         localStorage.setItem('token', response.data.token);
     }
-
-    console.log(response)
+ 
 }
 </script>
 
