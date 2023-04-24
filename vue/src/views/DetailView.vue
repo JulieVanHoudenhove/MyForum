@@ -33,21 +33,21 @@
             <div class="flex flex-row-reverse justify-between my-5">
                 <RouterLink class="text-vert" to="/remove/:id"><i class="fa-solid fa-trash"></i></RouterLink>
             </div>
-            <div class="w-12 flex flex-row justify-around text-vert">
+            <div v-if="current" class="w-12 flex flex-row justify-around text-vert">
                 <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->
                 <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
                 <p>{{ post.likes }}</p>
             </div>
-            <div class="w-12 flex flex-row justify-around text-vert mb-5">
-                <!--<RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>
-                <p>{{ post.likes }}</p>-->
+            <div v-else="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
+                <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>
+                <p>{{ post.likes }}</p>
             </div>
         </article>
         <article>
             <section class="mx-12 my-14 ">
                 <h3 class="my-5 text-xl font-bold">Commentaires</h3>
-                <input class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="Votre commentaire...">
-                <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
+                <input v-if="current" class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="Votre commentaire...">
+                <button v-if="current" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
                 <Commentaire v-if="coms" v-for="com in coms" :comment="com" />
             </section>
         </article>

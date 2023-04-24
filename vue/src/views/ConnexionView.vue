@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 
-const CheckCredentials = async () => {
+const checkCredentials = async () => {
     const response = await axios.post('http://localhost:8000/api/login_check', {
         "username": document.getElementById('inputUsername').value,
         "password": document.getElementById('inputPassword').value
@@ -36,7 +36,7 @@ const CheckCredentials = async () => {
         <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
         >
-        <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit">Connexion</button>
+        <button @click="checkCredentials" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit">Connexion</button>
     </div>
 </main>
 </template>

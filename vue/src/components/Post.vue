@@ -18,15 +18,15 @@
                 <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
             </div>
         </RouterLink>
-        <div class="w-12 flex flex-row justify-around text-vert mb-5">
+        <div v-if="current" class="w-12 flex flex-row justify-around text-vert mb-5">
             <!-- <RouterLink :to="'/dislike/' +id"><i class="fa-solid fa-heart"></i></RouterLink> -->
             <RouterLink :to="'/like/' + id"><i class="fa-regular fa-heart"></i></RouterLink>
             <p>{{ post.likes }}</p>
         </div>
-        <!-- <div class="w-12 flex flex-row justify-around text-vert mb-5">
+        <div v-if="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
             <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>
             <p>{{ post.likes }}</p>
-        </div> -->
+        </div>
     </article>
 </template>
 
