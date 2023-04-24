@@ -7,7 +7,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Dto\PostApiDto;
 use App\Repository\PostRepository;
-use App\State\PostApi;
+use App\State\PostCollectionProvider;
+use App\State\PostItemProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,14 +20,21 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
-        new Get(normalizationContext: ['groups' => 'post:item']),
-        new GetCollection(normalizationContext: ['groups' => 'post:list'])
+        new Get(
+            normalizationContext: ['groups' => 'post:item'],
+            output: PostApiDto::class,
+            provider: PostItemProvider::class
+        ),
+        new GetCollection(normalizationContext: ['groups' => 'post:list'],
+            provider: PostCollectionProvider::class,
+            extraProperties: [
+                'entity' => Post::class,
+            ],
+        )
     ],
-//    output: PostApiDto::class,
     order: ['createdAt' => 'DESC'],
     paginationEnabled: true,
     paginationItemsPerPage: 20,
-//    provider: PostApi::class
 )]
 //#[Get(provider: )]
 class Post
@@ -143,7 +151,7 @@ class Post
     /**
      * @return Collection<int, LikedPost>
      */
-    public function getLikedPosts(): Collection
+    public function getLikes(): Collection
     {
         return $this->likedPosts;
     }
