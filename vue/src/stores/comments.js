@@ -2,21 +2,20 @@ import { defineStore } from 'pinia'
 // Import axios to make HTTP requests
 import axios from "axios"
 
-
-export const usePostDetailStore = defineStore("post_detail",{
+export const useCommentStore = defineStore("comment",{
     state: () => ({
-        posts_detail: [],
+        comments: [],
     }),
     getters: {
-        getPostsDetail(state){
-            return state.posts_detail
+        getComments(state){
+            return state.comments
         }
     },
     actions: {
-        async fetchPostsDetail() {
+        async fetchComments() {
             try {
-                const data = await axios.get('http://localhost:8000/api/posts/${id}')
-                this.posts_detail = data.data;
+                const data = await axios.get('http://localhost:8000/api/comments?page=1&post=${id}')
+                this.comments = data.data['hydra:member'];
             }
             catch (error) {
                 alert(error)
