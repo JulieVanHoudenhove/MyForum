@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post as Poster;
 use App\Dto\PostApiDto;
 use App\Repository\PostRepository;
 use App\State\PostCollectionProvider;
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -25,18 +27,16 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             output: PostApiDto::class,
             provider: PostItemProvider::class
         ),
-        new GetCollection(normalizationContext: ['groups' => 'post:list'],
+        new GetCollection(
+            normalizationContext: ['groups' => 'post:list'],
             provider: PostCollectionProvider::class,
-            extraProperties: [
-                'entity' => Post::class,
-            ],
-        )
+        ),
+        new Poster()
     ],
     order: ['createdAt' => 'DESC'],
     paginationEnabled: true,
     paginationItemsPerPage: 20,
 )]
-//#[Get(provider: )]
 class Post
 {
     use TimestampableEntity;
@@ -48,15 +48,18 @@ class Post
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
     #[Groups(['post:list', 'post:item'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank()]
     #[Groups(['post:list', 'post:item'])]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank()]
     #[Groups(['post:list', 'post:item'])]
     private ?User $user = null;
 

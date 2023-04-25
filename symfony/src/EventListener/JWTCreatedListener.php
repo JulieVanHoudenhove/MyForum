@@ -6,10 +6,6 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 class JWTCreatedListener
 {
-    public function __construct(private $avatarDirectory)
-    {
-    }
-
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
         $user = $event->getUser();
@@ -21,7 +17,8 @@ class JWTCreatedListener
             [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
-                'avatar' => $avatar
+                'avatar' => $avatar,
+                '@id' => '/myforum/index.php/api/users/'.$user->getId()
             ]
         );
 
