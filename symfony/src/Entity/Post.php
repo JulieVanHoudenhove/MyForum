@@ -64,7 +64,7 @@ class Post
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
-    #[Groups(['post:item'])]
+    #[Groups(['post:item', 'comment:list'])]
     private Collection $comments;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: LikedPost::class, cascade: ['persist', 'remove'])]

@@ -1,61 +1,79 @@
 <script setup>
-    import axios from 'axios';
-    import Commentaire from '../components/Commentaire.vue';
-    import { ref, onMounted, computed } from "vue";
+    // import axios from 'axios';
+    // import Commentaire from '../components/Commentaire.vue';
     import { useCommentStore } from "../stores/comments.js";
-    import { usePostDetailStore } from "../stores/posts_detail.js";
-    // import { useRoute } from 'vue-router'
-    // const route = useRoute()
+    import { usePostStore } from "../stores/posts.js";
+    import { ref, onMounted, computed } from "vue";
+    // import { useCommentStore } from "../stores/comments.js";
+    // import { usePostDetailStore } from "../stores/posts_detail.js";
+    import { useRoute } from 'vue-router'
+    const route = useRoute();
     // const id = route.params.id
+    const postId = computed(() => Number(route?.params?.id))
 
-    //const post = ref(null);
-    //const coms = ref(null);
+    const store = usePostStore();
+    const commentStore = useCommentStore();
+    const commentIsLoading = computed(() => commentStore.isLoading);
 
-    // onMounted(async () => {
-    //     const response = await axios.get('http://localhost:8000/api/posts/'+ id);
-        // const responsecom = await axios.get('http://localhost:8000/api/comments?page=1&post='+id);
-        // post.value = await response.data;
-        // console.log(post.value)
-        // coms.value = await responsecom.data['hydra:member'];
-        // console.log(coms.value)
+    const post = computed(() => store.getPostById(postId.value));
+    const postComment = computed(() => commentStore.getCommentByPostId(postId.value));
+
+    onMounted(() => {
+        store.fetchPosts();
+        commentStore.fetchComments();
+    })
+    // //const post = ref(null);
+    // //const coms = ref(null);
+
+    // // onMounted(async () => {
+    // //     const response = await axios.get('http://localhost:8000/api/posts/'+ id);
+    //     // const responsecom = await axios.get('http://localhost:8000/api/comments?page=1&post='+id);
+    //     // post.value = await response.data;
+    //     // console.log(post.value)
+    //     // coms.value = await responsecom.data['hydra:member'];
+    //     // console.log(coms.value)
+    // // });
+
+    // const detail = usePostDetailStore();
+    // const getPostsDetail = computed(() => {
+    //     return detail.getPosts;
+    // });
+    // onMounted(() => {
+    //     detail.fetchPostsDetail();
     // });
 
-    const detail = usePostDetailStore();
-    const getPostsDetail = computed(() => {
-        return detail.getPosts;
-    });
-    onMounted(() => {
-        detail.fetchPostsDetail();
-    });
+    // const store = useCommentStore();
+    // const comments = computed(() => {
+    //     return store.comments;
+    // });
+    // onMounted(() => {
+    //     store.fetchComments();
+    // });
 
-    const store = useCommentStore();
-    const comments = computed(() => {
-        return store.comments;
-    });
-    onMounted(() => {
-        store.fetchComments();
-    });
+    // const current = ref();
 
-    const current = ref();
+    // const parseJwt = (token) => {
+    //     var base64Url = token.split('.')[1];
+    //     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    //     var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+    //         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    //     }).join(''));
 
-    const parseJwt = (token) => {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+    //     return JSON.parse(jsonPayload);
+    // }
 
-        return JSON.parse(jsonPayload);
-    }
-
-    if (localStorage.getItem('token')) {
-        current.value = parseJwt(localStorage.getItem('token'));
-        console.log(parseJwt(localStorage.getItem('token')))
-    }
+    // if (localStorage.getItem('token')) {
+    //     current.value = parseJwt(localStorage.getItem('token'));
+    //     console.log(parseJwt(localStorage.getItem('token')))
+    // }
 </script>
 
 <template>
-    <main v-if="post" v-for="post_detail in getPostsDetail" :key="post_detail.id" class="mt-5 ml-5 font-Poppins">
+    Hello world 
+    <template v-if="commentIsLoading">
+        ça charge
+    </template>    
+    <!-- <main v-if="post" v-for="post_detail in getPostsDetail" :key="post_detail.id" class="mt-5 ml-5 font-Poppins">
         <RouterLink class="m-5 text-vert transition duration-3000 decoration-2 hover:underline uppercase font-semibold" to="/"><i class="fa-solid fa-arrow-left"></i> Retour</RouterLink>
         <article class="m-12 px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <h3 class="my-5 text-xl font-bold">{{ posts.title }}</h3>
@@ -68,9 +86,9 @@
             <div class="flex flex-row-reverse justify-between my-5">
                 <RouterLink v-if="current && posts.user.id == current.id" class="text-vert" to="/remove/:id"><i class="fa-solid fa-trash"></i></RouterLink>
             </div>
-            <div v-if="current" class="w-12 flex flex-row justify-around text-vert">
+            <div v-if="current" class="w-12 flex flex-row justify-around text-vert"> -->
                 <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->
-                <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
+                <!-- <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
                 <p>{{ posts.likes }}</p>
             </div>
             <div v-else="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
@@ -86,7 +104,7 @@
                 <Commentaire v-if="coms" v-for="comment in comments" :comment="comment.id" />
             </section>
         </article>
-    </main>
+    </main> -->
   </template>
   
   <style>

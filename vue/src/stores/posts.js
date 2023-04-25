@@ -7,6 +7,9 @@ export const usePostStore = defineStore("post",{
         posts: [],
     }),
     getters: {
+        getPostById: (state) => (id) => {
+            return state.posts?.find(post => post.id === id);
+        },
         getPosts(state){
             return state.posts
         }
@@ -15,7 +18,7 @@ export const usePostStore = defineStore("post",{
         async fetchPosts() {
             try {
               const data = await axios.get('http://localhost:8000/api/posts?page=1')
-                this.posts = data.data['hydra:member'];
+                this.posts = data?.data?.['hydra:member'] || [];
             }
             catch (error) {
                 alert(error)

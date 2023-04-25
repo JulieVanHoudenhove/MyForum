@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 // Import axios to make HTTP requests
 import axios from "axios"
-
+    import { useRoute } from 'vue-router'
+    const route = useRoute()
+    const id = route.params.id
 
 export const usePostDetailStore = defineStore("post_detail",{
     state: () => ({
@@ -15,7 +17,7 @@ export const usePostDetailStore = defineStore("post_detail",{
     actions: {
         async fetchPostsDetail() {
             try {
-                const data = await axios.get('http://localhost:8000/api/posts/${id}')
+                const data = await axios.get('http://localhost:8000/api/posts/' + id)
                 this.posts_detail = data.data;
             }
             catch (error) {

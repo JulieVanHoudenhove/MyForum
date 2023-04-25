@@ -1,26 +1,28 @@
 <script setup>
-    // defineProps({
-    //     post: {
-    //         type: Object,
-    //         required: true
-    //     },
-    // })
+    defineProps({
+        post: {
+            type: Object,
+            required: true
+        },
+    })
 
-    import { onMounted, computed } from "vue";
-    import { usePostStore } from "../stores/posts.js";
+    // import { onMounted, computed } from "vue";
+    // import { usePostStore } from "../stores/posts.js";
     
-    const store = usePostStore();
-    const posts = computed(() => {
-        return store.posts;
-    });
-    onMounted(() => {
-        store.fetchPosts();
-    });
+    // const store = usePostStore();
+    // const posts = computed(() => {
+    //     return store.posts;
+    // });
+    // onMounted(() => {
+    //     store.fetchPosts();
+    // });
 </script>
 
 <template>
-    <article v-for="post in posts" :key="post.id" class=" mr-12 mb-12 ml-20 w-11/12  px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
-        <RouterLink class=" mx-12" :to="'/details/' + post.id">
+    <!-- v-for="post in posts" :key="post.id"  -->
+    <article class=" mr-12 mb-12 ml-20 w-11/12  px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
+        <RouterLink class=" mx-12" :to="{name: 'details', params: {id: post.id}}">
+         
             <h3 class="text-xl font-bold">{{ post.title }}</h3>
             <p class="my-5">{{ post.text }}</p>
             <img v-if="post.img" class="h-52 my-3.5" src="{{post.img}}" alt="">
