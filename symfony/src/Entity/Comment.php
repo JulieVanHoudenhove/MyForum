@@ -35,7 +35,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Poster(),
         new Delete()
     ],
-    order: ['createdAt' => 'DESC']
+    order: ['createdAt' => 'DESC'],
+    paginationEnabled: false
 )]
 #[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]
 class Comment
