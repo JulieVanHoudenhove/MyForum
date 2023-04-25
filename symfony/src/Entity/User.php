@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use App\Repository\UserRepository;
+use App\State\UserStatsProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +19,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 #[ApiResource(
     operations: [
-        new Get(normalizationContext: ['groups' => 'user:item'])
+        new Get(
+            normalizationContext: ['groups' => 'user:item']
+        ),
+        new Get(
+            uriTemplate: '/user_stats/{id}',
+            normalizationContext: ['groups' => 'user:stats'],
+            provider: UserStatsProvider::class
+        ),
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -26,11 +34,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list'])]
+    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list'])]
+    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats'])]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -43,6 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
+    #[Groups(['user:stats'])]
     private Collection $posts;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]

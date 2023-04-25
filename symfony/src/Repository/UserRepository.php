@@ -65,7 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //            ->setParameter(':date', new \DateTimeImmutable('1 week ago'))
             ->groupBy('u.id')
             ->orderBy('num_posts', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;

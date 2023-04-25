@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post as Poster;
-use App\Dto\PostApiDto;
 use App\Repository\PostRepository;
 use App\State\PostCollectionProvider;
 use App\State\PostItemProvider;
@@ -23,15 +25,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(
+            uriTemplate: '/post_detail/{id}',
+            requirements: ['id' => '\d+'],
             normalizationContext: ['groups' => 'post:item'],
-            output: PostApiDto::class,
-            provider: PostItemProvider::class
+            provider: PostItemProvider::class,
+        ),
+        new Get(
+            normalizationContext: ['groups' => 'post:item'],
         ),
         new GetCollection(
             normalizationContext: ['groups' => 'post:list'],
             provider: PostCollectionProvider::class,
         ),
-        new Poster()
+        new Poster(),
+        new Delete()
     ],
     order: ['createdAt' => 'DESC'],
     paginationEnabled: true,

@@ -3,7 +3,10 @@
 namespace App\DataTransformer;
 
 use App\Dto\PostApiDto;
+use App\Dto\PostApiDtoUser;
 use App\Entity\Post;
+use App\Repository\LikedPostRepository;
+use App\Repository\UserRepository;
 
 class PostTransformer
 {
@@ -17,6 +20,7 @@ class PostTransformer
             $post->getCreatedAt(),
             count($post->getLikes()),
             $post->getImage(),
+
         );
 
         return $dto;

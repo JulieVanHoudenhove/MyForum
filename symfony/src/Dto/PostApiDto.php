@@ -3,7 +3,6 @@
 namespace App\Dto;
 
 use App\Entity\User;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 class PostApiDto
@@ -22,17 +21,7 @@ class PostApiDto
     public int $likes;
     #[Groups(['post:list', 'post:item'])]
     public ?string $image = null;
-//    public Collection $comments;
 
-    /**
-     * @param int $id
-     * @param string $title
-     * @param string $text
-     * @param string|null $image
-     * @param User $user
-     * @param \DateTime $createdAt
-     * @param int $likes
-     */
     public function __construct(int $id, string $title, string $text, User $user, \DateTime $createdAt, int $likes, ?string $image)
     {
         $this->id = $id;
@@ -43,6 +32,9 @@ class PostApiDto
         $this->likes = $likes;
         $this->image = $image;
     }
+
+
+
 
 
 }

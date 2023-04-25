@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\DataTransformer\PostTransformer;
 use App\Dto\PostApiDto;
+use App\Dto\PostApiDtoUser;
 use App\Entity\Post;
 
 class PostItemProvider implements ProviderInterface
@@ -14,9 +15,6 @@ class PostItemProvider implements ProviderInterface
     {
     }
 
-    /**
-     * @param Post
-     */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): PostApiDto
     {
         $post = $this->itemProvider->provide($operation, $uriVariables, $context);

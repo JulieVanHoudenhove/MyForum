@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Post as Poster;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
@@ -23,11 +24,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new GetCollection(
+            uriTemplate: '/post_comments/{id}',
+            requirements: ['id' => '\d+'],
             normalizationContext: ['groups' => 'comment:list'],
-            output: CommentApiDto::class,
             provider: CommentCollectionProvider::class
         ),
-        new Poster()
+        new GetCollection(
+            normalizationContext: ['groups' => 'comment:list'],
+        ),
+        new Poster(),
+        new Delete()
     ],
     order: ['createdAt' => 'DESC']
 )]
