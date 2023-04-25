@@ -17,6 +17,23 @@
     coms.value = await responsecom.data['hydra:member'];
     console.log(coms.value)
   });
+
+  const current = ref();
+
+    const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    if (localStorage.getItem('token')) {
+        current.value = parseJwt(localStorage.getItem('token'));
+        console.log(parseJwt(localStorage.getItem('token')))
+    }
 </script>
 
 <template>
@@ -25,13 +42,13 @@
         <article class="m-12 px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <h3 class="my-5 text-xl font-bold">{{ post.title }}</h3>
             <p class="my-5">{{ post.text }}</p>
-            <!--<img class="h-52 my-3.5" src="{{post.image}}" alt="">-->
+            <img v-if="post.img" class="h-52 my-3.5" src="{{post.image}}" alt="">
             <div class="flex flew-row justify-between">
                 <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user.username }}</p>
                 <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
             </div>
             <div class="flex flex-row-reverse justify-between my-5">
-                <RouterLink class="text-vert" to="/remove/:id"><i class="fa-solid fa-trash"></i></RouterLink>
+                <RouterLink v-if="current && post.user.id == current.id" class="text-vert" to="/remove/:id"><i class="fa-solid fa-trash"></i></RouterLink>
             </div>
             <div v-if="current" class="w-12 flex flex-row justify-around text-vert">
                 <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->

@@ -1,10 +1,27 @@
 <script setup>
+    import {ref} from 'vue';
     defineProps({
         comment: {
             type: Object,
             required: true
         },
     })
+    const current = ref();
+
+    const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    if (localStorage.getItem('token')) {
+        current.value = parseJwt(localStorage.getItem('token'));
+        console.log(parseJwt(localStorage.getItem('token')))
+    }
 </script>
 
 <template>
@@ -18,7 +35,7 @@
                     <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
                     <p>{{ comment.likes}}</p>
                 </div>
-                <RouterLink class="text-vert" to="/removecom/:id"><i class="fa-solid fa-trash"></i></RouterLink>
+                <RouterLink v-if="current && comment.user.id == current.id" class="text-vert" to="/removecom/:id"><i class="fa-solid fa-trash"></i></RouterLink>
             </div>
             <div v-if="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
                 <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>

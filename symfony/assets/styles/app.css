@@ -16,6 +16,10 @@
     grid-area: 3 / 1 / 4 / 3; 
     width: 712px;
 }
+.grid-areas_2 {
+    grid-area: 4 / 1 / 5 / 3; 
+    width: 712px;
+}
 
 .margin-negative {
     margin-left: -30px;
