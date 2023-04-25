@@ -15,6 +15,7 @@ class CommentTransformer
             $comment->getUser(),
             $comment->getCreatedAt(),
             count($comment->getLikes()),
+            $comment->getPost()
         );
 
         return $dto;

@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Entity\Post;
 use App\Entity\User;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -22,6 +23,9 @@ class CommentApiDto
     #[Groups(['comment:list'])]
     public int $likes;
 
+    #[Groups(['comment:list'])]
+    public Post $post;
+
 //    public bool $isLiked;
 
     /**
@@ -31,13 +35,14 @@ class CommentApiDto
      * @param \DateTime $createdAt
      * @param int $likes
      */
-    public function __construct(int $id, string $text, User $user, \DateTime $createdAt, int $likes)
+    public function __construct(int $id, string $text, User $user, \DateTime $createdAt, int $likes, Post $post)
     {
         $this->id = $id;
         $this->text = $text;
         $this->user = $user;
         $this->createdAt = $createdAt;
         $this->likes = $likes;
+        $this->post = $post;
     }
 
 
