@@ -9,7 +9,7 @@ export const useCommentStore = defineStore("comment",{
     }),
     getters: {
         getCommentByPostId: (state) => (postId) => {
-            return state.comments?.find(comment => comment.post.id === postId);
+            return state.comments?.filter(comment => comment.post.id === postId);
         },
         getComments(state){
             return state.comments
@@ -22,6 +22,7 @@ export const useCommentStore = defineStore("comment",{
                 return await axios.get(`http://localhost:8000/api/comments`)
                     .then((res) => {
                         this.comments = res?.data?.['hydra:member'] || [] ;
+                        console.log('comments', this.comments)
                     })
                     .catch((err) => {
                         console.log('an error occured', err)

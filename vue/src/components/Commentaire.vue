@@ -25,7 +25,7 @@
 </script>
 
 <template>
-    <article v-if="comment" class=" mr-12 mb-12 ml-12">
+    <article class=" mr-12 mb-12 ml-12">
         <p class="my-6"><span class="font-semibold">{{ comment.user.username }}</span><br>{{ comment.text }}</p>
         <div class=" flex flex-row justify-between">
             <p>{{ new Date(comment.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
