@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Post as Poster;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Dto\CommentApiDto;
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -24,9 +26,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             normalizationContext: ['groups' => 'comment:list'],
             output: CommentApiDto::class,
             provider: CommentCollectionProvider::class
-        )
+        ),
+        new Poster()
     ],
-    order: ['createdAt' => 'DESC'],
+    order: ['createdAt' => 'DESC']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]
 class Comment
@@ -41,6 +44,7 @@ class Comment
 
     #[ORM\Column(length: 100)]
     #[Groups(['comment:list'])]
+    #[Assert\NotBlank()]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
