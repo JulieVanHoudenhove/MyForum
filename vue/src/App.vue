@@ -1,6 +1,6 @@
 <script setup>
+import { ref } from "vue";
 import { RouterLink, RouterView } from 'vue-router'
-import { ref } from 'vue'
 
 const current = ref();
 
