@@ -48,3 +48,7 @@ services:
     App\State\UserStatsProvider:
         bind:
             $itemProvider: '@api_platform.doctrine.orm.state.item_provider'
+
+    App\State\UserRegisterProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'

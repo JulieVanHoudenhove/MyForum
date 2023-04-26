@@ -3,8 +3,8 @@
 namespace App\Service;
 
 
-use App\Dto\CommentDtoTransformer;
-use App\Dto\PostDtoTransformer;
+use App\DataTransformer\CommentDtoTransformer;
+use App\DataTransformer\PostDtoTransformer;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 

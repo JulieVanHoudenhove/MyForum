@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Dto;
+namespace App\DataTransformer;
 
+use App\Dto\PostDto;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\LikedPostRepository;

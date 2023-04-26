@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto;
+namespace App\DataTransformer;
 
-use App\Entity\Post;
+use App\Dto\PostDto;
 use App\Entity\User;
 use App\Repository\LikedCommentRepository;
 
