@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post as Poster;
 use ApiPlatform\Metadata\Put;
+use App\Controller\UploadImageController;
 use App\Repository\UserRepository;
 use App\State\UserChangeAvatarProcessor;
 use App\State\UserChangePasswordProcessor;
@@ -16,6 +17,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -44,11 +47,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             denormalizationContext: ['groups' => 'user:changePassword'],
             processor: UserChangePasswordProcessor::class
         ),
-        new Put(
+        new Poster(
             uriTemplate: '/change-avatar/{id}',
-            denormalizationContext: ['groups' => 'user:avtar'],
-            processor: UserChangeAvatarProcessor::class
-        ),
+            inputFormats: ['multipart' => ['multipart/form-data']],
+            controller: UploadImageController::class,
+            normalizationContext: ['groups' => 'user:avatar-read'],
+            denormalizationContext: ['groups' => 'user:avatar'],
+            deserialize: false
+        )
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -87,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $likedComments;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:item', 'user:register', 'user:avtar'])]
+    #[Groups(['user:item', 'user:register', 'user:avatar-read'])]
     private ?string $avatar = 'default-pp.png';
 
     #[ORM\Column(length: 255)]
@@ -101,6 +107,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:changePassword'])]
     #[SerializedName('currentPassword')]
     private ?string $currentPassword = null;
+
+    #[Groups(['user:avatar'])]
+    #[SerializedName('file')]
+    private ?UploadedFile $file = null;
 
     public function __construct()
     {
@@ -342,6 +352,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCurrentPassword(?string $currentPassword): void
     {
         $this->currentPassword = $currentPassword;
+    }
+
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    public function setFile(?File $file): void
+    {
+        $this->file = $file;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?int $user_id): void
+    {
+        $this->user_id = $user_id;
     }
 
 

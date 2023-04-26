@@ -4,7 +4,6 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\DataTransformer\PostTransformer;
 use App\Dto\UserStatsDto;
 use App\Repository\LikedPostRepository;
 use App\Repository\PostRepository;
