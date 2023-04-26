@@ -77,7 +77,7 @@
         <article>
             <section class="mx-12 my-14 ">
                 <h3 class="my-5 text-xl font-bold">Commentaires</h3>
-                <form @submit.prevent="createPost">
+                <form @submit.prevent="createComment">
                     <input v-model="fields.text" v-if="current" class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" id="text" type="text" placeholder="Votre commentaire..." required>
                     <button v-if="current" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
                 </form>

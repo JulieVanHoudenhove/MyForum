@@ -38,19 +38,19 @@
     <form @submit.prevent="register" class="flex flex-col items-center justify-center">
       <div class="flex flex-col m-4 w-80">
         <label class="mb-2" for="email">Email</label>
-        <input id="email" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="email" placeholder="client@email.com">
+        <input id="email" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="email" placeholder="client@email.com" required>
       </div>
       <div  class="flex flex-col m-4 w-80">
         <label class="mb-2" for="pseudo">Pseudo</label>
-        <input id="pseudo" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">
+        <input id="pseudo" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="pseudo" required>
       </div>
       <div  class="flex flex-col m-4 w-80">
         <label class="mb-2" for="mdp">Mot de passe</label>
-        <input id="password" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">
+        <input id="password" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****" required>
       </div>
       <div  class="flex flex-col m-4 w-80">
         <label class="mb-2" for="confirm_mdp">Confirmation du mot de passe</label>
-        <input id="password_confirm" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text">
+        <input id="password_confirm" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****" required>
       </div>
       <div class="flex flex-row-reverse justify-around m-4 w-80">
         <label for="terms">Accepter les conditions d'utilisation</label>
