@@ -1,25 +1,38 @@
 <script setup>
+import axios from 'axios';
+
+const register = () => {
+  axios.post('http://localhost:8000/api/register/', {
+    'username': document.getElementById('pseudo').value,
+    'password': document.getElementById('mdp').value,
+    'email': document.getElementById('email').value,
+  })
+  .then((response) => {
+    response.status == 201 ? window.location.href = '/connexion': null;
+    }
+  )
+}
 </script>
 
 <template>
 <main class=" mt-20 flex flex-col items-center justify-center font-Poppins">
     <h1 class="h1 text-vert">Créez votre compte</h1>
-    <form class="flex flex-col items-center justify-center">
+    <form @submit.prevent="register" class="flex flex-col items-center justify-center">
       <div class="flex flex-col m-4 w-80">
         <label class="mb-2" for="email">Email</label>
-        <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="email" placeholder="client@email.com">
+        <input id="email" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="email" placeholder="client@email.com">
       </div>
       <div  class="flex flex-col m-4 w-80">
         <label class="mb-2" for="pseudo">Pseudo</label>
-        <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">
+        <input id="pseudo" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">
       </div>
       <div  class="flex flex-col m-4 w-80">
         <label class="mb-2" for="mdp">Mot de passe</label>
-        <input  class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">
+        <input id="password" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">
       </div>
       <div  class="flex flex-col m-4 w-80">
         <label class="mb-2" for="confirm_mdp">Confirmation du mot de passe</label>
-        <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text">
+        <input id="password_confirm" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text">
       </div>
       <div class="flex flex-row-reverse justify-around m-4 w-80">
         <label for="terms">Accepter les conditions d'utilisation</label>
