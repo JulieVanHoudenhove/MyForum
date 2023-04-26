@@ -31,7 +31,10 @@
 // }
 
 //variables
-$main-spinner-dimensions: 125px - 4px * 2; //width and height of bigger circle
+$basic-dark-color: #84a98c; //color of the spinner
+$border-width: 4px; //width of spinners border
+$basic-spinner-dimensions: 125px; //width and height of spinner
+$main-spinner-dimensions: $basic-spinner-dimensions - $border-width * 2; //width and height of bigger circle
 $small-spinner-dimensions: $main-spinner-dimensions * 0.7; //width and height of smaller circle
 
 /* YOU NEED THESE STYLES */
@@ -39,8 +42,8 @@ $small-spinner-dimensions: $main-spinner-dimensions * 0.7; //width and height of
 /* spinner style */
 .spinner {
     position: relative;
-    width: 125px;
-    height: 125px;
+    width: $basic-spinner-dimensions;
+    height: $basic-spinner-dimensions;
 
     &:before,
     &:after {
@@ -77,12 +80,12 @@ $small-spinner-dimensions: $main-spinner-dimensions * 0.7; //width and height of
   }
   
   &:before {
-    width: 125px;
-    height: 125px;
-    border-bottom-color: #84a98c;
-    border-right-color:#84a98c;
-    border-top-color: rgba(#84a98c, 0);
-    border-left-color: rgba(#84a98c, 0);
+    width: $main-spinner-dimensions;
+    height: $main-spinner-dimensions;
+    border-bottom-color: $basic-dark-color;
+    border-right-color: $basic-dark-color;
+    border-top-color: rgba($basic-dark-color, 0);
+    border-left-color: rgba($basic-dark-color, 0);
     top: 0px;
     left: 0px;
     animation: rotate-animation 1s linear 0s infinite;
@@ -91,12 +94,12 @@ $small-spinner-dimensions: $main-spinner-dimensions * 0.7; //width and height of
   &:after {
     width: $small-spinner-dimensions;
     height: $small-spinner-dimensions;
-    border-bottom-color: #84a98c;
-    border-right-color: #84a98c;
-    border-top-color: rgba(#84a98c, 0);
-    border-left-color: rgba(#84a98c, 0);
-    top: ($main-spinner-dimensions - $small-spinner-dimensions) / 2;
-    left: ($main-spinner-dimensions - $small-spinner-dimensions) / 2;
+    border-bottom-color: $basic-dark-color;
+    border-right-color: $basic-dark-color;
+    border-top-color: rgba($basic-dark-color, 0);
+    border-left-color: rgba($basic-dark-color, 0);
+    top: calc(($main-spinner-dimensions - $small-spinner-dimensions) / 2);
+    left: calc(($main-spinner-dimensions - $small-spinner-dimensions) / 2);
     animation: anti-rotate-animation 0.85s linear 0s infinite;
   }
 }

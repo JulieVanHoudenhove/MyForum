@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-// Import axios to make HTTP requests
 import axios from "axios"
 
 export const useCommentStore = defineStore("comment",{
@@ -8,7 +7,7 @@ export const useCommentStore = defineStore("comment",{
         isLoading: false,
     }),
     getters: {
-        getCommentByPostId: (state) => (postId) => {
+        getCommentsByPostId: (state) => (postId) => {
             return state.comments?.filter(comment => comment.post.id === postId);
         },
         getComments(state){
@@ -22,7 +21,6 @@ export const useCommentStore = defineStore("comment",{
                 return await axios.get(`http://localhost:8000/api/comments`)
                     .then((res) => {
                         this.comments = res?.data?.['hydra:member'] || [] ;
-                        console.log('comments', this.comments)
                     })
                     .catch((err) => {
                         console.log('an error occured', err)
@@ -31,14 +29,6 @@ export const useCommentStore = defineStore("comment",{
                         this.isLoading = false;
                     })
             });
-            // try {
-            //     const data = await axios.get(`http://localhost:8000/api/comments?page=1&post=${id}`);
-            //     this.comments = data?.data?.['hydra:member'] || [] ;
-            // }
-            // catch (error) {
-            //     alert(error)
-            //     console.log(error)
-            // }
         }
     },
 })

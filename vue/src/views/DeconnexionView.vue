@@ -1,7 +1,13 @@
+<script setup>
+  if(localStorage.getItem('token')) {
+    localStorage.removeItem('token')
+    window.location.href = '/'
+  } else {
+    window.location.href = '/'
+  }
+</script>
+
 <template>
-  <div class="statistiques">
-    <h1>This is an statistique page</h1>
-  </div>
 </template>
 
 <style>

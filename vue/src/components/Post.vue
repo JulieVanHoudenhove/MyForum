@@ -5,17 +5,6 @@
             required: true
         },
     })
-
-    // import { onMounted, computed } from "vue";
-    // import { usePostStore } from "../stores/posts.js";
-    
-    // const store = usePostStore();
-    // const posts = computed(() => {
-    //     return store.posts;
-    // });
-    // onMounted(() => {
-    //     store.fetchPosts();
-    // });
 </script>
 
 <template>
