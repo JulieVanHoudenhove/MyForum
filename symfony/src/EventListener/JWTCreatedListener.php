@@ -2,15 +2,20 @@
 
 namespace App\EventListener;
 
+use App\Service\UploaderService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 class JWTCreatedListener
 {
+    public function __construct()
+    {
+    }
+
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
         $user = $event->getUser();
 
-        $avatar = 'http://localhost:8000/uploads/avatars/' . $user->getAvatar();
+        $avatar = 'http://localhost:8088/myforum/uploads/avatars/'.$user->getAvatar();
 
         $payload = array_merge(
             $event->getData(),
