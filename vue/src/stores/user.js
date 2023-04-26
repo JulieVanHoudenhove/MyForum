@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
 import axios from "axios"
 
-export const useRegisterStore = defineStore("register",{
+export const useRegisterStore = defineStore("user",{
     state: () => ({
-        registers: [],
+        users: [],
         isLoading: false,
     }),
     getters: {
-        getRegisters(state){
-            return state.registers
+        getUsers(state){
+            return state.users
         },
     },
     actions: {
-        async postRegister() {
+        async Register() {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
                 return await axios.post(`http://localhost:8000/api/register/`), {
