@@ -1,11 +1,24 @@
 <script setup>
+import axios from 'axios';
 
+const current = defineProps({ utilisateur: { type: Object }})
+
+const changeAvatar = () => {
+axios.postForm('http://localhost:8088/myforum/index.php/api/change-avatar/'+current.utilisateur.id,{
+    file: document.getElementById('avatar').files[0]
+})
+.then((response) => {
+  if (response.status == 201) {
+    window.location.href = '/compte/'+current.utilisateur.id;
+  }
+})
+}
 </script>
 
 <template>
     <main  class=" mt-20 flex flex-col items-center justify-center font-Poppins">
         <h1 class="h1 text-vert">Changez votre photo de profil</h1>
-        <form class="flex flex-col items-center justify-center p-7">
+        <form @submit.prevent="changeAvatar" class="flex flex-col items-center justify-center p-7">
             <div class="flex flex-col justify-center items-center m-12">
                 <h3 class="text-xl font-bold pb-7">Votre photo actuelle :</h3>
                 <img class="bg-white rounded-full h-32 w-32" src="user.avatar" alt="">

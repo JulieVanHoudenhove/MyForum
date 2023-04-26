@@ -30,18 +30,15 @@ export const usePostStore = defineStore("post",{
                     })
             });
         },
-        async createPosts() {
+        async createPost(postParams) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/posts`), {
-                    'title': document.getElementById('titre').value,
-                    'text': document.getElementById('content').value,
-                    'user': current.utilisateur['@id']
-                
+                return await axios.post(`http://localhost:8000/api/posts`, postParams)
                     .then((response) => {
                         if (response.status === 201) {
                             window.location.href = '/';
                         }
+                        // resolve(response.data);
                     })
                     .catch((err) => {
                         console.log('an error occured', err)
@@ -49,10 +46,9 @@ export const usePostStore = defineStore("post",{
                     .finally(() => {
                         this.isLoading = false;
                     })
-                }
             });
         },
-        async deletePosts(id) {
+        async deletePost(id) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
                 return await axios.delete(`http://localhost:8000/api/posts/`+id)

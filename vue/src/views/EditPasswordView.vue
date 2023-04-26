@@ -1,11 +1,23 @@
 <script setup>
+        import axios from 'axios';
 
+        const current = defineProps({ utilisateur: { type: Object }})
+
+        const changePassword = () => {
+        axios.put('http://localhost:8000/myforum/index.php/api/change-password/'+current.utilisateur.id, {
+            'currentPassword': document.getElementById('currentPassword').value,
+            'password': document.getElementById('plainPassword').value,
+        })
+        .then((response) => {
+            console.log(response);
+        })
+        }
 </script>
 
 <template>
     <main class=" mt-20 flex flex-col items-center justify-center font-Poppins">
         <h1 class="h1 text-vert">Changez votre mot de passe</h1>
-        <form class="flex flex-col items-center justify-center p-7">
+        <form @submit.prevent="changePassword" class="flex flex-col items-center justify-center p-7">
             <div class="flex flex-col m-4 w-80">
                 <label class="mb-2" for="mdp_actuel">Mot de passe actuel</label>
                 <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" placeholder="****">

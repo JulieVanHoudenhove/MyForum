@@ -22,7 +22,7 @@
 
 <template>
 <main class=" mt-20 flex flex-col items-center justify-center font-Poppins">
-    <div class="flex flex-col items-center justify-center">
+    <form @submit.prevent="checkCredentials" class="flex flex-col items-center justify-center">
         <!-- <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         <div class="mb-3">
             You are logged in as {{ app.user.userIdentifier }}, <a href="/deconnexion">Deconnexion</a>
@@ -42,8 +42,8 @@
         <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
         >
-        <button @click="checkCredentials" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit">Connexion</button>
-    </div>
+        <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit">Connexion</button>
+    </form>
 </main>
 </template>
 

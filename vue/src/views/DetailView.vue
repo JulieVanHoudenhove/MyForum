@@ -2,7 +2,7 @@
     import Commentaire from '../components/Commentaire.vue';
     import { useCommentStore } from "../stores/comments.js";
     import { usePostStore } from "../stores/posts.js";
-    import { ref, onMounted, computed } from "vue";
+    import { onMounted, computed, reactive } from "vue";
     import { useRoute } from 'vue-router'
     const route = useRoute();
     const postId = computed(() => Number(route?.params?.id))
@@ -16,15 +16,27 @@
 
     onMounted(() => {
         store.fetchPosts();
-        store.createPosts();
-        store.deletePosts();
         commentStore.fetchComments();
-        commentStore.createComments();
-        commentStore.deleteComments();
     })
 
     const current = defineProps({utilisateur: {type: Object}})
-    
+
+    const deletePost = () => {
+        store.deletePost(postId.value);
+    }
+
+    const fields = reactive({
+        text: '',
+        post: "/api/posts/"+postId.value,
+        user: current.utilisateur['@id']
+    })
+
+    const createComment = () => {
+        commentStore.createComment(fields).then((res) => {
+            console.log('HELLO WORLD', res);
+        });
+    }
+
     // const sendComment = async () => {
     // await axios.post('http://localhost:8000/api/comments', {
     //     'text': document.getElementById('text').value,
@@ -37,11 +49,8 @@
     // }
 </script>
 
-<template>
-    <template class="flex justify-center items-center transition duration-300" v-if="commentIsLoading">
-        <div class="spinner spinner-1 w-full"></div>
-    </template>    
-    <main v-else v-if="post" class="mt-5 ml-5 font-Poppins transition duration-300">
+<template>   
+    <main v-if="post" class="mt-5 ml-5 font-Poppins transition duration-300">
         <RouterLink class="m-5 text-vert transition duration-3000 decoration-2 hover:underline uppercase font-semibold" to="/"><i class="fa-solid fa-arrow-left"></i> Retour</RouterLink>
         <article class="m-12 px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <h3 class="my-5 text-xl font-bold">{{ post.title }}</h3>
@@ -53,7 +62,7 @@
             </div>
             <div class="flex flex-row-reverse justify-between my-5">
                 <!-- <RouterLink v-if="current.utilisateur && post.user.id == current.utilisateur.id" class="text-vert" :to="'/remove/'+post.id"><i class="fa-solid fa-trash"></i></RouterLink> -->
-                <button @click="deleteComments" v-if="current.utilisateur && post.user.id == current.utilisateur.id" class="text-vert"><i class="fa-solid fa-trash"></i></button>
+                <button @click="deletePost" v-if="current.utilisateur && post.user.id == current.utilisateur.id" class="text-vert"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div v-if="current" class="w-12 flex flex-row justify-around text-vert">
                 <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->
@@ -68,9 +77,14 @@
         <article>
             <section class="mx-12 my-14 ">
                 <h3 class="my-5 text-xl font-bold">Commentaires</h3>
-                <input v-if="current" class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" id="text" type="text" placeholder="Votre commentaire...">
-                <button @click="createComments" v-if="current" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
-                <Commentaire v-if="postComment" v-for="comment in postComment" :comment="comment" :key="comment.id" :utilisateur="current.utilisateur"/>
+                <form @submit.prevent="createPost">
+                    <input v-model="fields.text" v-if="current" class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" id="text" type="text" placeholder="Votre commentaire..." required>
+                    <button v-if="current" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
+                </form>
+                <template class="flex justify-center items-center transition duration-300" v-if="commentIsLoading">
+                    <div class="spinner spinner-1 w-full"></div>
+                </template> 
+                <Commentaire v-else v-if="postComment" v-for="comment in postComment" :comment="comment" :key="comment.id" :utilisateur="current.utilisateur"/>
             </section>
         </article>
     </main>

@@ -15,7 +15,7 @@ export const useLoginCheckStore = defineStore("login_check",{
         async checkCredentials() {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/login_check`), {
+                return await axios.post(`http://localhost:8000/api/http://localhost:8000/api/login_check`), {
                     "username": document.getElementById('inputUsername').value,
                     "password": document.getElementById('inputPassword').value
                 }
