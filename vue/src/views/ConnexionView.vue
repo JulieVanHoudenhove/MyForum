@@ -1,23 +1,23 @@
 <script setup>
-import axios from 'axios';
+// import axios from 'axios';
 
-const checkCredentials = async () => {
-    const response = await axios.post('http://localhost:8000/api/login_check', {
-        "username": document.getElementById('inputUsername').value,
-        "password": document.getElementById('inputPassword').value
-    })
+// const checkCredentials = async () => {
+//     const response = await axios.post('http://localhost:8000/api/login_check', {
+//         "username": document.getElementById('inputUsername').value,
+//         "password": document.getElementById('inputPassword').value
+//     })
 
-    .then((response) => {
-        localStorage.setItem('token', response.data.token);
-        window.location.href = '/';
-    })
-    .catch((error) => {
-        if (error.request.status === 401) {
-            document.getElementById('error').innerHTML = 'Identifiants incorrects';
-        }
-    })
+//     .then((response) => {
+//         localStorage.setItem('token', response.data.token);
+//         window.location.href = '/';
+//     })
+//     .catch((error) => {
+//         if (error.request.status === 401) {
+//             document.getElementById('error').innerHTML = 'Identifiants incorrects';
+//         }
+//     })
  
-}
+// }
 </script>
 
 <template>

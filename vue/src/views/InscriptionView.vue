@@ -1,17 +1,35 @@
 <script setup>
-import axios from 'axios';
+// import axios from 'axios';
 
-const register = () => {
-  axios.post('http://localhost:8000/api/register/', {
-    'username': document.getElementById('pseudo').value,
-    'password': document.getElementById('mdp').value,
-    'email': document.getElementById('email').value,
-  })
-  .then((response) => {
-    response.status == 201 ? window.location.href = '/connexion': null;
-    }
-  )
-}
+// const register = () => {
+//   axios.post('http://localhost:8000/api/register/', {
+//     'username': document.getElementById('pseudo').value,
+//     'password': document.getElementById('mdp').value,
+//     'email': document.getElementById('email').value,
+//   })
+//   .then((response) => {
+//     response.status == 201 ? checkCredentials : null;
+//     }
+//   )
+// }
+
+// const checkCredentials = async () => {
+//     const response = await axios.post('http://localhost:8000/api/login_check', {
+//         "username": document.getElementById('pseudo').value,
+//         "password": document.getElementById('mdp').value
+//     })
+
+//     .then((response) => {
+//         localStorage.setItem('token', response.data.token);
+//         window.location.href = '/';
+//     })
+//     .catch((error) => {
+//         if (error.request.status === 401) {
+//             document.getElementById('error').innerHTML = 'Identifiants incorrects';
+//         }
+//     })
+ 
+// }
 </script>
 
 <template>

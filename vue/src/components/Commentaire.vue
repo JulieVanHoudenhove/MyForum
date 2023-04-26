@@ -21,7 +21,8 @@
                     <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
                     <p>{{ comment.likes}}</p>
                 </div>
-                <RouterLink v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" :to="'/removecom/' +comment.id"><i class="fa-solid fa-trash"></i></RouterLink>
+                <!-- <RouterLink v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" :to="'/removecom/' +comment.id"><i class="fa-solid fa-trash"></i></RouterLink> -->
+                <button v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" @click="deleteComments"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div v-if="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
                 <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>

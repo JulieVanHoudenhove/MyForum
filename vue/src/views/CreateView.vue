@@ -1,19 +1,35 @@
 <script setup>
-import axios from 'axios';
+//import axios from 'axios';
 const current = defineProps({utilisateur: {type: Object}})
-const sendPost = async () => {
-  await axios.post('http://localhost:8000/api/posts', {
-    'title': document.getElementById('titre').value,
-    'text': document.getElementById('contenu').value,
-    'image': document.getElementById('image').value,
-    'user': current.utilisateur['@id']
-  })
-    .then ((response) => {
-        if (response.status === 201) {
-            window.location.href = '/';
-        }
-    })
-}
+
+import { onMounted, computed } from "vue";
+import { usePostStore } from "../stores/posts.js";
+
+const store = usePostStore();
+const postIsLoading = computed(() => store.isLoading);
+const posts = computed(() => {
+    return store.posts;
+});
+
+onMounted(() => {
+    store.fetchPosts();
+    store.createPosts();
+    store.deletePosts();
+});
+
+// const sendPost = async () => {
+//   await axios.post('http://localhost:8000/api/posts', {
+//     'title': document.getElementById('titre').value,
+//     'text': document.getElementById('contenu').value,
+//     'image': document.getElementById('image').value,
+//     'user': current.utilisateur['@id']
+//   })
+//     .then ((response) => {
+//         if (response.status === 201) {
+//             window.location.href = '/';
+//         }
+//     })
+// }
 </script>
 
 <template>
@@ -32,7 +48,7 @@ const sendPost = async () => {
         <label class="mb-2" for="image">Ajouter une image</label>
         <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="file" id="image">
       </div>
-      <button @click="sendPost" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit" value="Poster">Poster</button>
+      <button @click="createPosts" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit" value="Poster">Poster</button>
     </div>
   </main>
 </template>
