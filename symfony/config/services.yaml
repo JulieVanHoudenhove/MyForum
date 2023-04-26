@@ -52,3 +52,11 @@ services:
     App\State\UserRegisterProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\UserChangePasswordProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\UserChangeAvatarProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
