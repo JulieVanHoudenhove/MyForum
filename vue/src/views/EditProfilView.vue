@@ -4,7 +4,7 @@ import axios from 'axios';
 const current = defineProps({ utilisateur: { type: Object }})
 
 const changeAvatar = () => {
-axios.postForm('http://localhost:8088/myforum/index.php/api/change-avatar/'+current.utilisateur.id,{
+axios.postForm('http://localhost:8000/api/change-avatar/'+current.utilisateur.id,{
     file: document.getElementById('avatar').files[0]
 })
 .then((response) => {

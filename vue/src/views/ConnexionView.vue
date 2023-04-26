@@ -1,23 +1,21 @@
 <script setup>
-// import axios from 'axios';
+    import { reactive, computed } from "vue";
+    import { useLogStore } from "../stores/connexion.js";
 
-// const checkCredentials = async () => {
-//     const response = await axios.post('http://localhost:8000/api/login_check', {
-//         "username": document.getElementById('inputUsername').value,
-//         "password": document.getElementById('inputPassword').value
-//     })
+    const logStore = useLogStore();
+    // const postIsLoading = computed(() => store.isLoading);
+    const logs = computed(() => {
+        return logStore.logs;
+    });
 
-//     .then((response) => {
-//         localStorage.setItem('token', response.data.token);
-//         window.location.href = '/';
-//     })
-//     .catch((error) => {
-//         if (error.request.status === 401) {
-//             document.getElementById('error').innerHTML = 'Identifiants incorrects';
-//         }
-//     })
- 
-// }
+    const fields = reactive({
+    username: '',
+    password: '',
+    })
+
+    const checkCredentials = () => {
+        logStore.checkCredentials(fields);
+    }
 </script>
 
 <template>
@@ -31,11 +29,11 @@
         <div id="error"></div>
         <div class="flex flex-col m-4 w-80">
             <label class="mb-2" for="inputUsername">Pseudo</label>
-            <input class=" py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" value="" name="username" id="inputUsername" autocomplete="username" required autofocus placeholder="pseudo">
+            <input v-model="fields.username" class=" py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" name="username" id="inputUsername" autocomplete="username" required autofocus placeholder="pseudo">
         </div>
         <div class="flex flex-col m-4 w-80">
             <label class="mb-2" for="inputPassword">Mot de passe</label>
-            <input class="form-control py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="password" name="password" id="inputPassword" autocomplete="current-password" required placeholder="****">
+            <input v-model="fields.password" class="form-control py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="password" name="password" id="inputPassword" autocomplete="current-password" required placeholder="****">
         </div>
         <p>Je n'ai pas de compte, <a class="text-vert" href="/inscription">m'inscrire</a></p>
 

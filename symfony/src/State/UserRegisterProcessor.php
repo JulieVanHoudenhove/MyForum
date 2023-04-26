@@ -10,7 +10,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserRegisterProcessor implements ProcessorInterface
 {
-    public function __construct(private UserPasswordHasherInterface $passwordHasher, private UserRepository $userRepository, private ProcessorInterface $persistProcessor) {}
+    public function __construct(private UserPasswordHasherInterface $passwordHasher, private ProcessorInterface $persistProcessor) {}
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
     {

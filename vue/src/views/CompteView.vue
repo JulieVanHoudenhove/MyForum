@@ -6,6 +6,8 @@
   const route = useRoute()
   const id = route.params.id
 
+  const current = defineProps({ utilisateur: { type: Object }})
+
   const users = ref(null);
 
   onMounted(async () => {
@@ -39,7 +41,7 @@
       <Compte :users = users />
       <div class="flex flex-col items-center p-7">
         <h3 class="text-xl font-bold">Mot de passe</h3>
-        <RouterLink v-if="current && current.id == users.id" class="text-vert transition duration-300 hover:underline decoration-2" :to="'/editpassword/' + users.id">Changer de mot de passe</RouterLink>
+        <RouterLink v-if="current.utilisateur && current.utilisateur.id == users.id" class="text-vert transition duration-300 hover:underline decoration-2" :to="'/editpassword/' + users.id">Changer de mot de passe</RouterLink>
       </div>
       <RouterLink class="m-4 px-5 py-2.5 bg-vert border-vert border-2 rounded-lg  text-white transition duration-300 text-md hover:bg-transparent hover:text-vert" :to="'/statistiques' + users.id">Accéder à mes statistiques</RouterLink>
     </section>

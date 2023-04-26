@@ -82,7 +82,7 @@
                     <button v-if="current" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
                 </form>
                 <template class="flex justify-center items-center transition duration-300" v-if="commentIsLoading">
-                    <div class="spinner spinner-1 w-full"></div>
+                    <div class="spinner spinner-1"></div>
                 </template> 
                 <Commentaire v-else v-if="postComment" v-for="comment in postComment" :comment="comment" :key="comment.id" :utilisateur="current.utilisateur"/>
             </section>

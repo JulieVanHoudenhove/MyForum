@@ -13,7 +13,7 @@ import { useCommentStore } from "../stores/comments.js";
     const commentStore = useCommentStore();
     const postComment = computed(() => commentStore.getCommentsByPostId(postId.value));
     const deleteComment = () => {
-        commentStore.deleteComment(current.comment.id);
+    commentStore.deleteComment(current.comment.id);
     }
 </script>
 
