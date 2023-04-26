@@ -40,16 +40,16 @@
 </script>
 
 <template>
-        <template class="flex justify-center items-center transition duration-300" v-if="postIsLoading">
-            <div class="spinner spinner-1 w-full"></div>
-        </template> 
-    <main v-else class="font-Poppins">
+    <main class="font-Poppins">
         <div class="w-full p-64 flex justify-center items-center bg-vert">
             <h1 class="text-white text-4xl font-bold">My Forum</h1>
         </div>
         <section class="flex items-start w-full flex-col">
             <h2 class="m-14 font-bold text-2xl">Fil d'actualité</h2>
-            <RouterLink v-if="current" class="ml-20 m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" to="/create">Créer un post</RouterLink>
+            <template class="flex justify-center items-center transition duration-300" v-if="postIsLoading">
+                <div class="spinner spinner-1 w-full"></div>
+            </template> 
+            <RouterLink v-else v-if="current" class="ml-20 m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" to="/create">Créer un post</RouterLink>
             <!-- POST     -->
             <Post v-for="item in posts" :post="item" :key="item.id" />
         </section>

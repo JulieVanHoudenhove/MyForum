@@ -1,4 +1,21 @@
 <script type="text/javascript">
+ import axios from 'axios';
+    import { onMounted, ref } from 'vue';
+
+    const current = defineProps({ utilisateur: { type: Object }})
+    const stats = ref();
+
+    onMounted(async () => {
+    const response = await axios.get('http://localhost:8088/myforum/index.php/api/user_stats/'+current.utilisateur.id);
+    stats.value = await response.data;
+    console.log(stats.value)
+  }); 
+
+
+
+
+
+
 export default {
        name: "graph"
     }

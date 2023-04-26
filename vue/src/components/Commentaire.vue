@@ -1,4 +1,6 @@
 <script setup>
+ import { computed } from "vue";
+import { useCommentStore } from "../stores/comments.js";
     const current = defineProps({
         comment: {
             type: Object,
@@ -8,6 +10,11 @@
             type: Object,
         }
     })
+    const commentStore = useCommentStore();
+    const postComment = computed(() => commentStore.getCommentsByPostId(postId.value));
+    const deleteComment = () => {
+        commentStore.deleteComment(current.comment.id);
+    }
 </script>
 
 <template>
@@ -22,7 +29,7 @@
                     <p>{{ comment.likes}}</p>
                 </div>
                 <!-- <RouterLink v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" :to="'/removecom/' +comment.id"><i class="fa-solid fa-trash"></i></RouterLink> -->
-                <button v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" @click="deleteComments"><i class="fa-solid fa-trash"></i></button>
+                <button v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" @click="deleteComment"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div v-if="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
                 <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>

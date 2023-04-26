@@ -33,15 +33,11 @@ export const useCommentStore = defineStore("comment",{
                     })
             });
         },
-        async createComments() {
+        async createComment(commentParams) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/comments`), {
-                    'text': document.getElementById('text').value,
-                    'post': "/api/posts/"+postId.value,
-                     'user': current.utilisateur['@id']
-                }
-                    .then((response) => {
+                return await axios.post(`http://localhost:8000/api/comments`, commentParams)
+                    .then(() => {
                         this.fetchComments();
                     })
                     .catch((err) => {
@@ -52,18 +48,19 @@ export const useCommentStore = defineStore("comment",{
                     })
             });
         },
-        async deleteComments(id) {
+        async deleteComment(id) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
                 return await axios.delete('http://localhost:8000/api/comments/'+id)
                     .then((response) => {
                         if (response.status == 204) {
-                            router.push({
-                            name: 'detailPost',
-                            params: {
-                                id: post.value.id
-                            }
-                            });
+                            // router.push({
+                            // name: 'detailPost',
+                            // params: {
+                            //     id: post.value.id
+                            // }
+                            // });
+                            this.fetchComments();
                         }
                         //this.state.comments = this.state.comments.filter(o => o.id !== id);
                     })

@@ -54,7 +54,7 @@
       </div>
       <div class="flex flex-row-reverse justify-around m-4 w-80">
         <label for="terms">Accepter les conditions d'utilisation</label>
-        <input type="checkbox">
+        <input type="checkbox" required>
       </div>        
       <p>J'ai déjà un compte, <a class="text-vert" href="/connexion">me connecter</a></p>
       <button type="submit" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" >S'inscrire</button>
