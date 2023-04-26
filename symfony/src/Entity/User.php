@@ -4,7 +4,13 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post as Poster;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
+use App\State\UserChangeAvatarProcessor;
+use App\State\UserChangePasswordProcessor;
+use App\State\UserRegisterProcessor;
 use App\State\UserStatsProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -27,6 +34,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => 'user:stats'],
             provider: UserStatsProvider::class
         ),
+        new Poster(
+            uriTemplate: '/register/',
+            denormalizationContext: ['groups' => 'user:register'],
+            processor: UserRegisterProcessor::class
+        ),
+        new Put(
+            uriTemplate: '/change-password/{id}',
+            denormalizationContext: ['groups' => 'user:changePassword'],
+            processor: UserChangePasswordProcessor::class
+        ),
+        new Put(
+            uriTemplate: '/change-avatar/{id}',
+            denormalizationContext: ['groups' => 'user:avtar'],
+            processor: UserChangeAvatarProcessor::class
+        ),
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -34,14 +56,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats'])]
+    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats', 'user:register'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats'])]
+    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats', 'user:register'])]
     private ?string $username = null;
 
     #[ORM\Column]
+    #[Groups(['user:register'])]
     private array $roles = [];
 
     /**
@@ -64,12 +87,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $likedComments;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:item'])]
-    private ?string $avatar = null;
+    #[Groups(['user:item', 'user:register', 'user:avtar'])]
+    private ?string $avatar = 'default-pp.png';
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:item'])]
+    #[Groups(['user:item', 'user:register'])]
     private ?string $email = null;
+
+    #[Groups(['user:register', 'user:changePassword'])]
+    #[SerializedName('password')]
+    private ?string $plainPassword = null;
+
+    #[Groups(['user:changePassword'])]
+    #[SerializedName('currentPassword')]
+    private ?string $currentPassword = null;
 
     public function __construct()
     {
@@ -145,8 +176,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
+        $this->currentPassword = null;
     }
 
     /**
@@ -292,4 +323,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getCurrentPassword(): ?string
+    {
+        return $this->currentPassword;
+    }
+
+    public function setCurrentPassword(?string $currentPassword): void
+    {
+        $this->currentPassword = $currentPassword;
+    }
+
+
+
 }
