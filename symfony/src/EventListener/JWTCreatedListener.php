@@ -10,7 +10,7 @@ class JWTCreatedListener
     {
         $user = $event->getUser();
 
-        $avatar = 'http://localhost:8088/myforum/uploads/avatars/' . $user->getAvatar();
+        $avatar = 'http://localhost:8000/uploads/avatars/' . $user->getAvatar();
 
         $payload = array_merge(
             $event->getData(),
@@ -18,7 +18,7 @@ class JWTCreatedListener
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
                 'avatar' => $avatar,
-                '@id' => '/myforum/index.php/api/users/'.$user->getId()
+                '@id' => '/api/users/'.$user->getId()
             ]
         );
 

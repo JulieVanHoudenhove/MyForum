@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-// Import axios to make HTTP requests
 import axios from "axios"
 
 export const usePostStore = defineStore("post",{
@@ -16,14 +15,19 @@ export const usePostStore = defineStore("post",{
     },
     actions: {
         async fetchPosts() {
-            try {
-              const data = await axios.get('http://localhost:8000/api/posts?page=1')
-                this.posts = data?.data?.['hydra:member'] || [];
-            }
-            catch (error) {
-                alert(error)
-                console.log(error)
-            }
+            this.isLoading = true;
+            return new Promise(async (resolve, reject) => {
+                return await axios.get(`http://localhost:8000/api/posts?page=1`)
+                    .then((data) => {
+                        this.posts = data?.data?.['hydra:member'] || [] ;
+                    })
+                    .catch((err) => {
+                        console.log('an error occured', err)
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
+            });
         }
     },
 })

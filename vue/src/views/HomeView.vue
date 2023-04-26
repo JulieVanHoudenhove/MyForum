@@ -30,17 +30,20 @@
 
 
     const store = usePostStore();
+    const postIsLoading = computed(() => store.isLoading);
     const posts = computed(() => {
         return store.posts;
     });
     onMounted(() => {
         store.fetchPosts();
-        console.log('hello world')
     });
 </script>
 
 <template>
-    <main class="font-Poppins">
+        <template class="flex justify-center items-center transition duration-300" v-if="postIsLoading">
+            <div class="spinner spinner-1 w-full"></div>
+        </template> 
+    <main v-else class="font-Poppins">
         <div class="w-full p-64 flex justify-center items-center bg-vert">
             <h1 class="text-white text-4xl font-bold">My Forum</h1>
         </div>

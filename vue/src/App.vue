@@ -34,7 +34,7 @@ if (localStorage.getItem('token')) {
             </ul>
         </nav>
     </header>
-    <RouterView />
+    <RouterView :utilisateur="current"/>
 </template>
 <style scoped>
 

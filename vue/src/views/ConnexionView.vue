@@ -7,9 +7,15 @@ const checkCredentials = async () => {
         "password": document.getElementById('inputPassword').value
     })
 
-    if (response) {
+    .then((response) => {
         localStorage.setItem('token', response.data.token);
-    }
+        window.location.href = '/';
+    })
+    .catch((error) => {
+        if (error.request.status === 401) {
+            document.getElementById('error').innerHTML = 'Identifiants incorrects';
+        }
+    })
  
 }
 </script>
@@ -22,6 +28,7 @@ const checkCredentials = async () => {
             You are logged in as {{ app.user.userIdentifier }}, <a href="/deconnexion">Deconnexion</a>
         </div> -->
         <h1 class="h1 text-vert">Connectez-vous</h1>
+        <div id="error"></div>
         <div class="flex flex-col m-4 w-80">
             <label class="mb-2" for="inputUsername">Pseudo</label>
             <input class=" py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="text" value="" name="username" id="inputUsername" autocomplete="username" required autofocus placeholder="pseudo">
