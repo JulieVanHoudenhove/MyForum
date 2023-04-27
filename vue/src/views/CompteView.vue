@@ -3,7 +3,9 @@
   import axios from 'axios';
   import Compte from '../components/Compte.vue';
   import { useRoute } from 'vue-router'
+
   const route = useRoute()
+
   const id = route.params.id
 
   const current = defineProps({ utilisateur: { type: Object }})
@@ -15,23 +17,6 @@
     users.value = response.data;
     console.log(users.value)
   });
-
-  // const current = ref();
-
-  // const parseJwt = (token) => {
-  //     var base64Url = token.split('.')[1];
-  //     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  //     var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-  //         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  //     }).join(''));
-
-  //     return JSON.parse(jsonPayload);
-  // }
-
-  // if (localStorage.getItem('token')) {
-  //     current.value = parseJwt(localStorage.getItem('token'));
-  //     console.log(parseJwt(localStorage.getItem('token')))
-  // }
 </script>
 
 <template>

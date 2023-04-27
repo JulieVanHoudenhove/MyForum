@@ -2,32 +2,32 @@
     import router from '../router'
     import { reactive, computed } from "vue";
     import { useLogStore } from "../stores/connexion.js";
+    import { useUserStore } from '../stores/users';
 
     const logStore = useLogStore();
+
+    const userStore = useUserStore();
     // const postIsLoading = computed(() => store.isLoading);
     const logs = computed(() => {
         return logStore.logs;
     });
 
     const fields = reactive({
-    username: '',
-    password: '',
+        username: '',
+        password: '',
     })
 
     const checkCredentials = () => {
-        logStore.checkCredentials(fields).then((res) => {
-            router.push('/');
-    });
-}
+        logStore.checkCredentials(fields).then(async (res) => {
+            userStore.setTryToLogin(true);
+            await router.push('/');
+        });
+    }
 </script>
 
 <template>
 <main class=" mt-20 flex flex-col items-center justify-center font-Poppins">
     <form @submit.prevent="checkCredentials" class="flex flex-col items-center justify-center">
-        <!-- <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="/deconnexion">Deconnexion</a>
-        </div> -->
         <h1 class="h1 text-vert">Connectez-vous</h1>
         <div id="error"></div>
         <div class="flex flex-col m-4 w-80">
