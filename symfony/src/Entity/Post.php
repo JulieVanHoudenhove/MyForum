@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post as Poster;
+use App\Controller\UploadPostController;
 use App\Repository\PostRepository;
 use App\State\PostCollectionProvider;
 use App\State\PostItemProvider;
@@ -16,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,7 +37,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => 'post:list'],
             provider: PostCollectionProvider::class,
         ),
-        new Poster(),
+        new Poster(
+            inputFormats: ['multipart' => ['multipart/form-data']],
+            controller: UploadPostController::class,
+            denormalizationContext: ['groups' => 'post:create'],
+            deserialize: false
+        ),
         new Delete()
     ],
     order: ['createdAt' => 'DESC'],
@@ -51,23 +56,23 @@ class Post
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list', 'post:item', 'comment:list'])]
+    #[Groups(['post:list', 'post:item', 'comment:list', 'post:create'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank()]
-    #[Groups(['post:list', 'post:item'])]
+    #[Groups(['post:list', 'post:item', 'post:create'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank()]
-    #[Groups(['post:list', 'post:item'])]
+    #[Groups(['post:list', 'post:item', 'post:create'])]
     private ?string $text = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank()]
-    #[Groups(['post:list', 'post:item'])]
+    #[Groups(['post:list', 'post:item', 'post:create'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
@@ -80,6 +85,11 @@ class Post
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post:list', 'post:item'])]
     private ?string $image = null;
+
+    #[Groups(['post:create'])]
+    #[SerializedName('file')]
+    private ?UploadedFile $file = null;
+
 
     public function __construct()
     {
@@ -199,6 +209,18 @@ class Post
 
         return $this;
     }
+
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    public function setFile(?UploadedFile $file): void
+    {
+        $this->file = $file;
+    }
+
+
 
     #[Groups(['post:list', 'post:item'])]
     #[SerializedName('createdAt')]

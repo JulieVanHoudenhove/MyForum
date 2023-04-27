@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[AsController]
 class UploadImageController extends AbstractController
 {
-    public function __invoke(User $user, Request $request, UserRepository $userRepository, UploaderService $uploaderService): ?User
+    public function __invoke(Request $request, UserRepository $userRepository, UploaderService $uploaderService): ?User
     {
         $avatarFile = $request->files->get('file');
 
