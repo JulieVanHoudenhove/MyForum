@@ -35,11 +35,11 @@ export const useLogStore = defineStore("log",{
             return new Promise(async (resolve, reject) => {
                 return await axios.post(`http://localhost:8000/api/register/`, inscriptionParams)
                     .then((response) => {
-                         if(response.status == 201) {
-                            this.checkCredentials;
-                         }
-                        // console.log(response)
-                        // response.status == 201 ? window.location.href = "/connexion" : null ;
+                        //  if(response.status == 201) {
+                        //     this.checkCredentials;
+                        //  }
+                        console.log(response)
+                        response.status == 201 ? window.location.href = "/connexion" : null ;
                         resolve(response);
                     })
                     .catch((error) => {

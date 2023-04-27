@@ -13,7 +13,8 @@ const posts = computed(() => {
 const fields = reactive({
     title: '',
     text: '',
-    user: current.utilisateur['@id']
+    user: current.utilisateur['@id'],
+    file: ''.files[0]
 })
 
 onMounted(() => {
@@ -31,7 +32,7 @@ const createPost = () => {
 //   await axios.post('http://localhost:8000/api/posts', {
 //     'title': document.getElementById('titre').value,
 //     'text': document.getElementById('contenu').value,
-//     'image': document.getElementById('image').value,
+//     'file': document.getElementById('image').files[0],
 //     'user': current.utilisateur['@id']
 //   })
 //     .then ((response) => {
@@ -56,7 +57,7 @@ const createPost = () => {
       </div>
       <div class="flex flex-col m-4 w-4/5">
         <label class="mb-2" for="image">Ajouter une image</label>
-        <input class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="file" id="image">
+        <input v-on="fileds.file" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="file" id="image">
       </div>
       <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit" value="Poster">Poster</button>
     </form>

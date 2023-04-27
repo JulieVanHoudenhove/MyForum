@@ -2,15 +2,7 @@
     import Post from '../components/Post.vue';
     import { ref, onMounted, computed } from "vue";
     import { usePostStore } from "../stores/posts.js";
-    // import axios from 'axios';
 
-    // const data = ref(null);
-
-    // onMounted(async () => {
-    // const response = await axios.get('http://localhost:8000/api/posts?page=1');
-    // data.value = response.data['hydra:member'];
-    // console.log(data.value)
-    // });
     const current = ref();
 
     const parseJwt = (token) => {

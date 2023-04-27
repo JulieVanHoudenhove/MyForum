@@ -23,7 +23,7 @@ export const useCommentStore = defineStore("comment",{
             return new Promise(async (resolve, reject) => {
                 return await axios.get(`http://localhost:8000/api/comments`)
                     .then((res) => {
-                        this.comments = res?.data?.['hydra:member'] || [] ;
+                        this.comments = res?.data || [] ;
                     })
                     .catch((err) => {
                         console.log('an error occured', err)

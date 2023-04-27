@@ -20,7 +20,7 @@ export const usePostStore = defineStore("post",{
             return new Promise(async (resolve, reject) => {
                 return await axios.get(`http://localhost:8000/api/posts?page=1`)
                     .then((data) => {
-                        this.posts = data?.data?.['hydra:member'] || [] ;
+                        this.posts = data?.data || [] ;
                     })
                     .catch((err) => {
                         console.log('an error occured', err)
@@ -33,7 +33,7 @@ export const usePostStore = defineStore("post",{
         async createPost(postParams) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/posts`, postParams)
+                return await axios.postForm(`http://localhost:8000/api/posts`, postParams)
                     .then((response) => {
                         if (response.status === 201) {
                             window.location.href = '/';
