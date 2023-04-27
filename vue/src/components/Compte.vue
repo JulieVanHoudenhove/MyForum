@@ -26,7 +26,7 @@
 
 <template>
     <div class="flex flex-row-reverse items-end p-7 relative">
-        <img class="bg-white rounded-full h-32 w-32" :src="users.avatar" alt="{{ users.username}} avatar">
+        <img class="bg-white rounded-full h-32 w-32" :src="'http://localhost:8000/uploads/avatars/' + users.avatar" :alt=" users.username + 'avatar'">
         <RouterLink v-if="current && current.id == users.id" class=" text-xl bg-vert p-2 rounded-full h-10 w-10 pb-2.5 text-center margin_negative absolute" :to="'/editprofil/' + users.id"><i class="fa-solid fa-camera"></i></RouterLink>
     </div>
     <div class="flex flex-row p-7 justify-around w-full">

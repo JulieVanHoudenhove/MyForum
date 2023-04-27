@@ -23,7 +23,7 @@ onMounted(() => {
 const createPost = () => {
   store.createPost(fields).then((res) => {
     console.log('HELLO WORLD', res);
-    alert(`Vous avez créé un nouveau post ! ${res.id}`);
+    // alert(`Vous avez créé un nouveau post ! ${res.id}`);
   });
 }
 
