@@ -64,4 +64,4 @@ services:
 
     App\State\UserInfoProvider:
         bind:
-            $itemProvider: '@api_platform.doctrine.orm.state.collection_provider'
+            $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'

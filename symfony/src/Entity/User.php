@@ -37,7 +37,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Get(
 //            uriTemplate: '/user/{id}',
             normalizationContext: ['groups' => 'user:item'],
-            provider: UserInfoProvider::class
         ),
         new Get(
             uriTemplate: '/user_stats/{id}',
@@ -54,7 +53,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             denormalizationContext: ['groups' => 'user:changePassword'],
             processor: UserChangePasswordProcessor::class
         ),
-        new GetCollection(),
+        new GetCollection(
+            provider: UserInfoProvider::class
+        ),
         new Poster(
             uriTemplate: '/change-avatar/{id}',
             inputFormats: ['multipart' => ['multipart/form-data']],
