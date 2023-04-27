@@ -31,11 +31,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 #[ApiResource(
     operations: [
-//        new Get(
-//            normalizationContext: ['groups' => 'user:item']
-//        ),
         new Get(
-//            uriTemplate: '/user/{id}',
             normalizationContext: ['groups' => 'user:item'],
         ),
         new Get(
@@ -54,6 +50,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             processor: UserChangePasswordProcessor::class
         ),
         new GetCollection(
+            normalizationContext: ['groups' => 'user:infos'],
             provider: UserInfoProvider::class
         ),
         new Poster(
@@ -71,11 +68,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats', 'user:register'])]
+    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats', 'user:register', 'user:infos'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats', 'user:register'])]
+    #[Groups(['post:list', 'post:item', 'user:item', 'comment:list', 'user:stats', 'user:register', 'user:infos'])]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -102,11 +99,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $likedComments;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:item', 'user:register', 'user:avatar-read'])]
+    #[Groups(['user:item', 'user:register', 'user:avatar-read', 'user:infos'])]
     private ?string $avatar = 'default-pp.png';
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:item', 'user:register'])]
+    #[Groups(['user:item', 'user:register', 'user:infos'])]
     private ?string $email = null;
 
     #[Groups(['user:register', 'user:changePassword'])]
@@ -120,6 +117,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:avatar'])]
     #[SerializedName('file')]
     private ?UploadedFile $file = null;
+
+    #[Groups(['user:infos'])]
+
+    #[SerializedName('@id')]
+    private ?string $uidd = null;
 
     public function __construct()
     {
@@ -372,4 +374,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->file = $file;
     }
+
+    public function getUidd(): ?string
+    {
+        return $this->uidd;
+    }
+
+    public function setUidd(?string $uidd): void
+    {
+        $this->uidd = $uidd;
+    }
+
+
 }

@@ -14,16 +14,14 @@ class UserInfoProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         $users = $this->collectionProvider->provide($operation, $uriVariables, $context);
-        $results = [];
 
         foreach ($users as $user)
         {
             $url = $this->uploaderService->getUrl($user->getAvatar(), $this->uploaderService::AVATAR);
             $user->setAvatar($url);
-
-            $results[] = $user;
+            $user->setUidd('/api/users/'.$user->getId());
         }
 
-        return $results;
+        return $users;
     }
 }
