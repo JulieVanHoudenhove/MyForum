@@ -37,7 +37,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Get(
 //            uriTemplate: '/user/{id}',
             normalizationContext: ['groups' => 'user:item'],
-//            provider: UserInfoProvider::class
+            provider: UserInfoProvider::class
         ),
         new Get(
             uriTemplate: '/user_stats/{id}',
