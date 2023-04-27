@@ -4,6 +4,8 @@
     import { usePostStore } from "../stores/posts.js";
     import { onMounted, computed, reactive } from "vue";
     import { useRoute } from 'vue-router'
+    import router from '../router';
+
     const route = useRoute();
     const postId = computed(() => Number(route?.params?.id))
 
@@ -22,7 +24,9 @@
     const current = defineProps({utilisateur: {type: Object}})
 
     const deletePost = () => {
-        store.deletePost(postId.value);
+        store.deletePost(postId.value).then(async (res) => {
+            await router.push('/');
+        });
     }
 
     const fields = reactive({
@@ -36,17 +40,6 @@
             console.log('HELLO WORLD', res);
         });
     }
-
-    // const sendComment = async () => {
-    // await axios.post('http://localhost:8000/api/comments', {
-    //     'text': document.getElementById('text').value,
-    //     'post': "/api/posts/"+postId.value,
-    //     'user': current.utilisateur['@id']
-    // })
-    //     .then ((response) => {
-    //         commentStore.fetchComments();
-    //     })
-    // }
 </script>
 
 <template>   

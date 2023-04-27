@@ -32,10 +32,14 @@ export const usePostStore = defineStore("post",{
             });
         },
         async createPost({fields}) {
-            console.log(fields)
             this.isLoading = true;
+
             const formData = new FormData();
-            formData.append('file', fields.file);
+
+            Object.entries(fields).forEach(([key, value]) => {
+                formData.append(key, value); 
+            });
+
             return new Promise(async (resolve, reject) => {
                 return await axios.post(`http://localhost:8000/api/posts`, formData, {
                     headers: {
@@ -43,9 +47,6 @@ export const usePostStore = defineStore("post",{
                     }
                 })
                     .then((response) => {
-                        if (response.status === 201) {
-                            window.location.href = '/';
-                        }
                         resolve(response.data);
                     })
                     .catch((err) => {
@@ -61,9 +62,7 @@ export const usePostStore = defineStore("post",{
             return new Promise(async (resolve, reject) => {
                 return await axios.delete(`http://localhost:8000/api/posts/`+id)
                     .then((response) => {
-                        if (response.status == 204) {
-                            window.location.href = "/";
-                          }
+                        resolve(response.data);
                     })
                     .catch((err) => {
                         console.log('an error occured', err)

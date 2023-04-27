@@ -2,7 +2,8 @@
 const current = defineProps({utilisateur: {type: Object}})
 
 import { onMounted, computed, reactive } from "vue";
-import { usePostStore } from "../stores/posts.js";
+import { usePostStore } from "../stores/posts.js";    
+import router from '../router'
 
 const store = usePostStore();
 const postIsLoading = computed(() => store.isLoading);
@@ -13,7 +14,7 @@ const posts = computed(() => {
 const fields = reactive({
     title: '',
     text: '',
-    user: current.utilisateur['@id'],
+    user: current.utilisateur.id,
     file: null,
 })
 
@@ -26,25 +27,10 @@ onMounted(() => {
 });
 
 const createPost = () => {
-  store.createPost({fields}).then((res) => {
-    console.log('HELLO WORLD', res);
-    // alert(`Vous avez créé un nouveau post ! ${res.id}`);
+  store.createPost({fields}).then(async (res) => {
+    await router.push('/');
   });
 }
-
-// const sendPost = async () => {
-//   await axios.post('http://localhost:8000/api/posts', {
-//     'title': document.getElementById('titre').value,
-//     'text': document.getElementById('contenu').value,
-//     'file': document.getElementById('image').files[0],
-//     'user': current.utilisateur['@id']
-//   })
-//     .then ((response) => {
-//         if (response.status === 201) {
-//             window.location.href = '/';
-//         }
-//     })
-// }
 </script>
 
 <template>

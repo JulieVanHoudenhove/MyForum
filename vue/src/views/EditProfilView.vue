@@ -1,5 +1,4 @@
 <script setup>
-// import axios from 'axios';
     import { reactive, computed } from "vue";
     import { useUserStore } from "../stores/users.js";
     
@@ -14,21 +13,11 @@
     const handleInputChange = (e) => {
         fields.file = e.target.files[0];
     }
-
+    
     const changeAvatar = () => {
         console.log(current);
         userStore.changeAvatar({fields, current});
     }
-// const changeAvatar = () => {
-// axios.postForm('http://localhost:8000/api/change-avatar/'+current.utilisateur.id,{
-    // file: document.getElementById('avatar').files[0]
-// })
-// .then((response) => {
-  // if (response.status == 201) {
-    // window.location.href = '/compte/'+current.utilisateur.id;
-  // }
-// })
-// }
 </script>
 
 <template>

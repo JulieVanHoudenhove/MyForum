@@ -51,18 +51,9 @@ export const useCommentStore = defineStore("comment",{
         async deleteComment(id) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.delete('http://localhost:8000/api/comments/'+id)
+                return await axios.delete(`http://localhost:8000/api/comments/${id}`)
                     .then((response) => {
-                        if (response.status == 204) {
-                            // router.push({
-                            // name: 'detailPost',
-                            // params: {
-                            //     id: post.value.id
-                            // }
-                            // });
-                            this.fetchComments();
-                        }
-                        //this.state.comments = this.state.comments.filter(o => o.id !== id);
+                        this.fetchComments();
                     })
                     .catch((err) => {
                         console.log('an error occured', err)
