@@ -24,26 +24,22 @@ class UploaderService
 
         switch ($type) {
             case self::AVATAR:
-                try {
-                    $file->move(
-                        $this->getAvatarDirectory(),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // if something happens during upload
-                }
+                $path = $this->getAvatarDirectory();
                 break;
             case self::POST:
-                try {
-                    $file->move(
-                        $this->getPostDirectory(),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // if something happens during upload
-                }
+                $path = $this->getPostDirectory();
                 break;
         }
+
+        try {
+            $file->move(
+                $path,
+                $newFilename
+            );
+        } catch (FileException $e) {
+            // if something happens during upload
+        }
+
         return $newFilename;
     }
 
