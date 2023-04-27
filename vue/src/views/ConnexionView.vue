@@ -1,4 +1,5 @@
 <script setup>
+    import router from '../router'
     import { reactive, computed } from "vue";
     import { useLogStore } from "../stores/connexion.js";
 
@@ -14,8 +15,10 @@
     })
 
     const checkCredentials = () => {
-        logStore.checkCredentials(fields);
-    }
+        logStore.checkCredentials(fields).then((res) => {
+            router.push('/');
+    });
+}
 </script>
 
 <template>

@@ -18,12 +18,11 @@ export const useLogStore = defineStore("log",{
                 return await axios.post(`http://localhost:8000/api/login_check`, connexionParams)
                     .then((response) => {
                         localStorage.setItem('token', response.data.token);
-                        window.location.href = '/';
+                        resolve(response.data)
                     })
                     .catch((error) => {
-                        if (error.request.status === 401) {
                             document.getElementById('error').innerHTML = 'Identifiants incorrects';
-                        }
+                            reject(error);
                     })
                     .finally(() => {
                         this.isLoading = false;
@@ -34,13 +33,15 @@ export const useLogStore = defineStore("log",{
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
                 return await axios.post(`http://localhost:8000/api/register/`, inscriptionParams)
-                    .then((response) => {
-                        //  if(response.status == 201) {
-                        //     this.checkCredentials;
-                        //  }
-                        console.log(response)
-                        response.status == 201 ? window.location.href = "/connexion" : null ;
-                        resolve(response);
+                    .then(({data}) => {
+                        this.checkCredentials({
+                            "username": data.username,
+                            "password": inscriptionParams.password,
+                        }).then((res) => {
+                            resolve(res);
+                        }).catch((err) => {
+                            console.log('het some problems', err);
+                        });
                     })
                     .catch((error) => {
                         console.log('an error occured', error)

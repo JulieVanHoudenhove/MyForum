@@ -1,6 +1,7 @@
 <script setup>
     import { reactive, computed } from "vue";
     import { useLogStore } from "../stores/connexion.js";
+    import router from "../router";
 
     const logStore = useLogStore();
     // const postIsLoading = computed(() => store.isLoading);
@@ -16,7 +17,8 @@
     
     const register = () => {
         logStore.Register(fields).then((res) => {
-            console.log('HELLO WORLD', res);
+            router.push('/');
+            // TODO: Faire la redirection avec router.push et pas window.location.href
     });
     }
 

@@ -1,6 +1,19 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink, RouterView } from 'vue-router'
+import { onMounted } from "vue";
+
+
+
+import {useUserStore} from "./stores/users.js";
+
+const userStore = useUserStore();
+
+//const current = computed(() => userStore.getCurrentUser());
+
+onMounted(() => {
+    userStore.fetchUsers();
+})
 
 const current = ref();
 
@@ -34,6 +47,7 @@ if (localStorage.getItem('token')) {
             </ul>
         </nav>
     </header>
+    
     <RouterView :utilisateur="current"/>
 </template>
 <style scoped>

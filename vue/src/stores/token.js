@@ -1,3 +1,5 @@
+import {ref} from 'vue';
+
 const current = ref();
 
 const parseJwt = (token) => {
@@ -14,3 +16,5 @@ if (localStorage.getItem('token')) {
     current.value = parseJwt(localStorage.getItem('token'));
     console.log(parseJwt(localStorage.getItem('token')))
 }
+
+export {parseJwt};
