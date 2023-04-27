@@ -35,6 +35,8 @@ services:
         arguments:
             - avatarDirectory: '%avatars_directory%'
             - postDirectory: '%post_img_directory%'
+            - publicAvatarPath: '/uploads/avatars'
+            - publicPostPath: '/uploads/post_img'
 
     App\State\PostItemProvider:
         bind:
@@ -59,3 +61,7 @@ services:
     App\State\UserChangePasswordProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\State\UserInfoProvider:
+        bind:
+            $itemProvider: '@api_platform.doctrine.orm.state.collection_provider'

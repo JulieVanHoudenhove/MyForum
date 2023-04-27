@@ -12,7 +12,7 @@ class UploaderService
     public const POST = 2;
     private SluggerInterface $slugger;
 
-    public function __construct(private $avatarDirectory, private $postDirectory, SluggerInterface $slugger, private UrlHelper $urlHelper)
+    public function __construct(private $avatarDirectory, private $postDirectory, private $publicAvatarPath, private $publicPostPath, SluggerInterface $slugger, private UrlHelper $urlHelper)
     {
         $this->slugger = $slugger;
     }
@@ -47,19 +47,19 @@ class UploaderService
     {
         switch ($type) {
             case self::AVATAR:
-                $path = $this->getAvatarDirectory();
+                $path = $this->getPublicAvatarPath();
                 break;
             case self::POST:
-                $path = $this->getPostDirectory();
+                $path = $this->getPublicPostPath();
                 break;
         }
         if (empty($fileName)) return null;
 
         if ($absolute) {
-            return $this->urlHelper->getAbsoluteUrl($path.$fileName);
+            return $this->urlHelper->getAbsoluteUrl($path . '/' . $fileName);
         }
 
-        return $this->urlHelper->getRelativePath($path.$fileName);
+        return $this->urlHelper->getRelativePath($path . '/' . $fileName);
     }
 
     public function getAvatarDirectory()
@@ -70,6 +70,16 @@ class UploaderService
     public function getPostDirectory()
     {
         return $this->postDirectory['postDirectory'];
+    }
+
+    public function getPublicAvatarPath()
+    {
+        return $this->publicAvatarPath['publicAvatarPath'];
+    }
+
+    public function getPublicPostPath()
+    {
+        return $this->publicPostPath['publicPostPath'];
     }
 
 }
