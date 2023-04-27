@@ -64,7 +64,7 @@ class UserController extends AbstractController
             $avatarFile = $form->get('avatarFile')->getData();
 
             if ($avatarFile) {
-                if($user->getAvatar() != null) {
+                if($user->getAvatar() != null && $user->getAvatar() != 'default-pp.png') {
                     $filesystem = new Filesystem();
                     $oldFile = $user->getAvatar();
                     $path = $this->getParameter('avatars_directory').'/'.$oldFile;

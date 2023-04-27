@@ -32,7 +32,7 @@ class UploadImageController extends AbstractController
         $user = $userRepository->findOneBy(['id' => $userId]);
 
         if ($avatarFile) {
-            if($user->getAvatar() != null) {
+            if($user->getAvatar() != null && $user->getAvatar() != 'default-pp.png') {
                 $filesystem = new Filesystem();
                 $oldFile = $user->getAvatar();
                 $path = $this->getParameter('avatars_directory').'/'.$oldFile;
