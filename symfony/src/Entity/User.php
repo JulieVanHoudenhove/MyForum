@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post as Poster;
 use ApiPlatform\Metadata\Put;
@@ -47,6 +48,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             denormalizationContext: ['groups' => 'user:changePassword'],
             processor: UserChangePasswordProcessor::class
         ),
+        new GetCollection(),
         new Poster(
             uriTemplate: '/change-avatar/{id}',
             inputFormats: ['multipart' => ['multipart/form-data']],
@@ -55,7 +57,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             denormalizationContext: ['groups' => 'user:avatar'],
             deserialize: false
         )
-    ]
+        ],
+    paginationEnabled: false,
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -362,16 +365,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFile(?File $file): void
     {
         $this->file = $file;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?int $user_id): void
-    {
-        $this->user_id = $user_id;
     }
 
 

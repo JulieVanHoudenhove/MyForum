@@ -7,18 +7,18 @@
 
     const userStore = useUserStore();
     // const postIsLoading = computed(() => store.isLoading);
-    const users = computed(() => {
-        return userStore.users;
-    });
-
     const fields = reactive({
-    file: ''.files[0]
+        file: null,
     })
 
-    const changeAvatar = () => {
-        userStore.changeAvatar(fields);
+    const handleInputChange = (e) => {
+        fields.file = e.target.files[0];
     }
 
+    const changeAvatar = () => {
+        console.log(current);
+        userStore.changeAvatar({fields, current});
+    }
 // const changeAvatar = () => {
 // axios.postForm('http://localhost:8000/api/change-avatar/'+current.utilisateur.id,{
     // file: document.getElementById('avatar').files[0]
@@ -41,7 +41,7 @@
             </div>
             <div class="flex flex-col items-center justify-center p-7">
                 <label class="mb-2" for="upload_img">Ajouter une photo</label>
-                <input v-on="fields.file" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="file" name="avatar" id="avatar">
+                <input @change="handleInputChange" class="py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" type="file" name="avatar" id="avatar">
             </div>
             <input class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" type="submit" value="Mettre à jour">
         </form>

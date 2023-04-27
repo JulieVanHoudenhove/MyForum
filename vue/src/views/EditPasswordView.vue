@@ -16,7 +16,8 @@
     })
 
     const changePassword = () => {
-        userStore.changePassword(fields);
+        console.log(fields, current);
+        userStore.changePassword({fields, current});
     }
         // import axios from 'axios';
 
