@@ -55,7 +55,7 @@
         <article class="m-12 px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <h3 class="my-5 text-xl font-bold">{{ post.title }}</h3>
             <p class="my-5">{{ post.text }}</p>
-            <img v-if="post.img" class="h-52 my-3.5" :src="'http://localhost:8000/uploads/post_img/'+post.image" alt="">
+            <img v-if="post.image" class="h-52 my-3.5" :src="post.image" alt="">
             <div class="flex flew-row justify-between">
                 <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user.username}}</p>
                 <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
