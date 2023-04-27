@@ -82,22 +82,6 @@ const router = createRouter({
       component: () => import('../views/LikeView.vue')
     },
     {
-      path: '/remove/:id',
-      name: 'remove',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/RemoveView.vue')
-    },
-    {
-      path: '/removecom/:id',
-      name: 'removecom',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/RemoveComView.vue')
-    },
-    {
       path: '/editprofil/:id',
       name: 'editprofil',
       // route level code-splitting

@@ -28,7 +28,7 @@
     const fields = reactive({
         text: '',
         post: "/api/posts/"+postId.value,
-        user: current.utilisateur['@id']
+        user: current.utilisateur ? current.utilisateur['@id'] : null
     })
 
     const createComment = () => {
@@ -55,7 +55,7 @@
         <article class="m-12 px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <h3 class="my-5 text-xl font-bold">{{ post.title }}</h3>
             <p class="my-5">{{ post.text }}</p>
-            <img v-if="post.img" class="h-52 my-3.5" src="{{post.img}}" alt="">
+            <img v-if="post.img" class="h-52 my-3.5" :src="'http://localhost:8000/uploads/post_img/'+post.image" alt="">
             <div class="flex flew-row justify-between">
                 <p class="text-lg"><span class="text-xs italic">Écrit par : </span>{{ post.user.username}}</p>
                 <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
@@ -77,9 +77,9 @@
         <article>
             <section class="mx-12 my-14 ">
                 <h3 class="my-5 text-xl font-bold">Commentaires</h3>
-                <form @submit.prevent="createComment">
-                    <input v-model="fields.text" v-if="current" class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" id="text" type="text" placeholder="Votre commentaire..." required>
-                    <button v-if="current" class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
+                <form v-if="current.utilisateur" @submit.prevent="createComment">
+                    <input v-model="fields.text" class="mx-12 w-2/4 py-2.5 px-5 bg-gris_input text-gris_text border-gris_input rounded-lg" id="text" type="text" placeholder="Votre commentaire..." required>
+                    <button class="m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-mg hover:bg-transparent hover:text-vert">Envoyer</button>
                 </form>
                 <template class="flex justify-center items-center transition duration-300" v-if="commentIsLoading">
                     <div class="spinner spinner-1"></div>
