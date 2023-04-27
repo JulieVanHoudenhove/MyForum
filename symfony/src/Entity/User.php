@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post as Poster;
 use ApiPlatform\Metadata\Put;
@@ -11,6 +12,7 @@ use App\Controller\UploadImageController;
 use App\Repository\UserRepository;
 use App\State\UserChangeAvatarProcessor;
 use App\State\UserChangePasswordProcessor;
+use App\State\UserInfoProvider;
 use App\State\UserRegisterProcessor;
 use App\State\UserStatsProvider;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,8 +31,13 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 #[ApiResource(
     operations: [
+//        new Get(
+//            normalizationContext: ['groups' => 'user:item']
+//        ),
         new Get(
-            normalizationContext: ['groups' => 'user:item']
+//            uriTemplate: '/user/{id}',
+            normalizationContext: ['groups' => 'user:item'],
+//            provider: UserInfoProvider::class
         ),
         new Get(
             uriTemplate: '/user_stats/{id}',
@@ -47,6 +54,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             denormalizationContext: ['groups' => 'user:changePassword'],
             processor: UserChangePasswordProcessor::class
         ),
+        new GetCollection(),
         new Poster(
             uriTemplate: '/change-avatar/{id}',
             inputFormats: ['multipart' => ['multipart/form-data']],
@@ -363,17 +371,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->file = $file;
     }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?int $user_id): void
-    {
-        $this->user_id = $user_id;
-    }
-
-
-
 }
