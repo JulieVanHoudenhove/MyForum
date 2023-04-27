@@ -49,6 +49,7 @@ export const useUserStore = defineStore("user",{
             return new Promise(async (resolve, reject) => {
                 return await axios.put(`http://localhost:8000/api/change-password/${current.utilisateur.id}`, fields)
                     .then((response) => {
+                        resolve(response);
                     })
                     .catch((error) => {
                         console.log('an error occured', error)
