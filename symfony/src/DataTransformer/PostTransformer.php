@@ -18,6 +18,8 @@ class PostTransformer
 
     public function transform(Post $post): PostApiDto
     {
+        $url = $this->uploaderService->getUrl($post->getImage(), $this->uploaderService::POST);
+
         $dto = new PostApiDto(
             $post->getId(),
             $post->getTitle(),
@@ -25,7 +27,7 @@ class PostTransformer
             $post->getUser(),
             $post->getCreatedAt(),
             count($post->getLikes()),
-            $post->getImage(),
+            $url,
         );
 
         return $dto;
