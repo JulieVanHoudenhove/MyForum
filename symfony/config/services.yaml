@@ -46,10 +46,6 @@ services:
         bind:
             $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'
 
-    App\State\CommentCollectionProvider:
-        bind:
-            $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'
-
     App\State\UserStatsProvider:
         bind:
             $itemProvider: '@api_platform.doctrine.orm.state.item_provider'
