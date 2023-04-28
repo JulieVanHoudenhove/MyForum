@@ -1,6 +1,7 @@
 <script setup>
     import { reactive, computed } from "vue";
     import { useUserStore } from "../stores/users.js";
+    import router from "../router";
 
     const current = defineProps({utilisateur: {type: Object}})
 
@@ -17,7 +18,9 @@
 
     const changePassword = () => {
         console.log(fields, current);
-        userStore.changePassword({fields, current});
+        userStore.changePassword({fields, current}).then(async (res) => {
+            await router.push(`/compte/${current.utilisateur.id}`);
+        });
     }
         // import axios from 'axios';
 

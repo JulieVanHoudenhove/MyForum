@@ -2,8 +2,11 @@
     import { reactive, computed } from "vue";
     import { useLogStore } from "../stores/connexion.js";
     import router from "../router";
-
+    import { useUserStore } from "../stores/users.js";
+    
     const logStore = useLogStore();
+
+    const userStore = useUserStore();
     // const postIsLoading = computed(() => store.isLoading);
     const logs = computed(() => {
         return logStore.logs;
@@ -16,9 +19,9 @@
     })
     
     const register = () => {
-        logStore.Register(fields).then((res) => {
-            router.push('/');
-            // TODO: Faire la redirection avec router.push et pas window.location.href
+        logStore.Register(fields).then(async (res) => {
+            userStore.setTryToLogin(true);
+            await router.push('/');
     });
     }
 
