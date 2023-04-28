@@ -22,6 +22,7 @@
     })
 
     const current = defineProps({utilisateur: {type: Object}})
+    console.log('current', current.utilisateur['@id']);
 
     const deletePost = () => {
         store.deletePost(postId.value).then(async (res) => {
@@ -32,7 +33,7 @@
     const fields = reactive({
         text: '',
         post: "/api/posts/"+postId.value,
-        user: current.utilisateur ? current.utilisateur['@id'] : null
+        user: current.utilisateur['@id'],
     })
 
     const createComment = () => {

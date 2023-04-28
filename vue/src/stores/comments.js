@@ -24,6 +24,7 @@ export const useCommentStore = defineStore("comment",{
                 return await axios.get(`http://localhost:8000/api/comments`)
                     .then((res) => {
                         this.comments = res?.data || [] ;
+                        console.log('comments', this.comments);
                     })
                     .catch((err) => {
                         console.log('an error occured', err)

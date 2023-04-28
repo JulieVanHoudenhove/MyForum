@@ -2,6 +2,8 @@
     import axios from 'axios';
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router'
+    import GraphUser from '../components/GraphUser.vue';
+    import GraphLike from '../components/GraphLike.vue';
 
     const route = useRoute()
 
@@ -11,18 +13,14 @@ const current = defineProps({ utilisateur: { type: Object }})
 
 const stats = ref(null);
     onMounted(async () => {
-        const response = await axios.get('http://127.0.0.1:8000/api/user_stats/'+current.id);
+        const response = await axios.get('http://127.0.0.1:8000/api/user_stats/'+id);
         stats.value = response.data;
         console.log(stats.value)
     });
 </script>
 
 <template>
-    <!-- <div>
-        {{ stats.lastWeekLike }}
-        {{ stats.lastWeekPost }}
-        {{ stats.totalPost }}
-        {{ stats.totalLike }}
+    <!-- <div v-if="stats">
         <div v-for="activeUser in stats.mostActiveUsers">
             {{ activeUser.username }}, Total de  {{ activeUser.posts.length  }} posts <br>
         </div>
@@ -30,44 +28,31 @@ const stats = ref(null);
             {{ week['1'] }} likes, semaine n°{{ week.w }}
         </div>
     </div> -->
-<main class="mt-20 font-Poppins flex flex-col justify-center items-center">
+<main v-if="stats" class="mt-20 font-Poppins flex flex-col justify-center items-center">
     <h1 class="h1 text-vert">Statistiques</h1>
     <div class="grid grid-cols-2 gap-x-10 gap-y-10 text-center justify-center items-center m-12">
         <section class="py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <!-- nombre total de post de l'utilisateur -->
-            <h2 class="text-2xl font-bold">5<!--{{ totalPost|length }}--></h2>
-            <p><!--{{ totalPost|length > 1 ? 'Posts' : 'Post' }}-->Posts</p>
+            <h2 class="text-2xl font-bold">{{ stats.totalPost }}</h2>
+            <p>{{ stats.totalPost > 1 ? 'Posts' : 'Post' }}</p>
         </section>
         <section class="py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <!-- nombre total de likes tous les posts de l'utilisateur -->
-            <h2 class="text-2xl font-bold">5<!--{{ totalLike|length }}--></h2>
-            <p><!--{{ totalLike|length > 1 ? 'Likes' : 'Like' }}-->Likes</p>
+            <h2 class="text-2xl font-bold">{{ stats.totalLike }}</h2>
+            <p>{{ stats.totalLike > 1 ? 'Likes' : 'Like' }}</p>
         </section>
         <section class="py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <!-- nombre de posts fait depuis 7 jours -->
-            <h2 class="text-2xl font-bold">7<!--{{ lastWeekPost|length }}--></h2>
-            <p><!--{{ lastWeekPost|length > 1 ? 'Posts' : 'Post' }}-->Posts des <br>7 derniers jours</p>
+            <h2 class="text-2xl font-bold">{{ stats.lastWeekPost }}</h2>
+            <p>Posts des <br>7 derniers jours</p>
         </section>
         <section class="py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
             <!-- nombre de likes sur les posts depuis 7 jours -->
-            <h2 class="text-2xl font-bold">10<!--{{ lastWeekLike|length }}--></h2>
-            <p><!--{{ lastWeekLike|length > 1 ? 'Likes' : 'Like' }}-->Likes des <br>7 derniers jours</p>
+            <h2 class="text-2xl font-bold">{{ stats.lastWeekLike }}</h2>
+            <p>Likes des <br>7 derniers jours</p>
         </section>
-        <section class="grid-areas py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
-            <h2>Les utilisateurs qui postent le plus</h2>
-                    <div>
-                        <p><!--{{ activeUser.username }} = {{ activeUser.posts|length }}--></p>
-                    </div>
-            <!-- Voir qui sont les utilisateurs qui postent le plus (pie chart…) -->
-            <div id="chart_div"></div>
-        </section>
-        <section class="grid-areas_2 py-5 w-80 transition duration-300 hover:bg-white hover:border-0 hover:shadow-[0_40px_80px_rgba(49,49,49,.1)] px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
-            <h2>Likes per weeks</h2>
-            <div>
-              <p>Semaine n°: <!--{{ like.w }} -->17<br>total like sur les posts : <!--{{ like.1 }}-->800</p>
-            </div>
-            <div id="chart_column_div"></div>
-        </section>
+        <GraphUser v-if="stats" :users="stats.mostActiveUsers" />
+        <GraphLike v-if="stats" :users="stats.likesPerWeek" />
     </div>
 </main>
 </template>
