@@ -26,16 +26,14 @@ class CommentApiDto
     #[Groups(['comment:list'])]
     public Post $post;
 
-//    public bool $isLiked;
+    #[Groups(['comment:list'])]
+    public ?bool $isLiked;
 
-    /**
-     * @param int $id
-     * @param string $text
-     * @param User $user
-     * @param \DateTime $createdAt
-     * @param int $likes
-     */
-    public function __construct(int $id, string $text, User $user, \DateTime $createdAt, int $likes, Post $post)
+    #[Groups(['comment:list'])]
+    public ?int $likeId;
+
+
+    public function __construct(int $id, string $text, User $user, \DateTime $createdAt, int $likes, Post $post, ?bool $isLiked, ?int $likeId)
     {
         $this->id = $id;
         $this->text = $text;
@@ -43,7 +41,7 @@ class CommentApiDto
         $this->createdAt = $createdAt;
         $this->likes = $likes;
         $this->post = $post;
+        $this->isLiked = $isLiked;
+        $this->likeId = $likeId;
     }
-
-
 }
