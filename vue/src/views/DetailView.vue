@@ -1,10 +1,16 @@
 <script setup>
+const current = defineProps({utilisateur: {type: Object}})
+console.log('current',current)
+
+
     import Commentaire from '../components/Commentaire.vue';
     import { useCommentStore } from "../stores/comments.js";
     import { usePostStore } from "../stores/posts.js";
     import { onMounted, computed, reactive } from "vue";
     import { useRoute } from 'vue-router'
     import router from '../router';
+    import axios from 'axios';
+
 
     const route = useRoute();
     const postId = computed(() => Number(route?.params?.id))
@@ -21,8 +27,7 @@
         commentStore.fetchComments();
     })
 
-    const current = defineProps({utilisateur: {type: Object}})
-    console.log('current', current.utilisateur['@id']);
+    
 
     const deletePost = () => {
         store.deletePost(postId.value).then(async (res) => {
@@ -33,13 +38,42 @@
     const fields = reactive({
         text: '',
         post: "/api/posts/"+postId.value,
-        user: current.utilisateur['@id'],
+        user: current.utilisateur != null ? current.utilisateur['@id'] : null,
+
     })
+
 
     const createComment = () => {
         commentStore.createComment(fields).then((res) => {
             console.log('HELLO WORLD', res);
         });
+    }
+
+    // const fieldsLike = reactive({
+    //     "post": "/api/posts/"+postId.value,
+    //     "user": current.utilisateur != null ? current.utilisateur['@id'] : null,
+    // })
+    
+    const likePost = () => {
+        // store.likePost(fieldsLike).then((res) => {
+        //     console.log('HELLO WORLD', res);
+        // });
+        axios.post('http://localhost:8000/api/liked_posts', {
+            "post": "/api/posts/"+post.value.id,
+            "user": current.utilisateur['@id']
+        })
+        .then((response) => {
+            store.fetchPosts();
+            console.log(response);
+        })
+    }
+
+    const dislikePost = () => {
+        axios.delete('http://localhost:8000/api/liked_posts/'+post.value.likeId)
+        .then((response) => {
+            store.fetchPosts();
+            console.log(response);
+        })
     }
 </script>
 
@@ -59,8 +93,8 @@
                 <button @click="deletePost" v-if="current.utilisateur && post.user.id == current.utilisateur.id" class="text-vert"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div v-if="current" class="w-12 flex flex-row justify-around text-vert">
-                <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->
-                <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
+                <button v-if="post.isLiked" @click="dislikePost"><i class="fa-solid fa-heart"></i></button>
+                <button v-else @click="likePost"><i class="fa-regular fa-heart"></i></button>
                 <p>{{ post.likes }}</p>
             </div>
             <div v-else="!current" class="w-12 flex flex-row justify-around text-vert mb-5">

@@ -1,3 +1,4 @@
+import api from "./api";
 import { defineStore } from 'pinia'
 import axios from "axios"
 
@@ -21,7 +22,8 @@ export const useCommentStore = defineStore("comment",{
         async fetchComments() {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.get(`http://localhost:8000/api/comments`)
+                const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
+                return await api.get(`comments`, { headers})
                     .then((res) => {
                         this.comments = res?.data || [] ;
                         console.log('comments', this.comments);
@@ -37,7 +39,7 @@ export const useCommentStore = defineStore("comment",{
         async createComment(commentParams) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/comments`, commentParams)
+                return await api.post(`comments`, commentParams)
                     .then(() => {
                         this.fetchComments();
                     })

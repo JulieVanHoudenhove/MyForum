@@ -32,11 +32,8 @@ class CommentApiController extends AbstractController
             $user = $JWTEncoder->decode($token);
         }
 
-        $page = 1;
 
-        $offset = 20 * $page;
-
-        $comments = $commentRepository->findBy([], ['createdAt' => 'DESC'], 20, $offset);
+        $comments = $commentRepository->findBy([], ['createdAt' => 'DESC']);
         $results = [];
 
         foreach ($comments as $comment) {

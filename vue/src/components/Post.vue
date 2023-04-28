@@ -1,10 +1,36 @@
 <script setup>
+    import axios from "axios";
+    import { usePostStore } from "../stores/posts.js";
+    const store = usePostStore();
+    const current = 
     defineProps({
         post: {
             type: Object,
             required: true
         },
+        utilisateur: {
+            type: Object,
+        }
     })
+
+    const likePost = () => {
+        axios.post('http://localhost:8000/api/liked_posts', {
+            "post": "/api/posts/"+current.post.id,
+            "user": current.utilisateur['@id']
+        })
+        .then((response) => {
+            store.fetchPosts();
+            console.log(response);
+        })
+    }
+
+    const dislikePost = () => {
+        axios.delete('http://localhost:8000/api/liked_posts/'+current.post.likeId)
+        .then((response) => {
+            store.fetchPosts();
+            console.log(response);
+        })
+    }
 </script>
 
 <template>
@@ -20,8 +46,8 @@
             </div>
         </RouterLink>
         <div v-if="current" class="w-12 flex flex-row justify-around text-vert mb-5">
-            <!-- <RouterLink :to="'/dislike/' +id"><i class="fa-solid fa-heart"></i></RouterLink> -->
-            <RouterLink :to="'/like/' + id"><i class="fa-regular fa-heart"></i></RouterLink>
+            <button v-if="post.isLiked" @click="dislikePost"><i class="fa-solid fa-heart"></i></button>
+            <button v-else @click="likePost"><i class="fa-regular fa-heart"></i></button>
             <p>{{ post.likes }}</p>
         </div>
         <div v-if="!current" class="w-12 flex flex-row justify-around text-vert mb-5">

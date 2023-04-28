@@ -1,4 +1,5 @@
 <script setup>
+import axios from "axios";
  import { computed } from "vue";
 import { useCommentStore } from "../stores/comments.js";
     const current = defineProps({
@@ -15,6 +16,25 @@ import { useCommentStore } from "../stores/comments.js";
     const deleteComment = () => {
     commentStore.deleteComment(current.comment.id);
     }
+
+    const likeComment = () => {
+        axios.post('http://localhost:8000/api/liked_comments', {
+            "comment": "/api/comments/"+current.comment.id,
+            "user": current.utilisateur['@id']
+        })
+        .then((response) => {
+            commentStore.fetchComments();
+            console.log(response);
+        })
+    }
+
+    const dislikeComment = () => {
+        axios.delete('http://localhost:8000/api/liked_comments/'+current.comment.likeId)
+        .then((response) => {
+            commentStore.fetchComments();
+            console.log(response);
+        })
+    }
 </script>
 
 <template>
@@ -24,8 +44,8 @@ import { useCommentStore } from "../stores/comments.js";
             <p>{{ new Date(comment.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
             <div v-if="current" class="w-20 flex flex-row justify-between text-vert ">
                 <div class="w-12 flex flex-row justify-around">
-                    <!-- <RouterLink to="/dislike/:id"><i class="fa-solid fa-heart"></i></RouterLink> -->
-                    <RouterLink to="/like/:id"><i class="fa-regular fa-heart"></i></RouterLink>
+                    <button v-if="comment.isLiked" @click="dislikeComment"><i class="fa-solid fa-heart"></i></button>
+                    <button v-else @click="likeComment"><i class="fa-regular fa-heart"></i></button>
                     <p>{{ comment.likes}}</p>
                 </div>
                 <!-- <RouterLink v-if="current.utilisateur && comment.user.id == current.utilisateur.id" class="text-vert" :to="'/removecom/' +comment.id"><i class="fa-solid fa-trash"></i></RouterLink> -->

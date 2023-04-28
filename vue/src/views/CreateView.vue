@@ -1,6 +1,8 @@
 <script setup>
 const current = defineProps({utilisateur: {type: Object}})
 
+console.log('current',current)
+
 import { onMounted, computed, reactive } from "vue";
 import { usePostStore } from "../stores/posts.js";    
 import router from '../router'

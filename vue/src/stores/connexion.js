@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia'
 import axios from "axios"
 
+axios.interceptors.request.use(function (response) {
+    return response
+}, function (error) {
+    console.log('sup', error)
+    return Promise.reject(error)
+})
+
 export const useLogStore = defineStore("log",{
     state: () => ({
         logs: [],
@@ -13,7 +20,10 @@ export const useLogStore = defineStore("log",{
     },
     actions: {
         async checkCredentials(connexionParams) {
-            this.isLoading = true;
+            // this.isLoading = true;
+            // const { data } = await axios.post(`http://localhost:8000/api/login_check`, connexionParams)
+            // console.log('data', data);
+
             return new Promise(async (resolve, reject) => {
                 return await axios.post(`http://localhost:8000/api/login_check`, connexionParams)
                     .then((response) => {

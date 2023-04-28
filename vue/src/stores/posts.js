@@ -17,8 +17,9 @@ export const usePostStore = defineStore("post",{
     actions: {
         async fetchPosts() {
             this.isLoading = true;
+            const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
             return new Promise(async (resolve, reject) => {
-                return await axios.get(`http://localhost:8000/api/posts?page=1`)
+                return await axios.get(`http://localhost:8000/api/posts?page=1`, { headers})
                     .then((data) => {
                         console.log('data', data.data),
                         this.posts = data?.data || [] ;
@@ -60,8 +61,26 @@ export const usePostStore = defineStore("post",{
         async deletePost(id) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.delete(`http://localhost:8000/api/posts/`+id)
+                axios.delete
+                return await axios.delete(`http://localhost:8000/api/posts/${id}`)
                     .then((response) => {
+                        resolve(response.data);
+                    })
+                    .catch((err) => {
+                        console.log('an error occured', err)
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
+            });
+        },
+        async likePost(likeParams) {
+            this.isLoading = true;
+            return new Promise(async (resolve, reject) => {
+                return await axios.post(`http://localhost:8000/api/liked_posts`, likeParams)
+                    .then((response) => {
+                        store.fetchPosts();
+                        console.log(response);
                         resolve(response.data);
                     })
                     .catch((err) => {
