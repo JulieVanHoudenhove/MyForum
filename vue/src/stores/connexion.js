@@ -45,6 +45,7 @@ export const useLogStore = defineStore("log",{
                     })
                     .catch((error) => {
                         console.log('an error occured', error)
+                        reject(error);
                     })
                     .finally(() => {
                         this.isLoading = false;

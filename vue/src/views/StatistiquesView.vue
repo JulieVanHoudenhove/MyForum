@@ -1,86 +1,35 @@
-<script type="text/javascript">
- import axios from 'axios';
+<script setup>
+    import axios from 'axios';
     import { onMounted, ref } from 'vue';
+    import { useRoute } from 'vue-router'
 
-    const current = defineProps({ utilisateur: { type: Object }})
-    const stats = ref();
+    const route = useRoute()
 
+const id = route.params.id
+
+const current = defineProps({ utilisateur: { type: Object }})
+
+const stats = ref(null);
     onMounted(async () => {
-    const response = await axios.get('http://localhost:8088/myforum/index.php/api/user_stats/'+current.utilisateur.id);
-    stats.value = await response.data;
-    console.log(stats.value)
-  }); 
-
-
-
-
-
-
-export default {
-       name: "graph"
-    }
-     // Load the Visualization API and the corechart package.
-     google.charts.load("current", {packages: ["corechart"]});
- 
-     // Set a callback to run when the Google Visualization API is loaded.
-     google.charts.setOnLoadCallback(drawChart);
-     google.charts.setOnLoadCallback(drawChartColumn);
- 
-     // Callback that creates and populates a data table,
-     // instantiates the pie chart, passes in the data and
-     // draws it.
-     function drawChart() {
- 
-         // Create the data table.
-         var data = google.visualization.arrayToDataTable([
-             ["Element", "Posts", { role: "style" } ],
-             ["User1", 889, "#b87333"],
-             ["User2", 1049, "silver"],
-             ["User3", 1930, "gold"],
-             ["User4", 2145, "color: #e5e4e2"]
-             ["User5", 2245, "color: #e5e4e2"]
-         ]);
- 
-         // Set chart options
-         var options = {
-             title: "Nombre de posts",
-             width: 600,
-             height: 500,
-             bar: {groupWidth: "95%"},
-             legend: { position: "none" },
-         };
- 
-         // Instantiate and draw our chart, passing in some options.
-         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-         chart.draw(data, options);
-     }
-     function drawChartColumn() {
- 
-        // Create the data table.
-        var data = google.visualization.arrayToDataTable([
-        ['Element', 'Density', { role: 'style' }],
-        ['Semaine n°14', 8.94, '#b87333'],            // RGB value
-        ['Semaine n°15', 10.49, 'silver'],            // English color name
-        ['Semaine n°16', 19.30, 'gold'],
-        ['Semaine n°17', 21.45, 'color: #e5e4e2' ], // CSS-style declaration
-        ]);
-
-        // Set chart options
-        var options = {
-            title: "Nombre de like par semaine",
-            width: 600,
-            height: 400,
-            bar: {groupWidth: "95%"},
-            legend: { position: "none" },
-        };
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_column_div'));
-        chart.draw(data, options);
-    }
+        const response = await axios.get('http://127.0.0.1:8000/api/user_stats/'+current.id);
+        stats.value = response.data;
+        console.log(stats.value)
+    });
 </script>
 
 <template>
+    <!-- <div>
+        {{ stats.lastWeekLike }}
+        {{ stats.lastWeekPost }}
+        {{ stats.totalPost }}
+        {{ stats.totalLike }}
+        <div v-for="activeUser in stats.mostActiveUsers">
+            {{ activeUser.username }}, Total de  {{ activeUser.posts.length  }} posts <br>
+        </div>
+        <div v-for="week in stats.likesPerWeek">
+            {{ week['1'] }} likes, semaine n°{{ week.w }}
+        </div>
+    </div> -->
 <main class="mt-20 font-Poppins flex flex-col justify-center items-center">
     <h1 class="h1 text-vert">Statistiques</h1>
     <div class="grid grid-cols-2 gap-x-10 gap-y-10 text-center justify-center items-center m-12">
