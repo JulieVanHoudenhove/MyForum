@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post as Poster;
+use App\Controller\PostUserController;
 use App\Controller\UploadPostController;
 use App\Repository\PostRepository;
 use App\State\PostCollectionProvider;
@@ -34,8 +37,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => 'post:item'],
         ),
         new GetCollection(
+            controller: PostUserController::class,
             normalizationContext: ['groups' => 'post:list'],
-            provider: PostCollectionProvider::class,
         ),
         new Poster(
             inputFormats: ['multipart' => ['multipart/form-data']],
@@ -49,6 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationEnabled: true,
     paginationItemsPerPage: 20,
 )]
+//#[ApiFilter(SearchFilter::class, properties: ['likedPosts.user' => 'exact'])]
 class Post
 {
     use TimestampableEntity;

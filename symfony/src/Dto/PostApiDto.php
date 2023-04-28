@@ -21,8 +21,12 @@ class PostApiDto
     public int $likes;
     #[Groups(['post:list', 'post:item'])]
     public ?string $image = null;
+    #[Groups(['post:list', 'post:item'])]
+    public ?bool $isLiked = null;
+    #[Groups(['post:list', 'post:item'])]
+    public ?int $likeId = null;
 
-    public function __construct(int $id, string $title, string $text, User $user, \DateTime $createdAt, int $likes, ?string $image)
+    public function __construct(int $id, string $title, string $text, User $user, \DateTime $createdAt, int $likes, ?string $image, ?bool $isLiked, ?int $likeId)
     {
         $this->id = $id;
         $this->title = $title;
@@ -31,6 +35,8 @@ class PostApiDto
         $this->createdAt = $createdAt;
         $this->likes = $likes;
         $this->image = $image;
+        $this->isLiked = $isLiked;
+        $this->likeId = $likeId;
     }
 
 

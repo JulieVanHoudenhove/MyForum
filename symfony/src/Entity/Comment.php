@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Post as Poster;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\CommentApiController;
+use App\Controller\PostUserController;
 use App\Dto\CommentApiDto;
 use App\Repository\CommentRepository;
 use App\State\CommentCollectionProvider;
@@ -24,21 +26,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/post_comments/{id}',
-            requirements: ['id' => '\d+'],
-            normalizationContext: ['groups' => 'comment:list'],
-            provider: CommentCollectionProvider::class
-        ),
-        new GetCollection(
+            controller: CommentApiController::class,
             normalizationContext: ['groups' => 'comment:list'],
         ),
+//        new GetCollection(
+//            normalizationContext: ['groups' => 'comment:list'],
+//        ),
         new Poster(),
         new Delete()
     ],
     order: ['createdAt' => 'DESC'],
     paginationEnabled: false
 )]
-#[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]
+//#[ApiFilter(SearchFilter::class, properties: ['post' => 'exact'])]
 class Comment
 {
     use TimestampableEntity;
