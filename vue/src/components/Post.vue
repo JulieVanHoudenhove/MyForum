@@ -1,4 +1,5 @@
 <script setup>
+import {ref} from'vue'
     import axios from "axios";
     import { usePostStore } from "../stores/posts.js";
     import api from "../stores/api";
@@ -13,6 +14,10 @@
             type: Object,
         }
     })
+
+    const handleEdit = () => {
+        isEditing.value = true;
+    }
 
     const likePost = () => {
         api.post('liked_posts', {
@@ -37,7 +42,7 @@
 <template>
     <!-- v-for="post in posts" :key="post.id"  -->
     <article class=" mr-12 mb-12 ml-20 w-11/12  px-12 p-5 rounded-lg shadow-[0_0_80px_rgba(0,0,0,.07)]">
-        <RouterLink class=" mx-12" :to="{name: 'details', params: {id: post.id}}">
+        <RouterLink class=" mx-12" :to="{name: 'post', params: {id: post.id}}">
             <h3 class="text-xl font-bold">{{ post.title }}</h3>
             <p class="my-5">{{ post.text }}</p>
             <img v-if="post.image" class="h-52 my-3.5"  :src="post.image" alt="">

@@ -76,6 +76,7 @@ console.log('current',current)
             console.log(response);
         })
     }
+    
 </script>
 
 <template>   

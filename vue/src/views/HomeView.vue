@@ -1,51 +1,39 @@
 <script setup>
-    import Post from '../components/Post.vue';
-    import { ref, onMounted, computed } from "vue";
-    import { usePostStore } from "../stores/posts.js";
+    // import Post from '../components/Post.vue';
+    // import {useGetPostsQuery} from '../hooks/post.js';
+    // import { ref, onMounted, computed } from "vue";
+    // import { usePostStore } from "../stores/posts.js";
 
-    const current = defineProps({utilisateur: {type: Object}})
+    // const current = defineProps({utilisateur: {type: Object}})
 
-    // const current = ref();
+    // const store = usePostStore();
+    // const postIsLoading = computed(() => store.isLoading);
+    // const posts = computed(() => {
+    //     return store.posts;
+    // });
+    // onMounted(() => {
+    //     store.fetchPosts();
+    // });
 
-    // const parseJwt = (token) => {
-    // var base64Url = token.split('.')[1];
-    // var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    // var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-    // return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    // }).join(''));
+    // -------------------------------------------------------------------
 
-    // return JSON.parse(jsonPayload);
-    // }
+    // const { isLoading, isError, data: posts, error } = useGetPostsQuery();
 
-    // if (localStorage.getItem('token')) {
-    // current.value = parseJwt(localStorage.getItem('token'));
-    // console.log(parseJwt(localStorage.getItem('token')))
-    // }
-
-
-    const store = usePostStore();
-    const postIsLoading = computed(() => store.isLoading);
-    const posts = computed(() => {
-        return store.posts;
-    });
-    onMounted(() => {
-        store.fetchPosts();
-    });
 </script>
 
 <template>
+    <!-- <span v-if="isLoading" class="flex justify-center items-center transition duration-300">
+        <div class="spinner spinner-1 w-full"></div>
+    </span>
+    <span v-else-if="isError">Error: {{ error.message }}</span> -->
     <main class="font-Poppins">
         <div class="w-full p-64 flex justify-center items-center bg-vert">
             <h1 class="text-white text-4xl font-bold">My Forum</h1>
         </div>
-        <section class="flex items-start w-full flex-col">
-            <h2 class="m-14 font-bold text-2xl">Fil d'actualité</h2>
-            <template class="flex justify-center items-center transition duration-300" v-if="postIsLoading">
-                <div class="spinner spinner-1 w-full"></div>
-            </template> 
-            <RouterLink v-else v-if="current" class="ml-20 m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" to="/create">Créer un post</RouterLink>
-            <!-- POST     -->
-            <Post v-for="item in posts" :post="item" :utilisateur="current.utilisateur" :key="item.id" />
-        </section>
+        <div class="flex items-start w-full flex-col">
+            <h2 class="m-14 font-bold text-2xl">Bienvenue sur My Forum</h2>
+            <p class="m-14">Vous pouvez poster, liker et commenter sur tous les posts de vos amis et sur tous les sujets qui vous plaisent</p>
+            <RouterLink class="ml-20 m-5 py-2.5 px-5 bg-vert border-vert border-2 rounded-lg text-white transition duration-300 text-lg hover:bg-transparent hover:text-vert" to="/posts">Voir tous les posts</RouterLink>
+        </div>
     </main>
 </template>
