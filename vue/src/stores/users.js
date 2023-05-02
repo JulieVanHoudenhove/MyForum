@@ -29,22 +29,6 @@ export const useUserStore = defineStore("user",{
         setTryToLogin(value) {
             this.tryToLogin = value;
         },
-        // async showCompte(current) {
-        //     this.isLoading = true;
-        //     return new Promise(async (resolve, reject) => {
-        //         return await api.get(`users/${current.utilisateur.id}`)
-        //             .then((res) => {
-        //                 users.value = response.data;
-        //                 console.log(users.value)
-        //             })
-        //             .catch((err) => {
-        //                 console.log('an error occured', err)
-        //             })
-        //             .finally(() => {
-        //                 this.isLoading = false;
-        //             })
-        //     });
-        // },
         async fetchUsers() {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {

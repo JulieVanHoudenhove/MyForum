@@ -8,16 +8,16 @@
 
     const route = useRoute()
 
-const id = route.params.id
+    const id = route.params.id
 
-const current = defineProps({ utilisateur: { type: Object }})
+    const current = defineProps({ utilisateur: { type: Object }})
 
-const stats = ref(null);
-    onMounted(async () => {
-        const response = await api.get('user_stats/'+id);
-        stats.value = response.data;
-        console.log(stats.value)
-    });
+    const stats = ref(null);
+        onMounted(async () => {
+            const response = await api.get('user_stats/'+id);
+            stats.value = response.data;
+            console.log(stats.value)
+        });
 </script>
 
 <template>

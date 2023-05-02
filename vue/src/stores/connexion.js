@@ -25,8 +25,8 @@ export const useLogStore = defineStore("log",{
             // const { data } = await api.post(`login_check`, connexionParams)
             // console.log('data', data);
 
-            return new Promise(async (resolve, reject) => {
-                return await api.post(`login_check`, connexionParams)
+            return new Promise((resolve, reject) => {
+                return api.post(`login_check`, connexionParams)
                     .then((response) => {
                         localStorage.setItem('token', response.data.token);
                         resolve(response.data)
