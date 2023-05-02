@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from "axios"
+import api from "./api";
 
 export const usePostStore = defineStore("post",{
     state: () => ({
@@ -17,9 +18,25 @@ export const usePostStore = defineStore("post",{
     actions: {
         async fetchPosts() {
             this.isLoading = true;
+            return new Promise(async (resolve, reject) => {
+                return await api.get(`posts?page=1`)
+                    .then((data) => {
+                        console.log('data', data.data),
+                        this.posts = data?.data || [] ;
+                    })
+                    .catch((err) => {
+                        console.log('an error occured', err)
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
+            });
+        },
+        async fetchPostsLike() {
+            this.isLoading = true;
             const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
             return new Promise(async (resolve, reject) => {
-                return await axios.get(`http://localhost:8000/api/posts?page=1`, { headers})
+                return await api.get(`posts?page=1`, { headers })
                     .then((data) => {
                         console.log('data', data.data),
                         this.posts = data?.data || [] ;
@@ -42,7 +59,7 @@ export const usePostStore = defineStore("post",{
             });
 
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/posts`, formData, {
+                return await api.post(`posts`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -62,7 +79,7 @@ export const usePostStore = defineStore("post",{
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
                 axios.delete
-                return await axios.delete(`http://localhost:8000/api/posts/${id}`)
+                return await api.delete(`posts/${id}`)
                     .then((response) => {
                         resolve(response.data);
                     })
@@ -77,7 +94,7 @@ export const usePostStore = defineStore("post",{
         async likePost(likeParams) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.post(`http://localhost:8000/api/liked_posts`, likeParams)
+                return await api.post(`liked_posts`, likeParams)
                     .then((response) => {
                         store.fetchPosts();
                         console.log(response);

@@ -3,6 +3,7 @@
   import axios from 'axios';
   import Compte from '../components/Compte.vue';
   import { useRoute } from 'vue-router'
+import api from '../stores/api';
 
   const route = useRoute()
 
@@ -13,7 +14,7 @@
   const users = ref(null);
 
   onMounted(async () => {
-    const response = await axios.get('http://localhost:8000/api/users/'+id);
+    const response = await api.get('users/'+id);
     users.value = response.data;
     console.log(users.value)
   });

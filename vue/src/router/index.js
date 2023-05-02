@@ -66,22 +66,6 @@ const router = createRouter({
       component: () => import('../views/CreateView.vue')
     },
     {
-      path: '/dislike/:id',
-      name: 'dislike',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/DislikeView.vue')
-    },
-    {
-      path: '/like/:id',
-      name: 'like',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/LikeView.vue')
-    },
-    {
       path: '/editprofil/:id',
       name: 'editprofil',
       // route level code-splitting

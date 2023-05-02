@@ -1,6 +1,7 @@
 <script setup>
     import axios from "axios";
     import { usePostStore } from "../stores/posts.js";
+    import api from "../stores/api";
     const store = usePostStore();
     const current = 
     defineProps({
@@ -14,20 +15,20 @@
     })
 
     const likePost = () => {
-        axios.post('http://localhost:8000/api/liked_posts', {
+        api.post('liked_posts', {
             "post": "/api/posts/"+current.post.id,
             "user": current.utilisateur['@id']
         })
         .then((response) => {
-            store.fetchPosts();
+            store.fetchPostsLike();
             console.log(response);
         })
     }
 
     const dislikePost = () => {
-        axios.delete('http://localhost:8000/api/liked_posts/'+current.post.likeId)
+        api.delete('liked_posts/'+current.post.likeId)
         .then((response) => {
-            store.fetchPosts();
+            store.fetchPostsLike();
             console.log(response);
         })
     }
@@ -45,12 +46,12 @@
                 <p>{{ new Date(post.createdAt).toLocaleDateString('fr-FR', {'year':'numeric', 'month':'long', 'day':'numeric', 'hour':'numeric', 'minute': 'numeric'}) }}</p>
             </div>
         </RouterLink>
-        <div v-if="current" class="w-12 flex flex-row justify-around text-vert mb-5">
+        <div v-if="current.utilisateur" class="w-12 flex flex-row justify-around text-vert mb-5">
             <button v-if="post.isLiked" @click="dislikePost"><i class="fa-solid fa-heart"></i></button>
             <button v-else @click="likePost"><i class="fa-regular fa-heart"></i></button>
             <p>{{ post.likes }}</p>
         </div>
-        <div v-if="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
+        <div v-if="!current.utilisateur" class="w-12 flex flex-row justify-around text-vert mb-5">
             <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>
             <p>{{ post.likes }}</p>
         </div>

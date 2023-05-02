@@ -4,6 +4,7 @@
     import { useRoute } from 'vue-router'
     import GraphUser from '../components/GraphUser.vue';
     import GraphLike from '../components/GraphLike.vue';
+    import api from '../stores/api';
 
     const route = useRoute()
 
@@ -13,7 +14,7 @@ const current = defineProps({ utilisateur: { type: Object }})
 
 const stats = ref(null);
     onMounted(async () => {
-        const response = await axios.get('http://127.0.0.1:8000/api/user_stats/'+id);
+        const response = await api.get('user_stats/'+id);
         stats.value = response.data;
         console.log(stats.value)
     });

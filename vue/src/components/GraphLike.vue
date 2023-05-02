@@ -18,7 +18,7 @@
         [`Semaine n°${get.users[0].w}`, parseInt(`${get.users[0][1]}`), '#3D4741'],            // RGB value
         [`Semaine n°${get.users[1].w}`, parseInt(`${get.users[1][1]}`), '#617967'],            // English color name
         [`Semaine n°${get.users[2].w}`, parseInt(`${get.users[2][1]}`), '#84A98C'],
-        [`Semaine n°${get.users[3].w}`, parseInt(`${get.users[3][1]}`), 'color: #e1e5e0' ], // CSS-style declaration
+        [`Semaine n°${get.users[3].w}`, parseInt(`${get.users[3][1]}`), '#e1e5e0' ], // CSS-style declaration
       ]);
 
         // Set chart options

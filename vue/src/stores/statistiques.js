@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from "axios"
+import api from './api'
 
 export const useLogStore = defineStore("statistique",{
     state: () => ({
@@ -15,7 +16,7 @@ export const useLogStore = defineStore("statistique",{
         async fetchStats() {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.get(`http://127.0.0.1:8000/api/user_stats/${id}`)
+                return await api.get(`user_stats/${id}`)
                     .then((response) => {
                         
                     })

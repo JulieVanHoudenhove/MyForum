@@ -22,6 +22,22 @@ export const useCommentStore = defineStore("comment",{
         async fetchComments() {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
+                return await api.get(`comments`)
+                    .then((res) => {
+                        this.comments = res?.data || [] ;
+                        console.log('comments', this.comments);
+                    })
+                    .catch((err) => {
+                        console.log('an error occured', err)
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
+            });
+        },
+        async fetchCommentsLike() {
+            this.isLoading = true;
+            return new Promise(async (resolve, reject) => {
                 const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
                 return await api.get(`comments`, { headers})
                     .then((res) => {
@@ -54,7 +70,7 @@ export const useCommentStore = defineStore("comment",{
         async deleteComment(id) {
             this.isLoading = true;
             return new Promise(async (resolve, reject) => {
-                return await axios.delete(`http://localhost:8000/api/comments/${id}`)
+                return await api.delete(`comments/${id}`)
                     .then((response) => {
                         this.fetchComments();
                     })

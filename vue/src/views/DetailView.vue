@@ -10,6 +10,7 @@ console.log('current',current)
     import { useRoute } from 'vue-router'
     import router from '../router';
     import axios from 'axios';
+    import api from '../stores/api';
 
 
     const route = useRoute();
@@ -58,20 +59,20 @@ console.log('current',current)
         // store.likePost(fieldsLike).then((res) => {
         //     console.log('HELLO WORLD', res);
         // });
-        axios.post('http://localhost:8000/api/liked_posts', {
+        api.post('liked_posts', {
             "post": "/api/posts/"+post.value.id,
             "user": current.utilisateur['@id']
         })
         .then((response) => {
-            store.fetchPosts();
+            store.fetchPostsLike();
             console.log(response);
         })
     }
 
     const dislikePost = () => {
-        axios.delete('http://localhost:8000/api/liked_posts/'+post.value.likeId)
+        api.delete('liked_posts/'+post.value.likeId)
         .then((response) => {
-            store.fetchPosts();
+            store.fetchPostsLike();
             console.log(response);
         })
     }
@@ -92,12 +93,12 @@ console.log('current',current)
                 <!-- <RouterLink v-if="current.utilisateur && post.user.id == current.utilisateur.id" class="text-vert" :to="'/remove/'+post.id"><i class="fa-solid fa-trash"></i></RouterLink> -->
                 <button @click="deletePost" v-if="current.utilisateur && post.user.id == current.utilisateur.id" class="text-vert"><i class="fa-solid fa-trash"></i></button>
             </div>
-            <div v-if="current" class="w-12 flex flex-row justify-around text-vert">
+            <div v-if="current.utilisateur" class="w-12 flex flex-row justify-around text-vert">
                 <button v-if="post.isLiked" @click="dislikePost"><i class="fa-solid fa-heart"></i></button>
                 <button v-else @click="likePost"><i class="fa-regular fa-heart"></i></button>
                 <p>{{ post.likes }}</p>
             </div>
-            <div v-else="!current" class="w-12 flex flex-row justify-around text-vert mb-5">
+            <div v-else="!current.utilisateur" class="w-12 flex flex-row justify-around text-vert mb-5">
                 <RouterLink to="/connexion"><i class="fa-regular fa-heart"></i></RouterLink>
                 <p>{{ post.likes }}</p>
             </div>
